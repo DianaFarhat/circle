@@ -33,7 +33,7 @@ router.get("/:id", authenticate, getMealById);
 router.post("/:id/save", authenticate, savePublicMealAsPrivate);
 
 // Create a new meal (private if authorized)
-router.post("/", authenticate, createMeal);
+router.post("/addmeal", authenticate, createMeal);
 
 // Update a private meal
 router.put("/:id", authenticate, updateMeal);
