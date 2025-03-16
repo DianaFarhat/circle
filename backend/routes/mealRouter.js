@@ -1,6 +1,19 @@
 const express= require('express')
-const router=express.Router();
-const { } = require('../controllers/mealController');
+const router = express.Router();
+const { 
+    getPublicMeals, 
+    getUserMeals, 
+    getMealById, 
+    savePublicMealAsPrivate, 
+    createMeal, 
+    updateMeal, 
+    deleteMeal, 
+    searchMeals, 
+    filterMeals, 
+    sortMeals, 
+    getMealSaves 
+} = require('../controllers/mealController');  // Ensure the path is correct
+
 const {authenticate}= require('../middlewares/authMiddleware')
 
 

@@ -4,6 +4,7 @@ const { connectToDatabase } = require('./database');
 const app= express();
 const DB= require('./database').connectToDatabase;
 const userRouter=require("./routes/userRouter"); 
+const mealRouter=require("./routes/mealRouter"); 
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 
@@ -11,8 +12,8 @@ const cookieParser = require("cookie-parser");
 
 // Set up the database
 const dotenv=require("dotenv"); 
-/*     
-const BundlesRoutes=require('./routes/bundleRouter') */
+
+
 dotenv.config();
 
 // Run the database connection
@@ -42,7 +43,7 @@ app.options('*', cors());
 
 // Routes
 app.use("/api/users", userRouter)
-app.use("/api/meals", mealRouter)
+
 
 
 
