@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
-import { FaMale, FaFemale } from "react-icons/fa";
+import { FaMale, FaFemale, FaSearch } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../services/authApi";
 import { logout } from "../services/authSlice";
@@ -47,12 +47,20 @@ const Navigation = () => {
           <span className="fs-3 fw-bold text-dark">thecircle</span>
           <span className="text-success fs-3 fw-bold">.</span>
         </Link>
-
-        {/* Centered Search Bar */}
-        <form className="d-flex mx-auto">
-          <input className="form-control me-2" type="search" placeholder="Matcha Protein Shake" />
-          <button className="btn btn-outline-success" type="submit">
-            <i className="bi bi-search"></i>
+          {/* Centered Search Bar */}
+          <form className="d-flex mx-auto position-relative" style={{ maxWidth: "500px", width: "100%" }}>
+          <input 
+            className="form-control rounded-pill px-4 py-2 shadow-sm" 
+            type="search" 
+            placeholder="Matcha Protein Shake" 
+            style={{ border: "1px solid #ccc", fontSize: "16px", outline: "none" }}
+          />
+          <button 
+            className="btn position-absolute end-0 top-50 translate-middle-y rounded-circle bg-light border-0 p-2 me-2" 
+            type="submit" 
+            style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", outline: "none", boxShadow: "none" }}
+          >
+            <FaSearch className="text-secondary" style={{ fontSize: "18px" }} />
           </button>
         </form>
 
