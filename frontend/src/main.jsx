@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider, Route, createRoutesFromElements } from "react-router-dom"; 
 import { Provider } from "react-redux";
-import { store } from "./redux/store"; 
-import Login from "./pages/Auth/Login.jsx";
+import { store } from "./store.js"; 
+
 
 // Define the router correctly
 const router = createBrowserRouter(
