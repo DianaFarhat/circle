@@ -10,7 +10,9 @@ import Home from "./pages/Home.jsx";
 // Define the router correctly
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Home />} /> // Define a valid route
+    <Route path="/" element={<App />}> 
+      <Route index element={<Home />} />  {/* This is the default route (Home) */}
+    </Route>
   )
 );
 
