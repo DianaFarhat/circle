@@ -1,43 +1,28 @@
-import { useState, useEffect } from "react";
-import {
-  AiOutlineMenu,
-  AiOutlineUser,
-} from "react-icons/ai";
-import { FaUserCircle, FaMale, FaFemale } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import { FaMale, FaFemale } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../services/authApi";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { logout } from "../services/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const storedUser = JSON.parse(localStorage.getItem("userInfo"));
-  const loggedInUserId = storedUser?.data?.user._id;
-  const { userInfo } = useSelector((state) => state.auth);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!loggedInUserId);
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth); // ✅ Get user from Redux
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [logoutApiCall] = useLogoutMutation();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("userInfo"));
-    setIsLoggedIn(!!storedUser?.data?.user._id);
-  }, []);
-
-  const [logout] = useLogoutMutation();
-
   const logoutHandler = async () => {
     try {
-      const response = await logout().unwrap();
-
-      setIsLoggedIn(false);
-      localStorage.removeItem("token");
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("expirationTime");
+      await logoutApiCall().unwrap();
+      dispatch(logout()); // ✅ Clears Redux state
 
       Swal.fire({
         icon: "success",
@@ -65,11 +50,7 @@ const Navigation = () => {
 
         {/* Centered Search Bar */}
         <form className="d-flex mx-auto">
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Matcha Protein Shake"
-          />
+          <input className="form-control me-2" type="search" placeholder="Matcha Protein Shake" />
           <button className="btn btn-outline-success" type="submit">
             <i className="bi bi-search"></i>
           </button>
@@ -77,11 +58,8 @@ const Navigation = () => {
 
         {/* Right Side (User) */}
         <div className="d-flex align-items-center">
-          {loggedInUserId && userInfo ? (
-            <button
-              className="btn d-flex align-items-center"
-              onClick={toggleDropdown}
-            >
+          {userInfo ? (
+            <button className="btn d-flex align-items-center" onClick={toggleDropdown}>
               {userInfo.sex === "female" ? (
                 <FaFemale size={30} className="text-danger" />
               ) : (
@@ -91,35 +69,23 @@ const Navigation = () => {
               <i className="bi bi-chevron-down ms-1"></i>
             </button>
           ) : (
-            <button className="btn" onClick={toggleDropdown}>
-              <AiOutlineUser size={30} />
-            </button>
+            <div>
+              {/* Show Login & Signup Links if NOT logged in */}
+              <Link to="/login" className="btn btn-outline-primary me-2">
+                Login
+              </Link>
+              <Link to="/register" className="btn btn-outline-success">
+                Sign Up
+              </Link>
+            </div>
           )}
 
-          {dropdownOpen && (
+          {/* Dropdown Menu */}
+          {dropdownOpen && userInfo && (
             <div className="dropdown-menu show position-absolute end-0 mt-2">
-              {!loggedInUserId ? (
-                <>
-                  <Link to="/login" className="dropdown-item">
-                    Login
-                  </Link>
-                  <Link to="/register" className="dropdown-item">
-                    Sign Up
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/profile" className="dropdown-item">
-                    My Profile
-                  </Link>
-                  <Link to="/password-settings" className="dropdown-item">
-                    Password Settings
-                  </Link>
-                  <button className="dropdown-item" onClick={logoutHandler}>
-                    Logout
-                  </button>
-                </>
-              )}
+              <Link to="/profile" className="dropdown-item">My Profile</Link>
+              <Link to="/password-settings" className="dropdown-item">Password Settings</Link>
+              <button className="dropdown-item" onClick={logoutHandler}>Logout</button>
             </div>
           )}
         </div>

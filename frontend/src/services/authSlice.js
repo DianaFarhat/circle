@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authApi } from "./authApi"; // Import API for backend authentication
 
+// 🔄 Load user data from localStorage (to persist session after refresh)
+const storedUser = JSON.parse(localStorage.getItem("userInfo")) || null;
+
 const initialState = {
-  userInfo: null, // Stores user info from login/profile
+  userInfo: storedUser, // ✅ Load user info from localStorage on start
 };
 
 const authSlice = createSlice({
@@ -11,17 +14,20 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.userInfo = null; // Clear user info on logout
+      localStorage.removeItem("userInfo"); // ✅ Remove from localStorage
     },
   },
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.getProfile.matchFulfilled, (state, { payload }) => {
-        state.userInfo = payload; // ✅ Store user info from backend
+        state.userInfo = payload;
+        localStorage.setItem("userInfo", JSON.stringify(payload)); // ✅ Save to localStorage
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
-        state.userInfo = payload; // ✅ Store user info from login response
+        state.userInfo = payload;
+        localStorage.setItem("userInfo", JSON.stringify(payload)); // ✅ Save login info
       });
-  },
+}, 
 });
 
 export const { logout } = authSlice.actions;
