@@ -15,7 +15,7 @@ function App() {
   <Provider store={store}>  
   <ToastContainer />
    <Navigation/>
-   <main className=''>
+   <main className="container-fluid px-0">
     <Outlet/>
    </main>
    </Provider>
