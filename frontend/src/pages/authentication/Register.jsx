@@ -104,7 +104,7 @@ const SignUp = () => {
             <label className="form-label">Height (cm)</label>
             <select className="form-select" value={height} onChange={(e) => setHeight(parseInt(e.target.value))}>
               {Array.from({ length: 51 }, (_, i) => i + 140).map((h) => (
-                <option key={h} value={h}>{h} cm</option>
+                <option key={h} value={h}>{h}</option>
               ))}
             </select>
 
