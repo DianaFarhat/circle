@@ -1,14 +1,14 @@
 ﻿import React, { useState } from 'react';
-
-import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
- 
 
 
 const SignUp = () => {
-  const navigate = useNavigate(); // ✅ Initialize useNavigate
-  const [loading, setLoading] = useState(false); // Track login status
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   // Required fields
   const [firstName, setFirstName] = useState('');
@@ -59,9 +59,10 @@ const SignUp = () => {
       if (targetWeight) userData.targetWeight = targetWeight;
       if (dietaryPreferences.length > 0) userData.dietaryPreferences = dietaryPreferences;
 
-      const response = await axios.post('http://localhost:3000/api/users/signup', userData);
+      // ✅ Dispatch signup action
+      const result = await dispatch(signup(userData)).unwrap(); 
       toast.success("User successfully registered"); 
-      setTimeout(() => navigate("/Login"), 2000); // ✅ Redirect to home after success
+      setTimeout(() => navigate("/Login"), 2000); 
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error occurred during signup');
       setLoading(false); // Reset button state on failure
@@ -153,18 +154,6 @@ const SignUp = () => {
                 <option value="admin">Admin</option>
               </select>
             </div>
-
-                      <button
-  className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm font-medium shadow-sm"
-  onClick={signInWithGoogle}
-  type="button"
->
-<img 
-  src="https://developers.google.com/identity/images/g-logo.png" 
-  alt="Google logo" 
-  className="w-5 h-5"
-/>  Sign in with Google
-</button>
 
             <button
               type="submit"
