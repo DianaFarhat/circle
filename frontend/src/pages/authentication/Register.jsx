@@ -1,10 +1,10 @@
 ﻿import React, { useState } from 'react';
-import axios from 'axios';
+
 import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { auth, provider } from "../../Firebase"; 
-import { signInWithPopup } from "firebase/auth";
+ 
+
 
 const SignUp = () => {
   const navigate = useNavigate(); // ✅ Initialize useNavigate
@@ -69,34 +69,7 @@ const SignUp = () => {
     }
   };
 
-  const signInWithGoogle = async (e) => {
-       e.preventDefault();
-      setLoading(true); // Set button to "Logging in..."
-    try {
-      const result = await signInWithPopup(auth, provider.setCustomParameters({ prompt: "select_account" }));
-      const { displayName, email, photoURL, uid } = result.user;
-
-      const res = await axios.post("http://localhost:3000/api/users/google-login", {
-        googleId: uid,
-        name: displayName,
-        email: email,
-        photo: photoURL,
-      });
-
-      toast.success("User successfully registered");
-      setTimeout(() => navigate("/Login"), 2000); // ✅ Redirect to home after success
-    } catch (error) {
- if (error.response?.status === 400) {
-      toast.error("User already registered");
-       setLoading(false); // Reset button state on failure
-          }     
-
-     else {
-      toast.error("Google Sign-In Error");
-    }      setLoading(false); // Reset button state on failure
-    }
-  };
-
+ 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-50">
       <div className="bg-white shadow-lg rounded-lg p-8 sm:max-w-md w-full">

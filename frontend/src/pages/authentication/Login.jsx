@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,6 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { userInfo } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
@@ -27,6 +26,7 @@ const Login = () => {
         }
     };
 
+    // Prevents logged-in users from seeing the login page (redirects them to /)
     useEffect(() => {
         if (userInfo) navigate(redirect);
     }, [navigate, redirect, userInfo]);
