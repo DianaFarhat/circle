@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema(
   },
   fitnessGoal: {
     type: String,
-    enum: ["Fat Loss", "Muscle Gain", "Maintenance"],
+    enum: ["Bulking", "Fat Loss", "Muscle Gain", "Maintenance"],
     required: [true, "Please enter your fitness goal"],
   },
   dietaryPreferences: {
