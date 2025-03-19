@@ -77,6 +77,10 @@ const userSchema = new mongoose.Schema(
     type: Number,
     required: [true, "Please enter your weight in kg"],
   },
+  targetWeight: {
+    type: Number,
+    required: false,
+  },
   activityLevel: {
     type: String,
     enum: ["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"],
@@ -87,17 +91,16 @@ const userSchema = new mongoose.Schema(
     enum: ["Fat Loss", "Muscle Gain", "Maintenance"],
     required: [true, "Please enter your fitness goal"],
   },
-  targetWeight: {
-    type: Number,
-    required: false,
-  },
   dietaryPreferences: {
     type: [String],
     enum: ["Vegetarian", "Vegan", "Paleo", "Gluten-Free", "Keto", "Other"],
     default: [],
     set: (arr) => [...new Set(arr)], // ✅ Remove duplicates automatically
   },
-  
+  caloriesRecommended:{
+    type: Number,
+    default: 1500
+  },
 
   //Favorite Meals
   favoriteMeals: [{ type: Schema.Types.ObjectId, ref: "Meal" }] 

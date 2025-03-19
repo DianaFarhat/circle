@@ -57,10 +57,11 @@ exports.signup = async (req, res) => {
         sex, 
         height, 
         weight, 
+        targetWeight,
         activityLevel, 
         fitnessGoal, 
-        targetWeight= null, 
-        dietaryPreferences= null 
+        dietaryPreferences= null,
+        caloriesRecommended 
     } = req.body;
       
     try {
