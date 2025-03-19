@@ -44,7 +44,7 @@ const SignUp = () => {
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error occurred during signup');
-      setLoading(false);
+
     }
   };
 
@@ -123,7 +123,7 @@ const SignUp = () => {
 
             <label className="form-label mt-2">Fitness Goal</label>
             <select className="form-select" value={fitnessGoal} onChange={(e) => setFitnessGoal(e.target.value)}>
-              {["Fat Loss", "Muscle Gain", "Maintenance"].map(goal => (
+              {["Bulking","Fat Loss", "Muscle Gain", "Maintenance"].map(goal => (
                 <option key={goal} value={goal}>{goal}</option>
               ))}
             </select>
