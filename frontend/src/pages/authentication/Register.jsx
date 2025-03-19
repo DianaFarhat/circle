@@ -3,325 +3,151 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useSignupMutation } from "../../services/authApi";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [signup, { isLoading }] = useSignupMutation();
 
-  // Required fields
+  // State Management
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [role, setRole] = useState('user');
-  const [birthdate, setBirthdate] = useState('');
-  const [sex, setSex] = useState('female"'); // Enum: "male", "female"
-  const [height, setHeight] = useState(155); // In cm
-  const [weight, setWeight] = useState(55); // In kg
-  const [activityLevel, setActivityLevel] = useState('Sedentary'); // Enum: Activity levels
-  const [fitnessGoal, setFitnessGoal] = useState('Fat Loss'); // Enum: Fitness goals
-
-  // Optional fields
-  const [targetWeight, setTargetWeight] = useState('');
-  const [dietaryPreferences, setDietaryPreferences] = useState([]); // Array of dietary preferences
-
-  const [message, setMessage] = useState('');
+  const [birthdate, setBirthdate] = useState('2000-08-29');
+  const [sex, setSex] = useState('female');
+  const [height, setHeight] = useState(155);
+  const [weight, setWeight] = useState(60);
+  const [targetWeight, setTargetWeight] = useState(55);
+  const [activityLevel, setActivityLevel] = useState('Sedentary');
+  const [fitnessGoal, setFitnessGoal] = useState('Fat Loss');
+  const [dietaryPreferences, setDietaryPreferences] = useState('Other');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      setLoading(true); // Set button to "Logging in..."
+    if (password !== passwordConfirm) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+   
 
     try {
-     // Build the user object dynamically, excluding empty optional fields
       const userData = {
-        firstName,
-        lastName,
-        email,
-        username,
-        password,
-        passwordConfirm,
-        role,
-        birthdate,
-        sex,
-        height,
-        weight,
-        activityLevel,
-        fitnessGoal,
-        caloriesRecommended
+        firstName, lastName, email, password, birthdate, sex,
+        height, weight, targetWeight, activityLevel, fitnessGoal, dietaryPreferences
       };
 
-      // Only add optional fields if they have a value
-      if (targetWeight) userData.targetWeight = targetWeight;
-      if (dietaryPreferences.length > 0) userData.dietaryPreferences = dietaryPreferences;
-
-      // ✅ Dispatch signup action
-      const result = await dispatch(signup(userData)).unwrap(); 
-      toast.success("User successfully registered"); 
-      setTimeout(() => navigate("/Login"), 2000); 
+      
+      const response= await signup(userData).unwrap(); 
+      toast.success("User successfully registered");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error occurred during signup');
-      setLoading(false); // Reset button state on failure
-
+      setLoading(false);
     }
   };
 
- 
- /*  return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50">
-      <div className="bg-white shadow-lg rounded-lg p-8 sm:max-w-md w-full">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Create Account</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">First Name</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
+  return (
+    <div className="container min-vh-100 d-flex flex-column align-items-center py-4">
+      <h1 className="text-center text-success fw-bold mb-3">Create Your Account</h1>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Last Name</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-              <input
-                type="password"
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                required
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Role</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 text-sm"
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
-
-        {message && (
-          <p className="mt-4 text-center text-red-500 text-sm">{message}</p>
-        )}
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-indigo-600 hover:underline">
-              Log In
-            </Link>
-          </p>
-        </div>
+      {/* Fitness Image */}
+      <div className="w-100 position-relative" style={{ height: "200px", overflow: "hidden" }}>
+        <img 
+          src="https://images.pexels.com/photos/6299937/pexels-photo-6299937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+          alt="Fitness Motivation" 
+          className="w-100 h-100"
+          style={{ objectFit: "cover", objectPosition: "center", maxWidth: "100%" }}
+        />
       </div>
 
-      <ToastContainer />
-    </div>
-  ); */
 
-  return (
-    <div className="min-h-screen flex flex-col items-center bg-lime-50 py-10">
-      {/* 🍋 Cute Image */}
-      <img
-        src="https://cdn.pixabay.com/photo/2017/08/30/01/20/lemons-2691827_1280.jpg"
-        alt="Cute Lemons"
-        className="w-40 h-40 rounded-full shadow-lg mb-4"
-      />
 
-      <div className="bg-white shadow-md rounded-xl p-8 w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center text-lime-600 mb-6">Create Your Account</h1>
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6">
-          {/* First Name */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">First Name</label>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
+      <div className="w-100 bg-white shadow-lg rounded p-4 w-100">
+        <form onSubmit={handleSubmit} className="row g-3">
+          {/* LEFT COLUMN - User Info */}
+          <div className="col-md-6">
+            <label className="form-label">First Name</label>
+            <input type="text" className="form-control" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+
+            <label className="form-label mt-2">Last Name</label>
+            <input type="text" className="form-control" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+
+            <label className="form-label mt-2">Email</label>
+            <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
+
+            <label className="form-label mt-2">Password</label>
+            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+            <label className="form-label mt-2">Confirm Password</label>
+            <input type="password" className="form-control" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required />
+
+            <label className="form-label mt-2">Birthdate</label>
+            <input type="date" className="form-control" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
+
+            <label className="form-label mt-2">Sex</label>
+            <div>
+              <div className="form-check form-check-inline">
+                <input className="form-check-input" type="radio" name="sex" value="female" checked={sex === "female"} onChange={() => setSex("female")} />
+                <label className="form-check-label">Female</label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input className="form-check-input" type="radio" name="sex" value="male" checked={sex === "male"} onChange={() => setSex("male")} />
+                <label className="form-check-label">Male</label>
+              </div>
+            </div>
           </div>
 
-          {/* Last Name */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Last Name</label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Username */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Confirm Password</label>
-            <input
-              type="password"
-              value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Birthdate */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Birthdate</label>
-            <input
-              type="date"
-              value={birthdate}
-              onChange={(e) => setBirthdate(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
-          </div>
-
-          {/* Sex Dropdown */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Sex</label>
-            <select
-              value={sex}
-              onChange={(e) => setSex(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            >
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-            </select>
-          </div>
-
-          {/* Height Dropdown */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Height (cm)</label>
-            <select
-              value={height}
-              onChange={(e) => setHeight(parseInt(e.target.value))}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            >
+          {/* RIGHT COLUMN - Fitness Info */}
+          <div className="col-md-6">
+            <label className="form-label">Height (cm)</label>
+            <select className="form-select" value={height} onChange={(e) => setHeight(parseInt(e.target.value))}>
               {Array.from({ length: 51 }, (_, i) => i + 140).map((h) => (
-                <option key={h} value={h}>
-                  {h} cm
-                </option>
+                <option key={h} value={h}>{h} cm</option>
+              ))}
+            </select>
+
+            <label className="form-label mt-2">Weight (kg)</label>
+            <input type="number" className="form-control" value={weight} onChange={(e) => setWeight(e.target.value)} />
+
+            <label className="form-label mt-2">Target Weight (kg)</label>
+            <input type="number" className="form-control" value={targetWeight} onChange={(e) => setTargetWeight(e.target.value)} />
+
+            <label className="form-label mt-2">Activity Level</label>
+            <select className="form-select" value={activityLevel} onChange={(e) => setActivityLevel(e.target.value)}>
+              {["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"].map(level => (
+                <option key={level} value={level}>{level}</option>
+              ))}
+            </select>
+
+            <label className="form-label mt-2">Fitness Goal</label>
+            <select className="form-select" value={fitnessGoal} onChange={(e) => setFitnessGoal(e.target.value)}>
+              {["Fat Loss", "Muscle Gain", "Maintenance"].map(goal => (
+                <option key={goal} value={goal}>{goal}</option>
+              ))}
+            </select>
+
+            <label className="form-label mt-2">Dietary Preferences</label>
+            <select className="form-select" value={dietaryPreferences} onChange={(e) => setDietaryPreferences(e.target.value)}>
+              {["Vegetarian", "Vegan", "Paleo", "Gluten-Free", "Keto", "Other"].map(pref => (
+                <option key={pref} value={pref}>{pref}</option>
               ))}
             </select>
           </div>
 
-          {/* Weight */}
-          <div>
-            <label className="block text-gray-700 text-sm font-medium">Weight (kg)</label>
-            <input
-              type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-500"
-            />
+          {/* Submit Button */}
+          <div className="text-center mt-4">
+            <button type="submit" className="btn btn-success w-50" disabled={isLoading}>
+              {isLoading ? "Signing Up..." : "Sign Up"}
+            </button>
           </div>
         </form>
       </div>
+
+      <ToastContainer />
     </div>
   );
-
-
 };
 
 export default SignUp;
