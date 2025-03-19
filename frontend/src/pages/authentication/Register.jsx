@@ -20,7 +20,7 @@ const SignUp = () => {
   const [height, setHeight] = useState(155);
   const [weight, setWeight] = useState(60);
   const [targetWeight, setTargetWeight] = useState(55);
-  const [activityLevel, setActivityLevel] = useState('Sedentary');
+  const [activityLevel, setActivityLevel] = useState('Lightly Active');
   const [fitnessGoal, setFitnessGoal] = useState('Fat Loss');
   const [dietaryPreferences, setDietaryPreferences] = useState('Other');
 
@@ -55,10 +55,10 @@ const SignUp = () => {
       {/* Fitness Image */}
       <div className="w-100 position-relative" style={{ height: "200px", overflow: "hidden" }}>
         <img 
-          src="https://images.pexels.com/photos/6299937/pexels-photo-6299937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+          src="https://images.pexels.com/photos/450062/pexels-photo-450062.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
           alt="Fitness Motivation" 
           className="w-100 h-100"
-          style={{ objectFit: "cover", objectPosition: "center", maxWidth: "100%" }}
+          style={{ objectFit: "cover", objectPosition: "55% 65%", maxWidth: "100%" }}
         />
       </div>
 
