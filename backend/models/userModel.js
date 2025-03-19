@@ -18,12 +18,6 @@ const userSchema = new mongoose.Schema(
     minLength: 3,
     trim: true,
   },
-  username: {
-    type: String,
-    unique: true,
-    trim: true,
-    required: [true, "Please enter your username"],
-  },
   email: {
     type: String,
     unique: true,
@@ -100,6 +94,10 @@ const userSchema = new mongoose.Schema(
   caloriesRecommended:{
     type: Number,
     default: 1500
+  },
+  proteinRecommended:{
+    type: Number,
+    default:80
   },
 
   //Favorite Meals

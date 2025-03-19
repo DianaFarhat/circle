@@ -49,7 +49,6 @@ exports.signup = async (req, res) => {
         firstName, 
         lastName, 
         email, 
-        username, 
         password, 
         passwordConfirm, 
         role, 
@@ -61,7 +60,8 @@ exports.signup = async (req, res) => {
         activityLevel, 
         fitnessGoal, 
         dietaryPreferences= null,
-        caloriesRecommended 
+        caloriesRecommended,
+        proteinRecommended 
     } = req.body;
       
     try {
@@ -81,7 +81,6 @@ exports.signup = async (req, res) => {
         firstName,
         lastName,
         email,
-        username,
         password,
         passwordConfirm,
         role,
@@ -89,10 +88,12 @@ exports.signup = async (req, res) => {
         sex,
         height,
         weight,
+        targetWeight,
         activityLevel,
         fitnessGoal,
-        targetWeight,
-        dietaryPreferences
+        dietaryPreferences,
+        caloriesRecommended,
+        proteinRecommended
     });
 
     // Explicitly validate the document
@@ -218,17 +219,17 @@ exports.getCurrentUserProfile = async (req, res) => {
                 _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                username: user.username,
                 email: user.email,
                 role: user.role,
                 birthdate: user.birthdate,
                 sex: user.sex,
                 height: user.height,
                 weight: user.weight,
-                bodyFatPercentage: user.bodyFatPercentage,
+                targetWeight: user.targetWeight,
                 activityLevel: user.activityLevel,
                 fitnessGoal: user.fitnessGoal,
-                targetWeight: user.targetWeight,
+                caloriesRecommended: user.caloriesRecommended,
+                proteinRecommended: user.proteinRecommended,
                 dietaryPreferences: user.dietaryPreferences,
                 createdAt: user.createdAt,
             },
@@ -251,17 +252,17 @@ exports.updateCurrentUserProfile = async (req, res) => {
         // ✅ Update only the provided fields (keep existing values if not provided)
         user.firstName = req.body.firstName || user.firstName;
         user.lastName = req.body.lastName || user.lastName;
-        user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
         user.birthdate = req.body.birthdate || user.birthdate;
         user.sex = req.body.sex || user.sex;
         user.height = req.body.height || user.height;
         user.weight = req.body.weight || user.weight;
-        user.bodyFatPercentage = req.body.bodyFatPercentage || user.bodyFatPercentage;
+        user.targetWeight = req.body.targetWeight || user.targetWeight;
         user.activityLevel = req.body.activityLevel || user.activityLevel;
         user.fitnessGoal = req.body.fitnessGoal || user.fitnessGoal;
-        user.targetWeight = req.body.targetWeight || user.targetWeight;
         user.dietaryPreferences = req.body.dietaryPreferences || user.dietaryPreferences;
+        user.caloriesRecommended= req.body.caloriesRecommended || user.caloriesRecommended;
+        user.proteinRecommended= req.body.proteinRecommended || user.proteinRecommended;
 
         // ✅ Save updated user data to the database
         const updatedUser = await user.save();
@@ -273,18 +274,18 @@ exports.updateCurrentUserProfile = async (req, res) => {
                 _id: updatedUser._id,
                 firstName: updatedUser.firstName,
                 lastName: updatedUser.lastName,
-                username: updatedUser.username,
                 email: updatedUser.email,
                 role: updatedUser.role,
                 birthdate: updatedUser.birthdate,
                 sex: updatedUser.sex,
                 height: updatedUser.height,
                 weight: updatedUser.weight,
-                bodyFatPercentage: updatedUser.bodyFatPercentage,
+                targetWeight: updatedUser.targetWeight,
                 activityLevel: updatedUser.activityLevel,
                 fitnessGoal: updatedUser.fitnessGoal,
-                targetWeight: updatedUser.targetWeight,
                 dietaryPreferences: updatedUser.dietaryPreferences,
+                caloriesRecommended: updatedUser.caloriesRecommended,
+                proteinRecommended: updatedUser.proteinRecommended,
                 createdAt: updatedUser.createdAt,
             },
         });
