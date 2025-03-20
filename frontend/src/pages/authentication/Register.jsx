@@ -52,7 +52,7 @@ const SignUp = () => {
 
   return (
     <div className="container min-vh-100 d-flex flex-column align-items-center py-4">
-      <h1 className="text-center text-success fw-bold mb-3">Create Your Account</h1>
+      
 
       {/* Fitness Image */}
       <div className="w-100 position-relative" style={{ height: "200px", overflow: "hidden" }}>
@@ -67,6 +67,7 @@ const SignUp = () => {
 
 
       <div className="w-100 bg-white shadow-lg rounded p-4 w-100">
+      <h2 className="fw-bold mb-3">Create Your Account</h2>
         <form onSubmit={handleSubmit} className="row g-3">
           {/* LEFT COLUMN - User Info */}
           <div className="col-md-6">
@@ -144,6 +145,9 @@ const SignUp = () => {
               {isLoading ? "Signing Up..." : "Sign Up"}
             </button>
           </div>
+          <div className="mt-3 text-center">
+              <p className="small">Already have an account? <Link to="/login" className="text-primary">Log in</Link></p>
+            </div>
         </form>
       </div>
     </div>
