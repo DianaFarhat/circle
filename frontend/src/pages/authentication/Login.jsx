@@ -35,7 +35,7 @@ const Login = () => {
       <div className="container-fluid d-flex flex-column flex-lg-row vh-100">
         <div 
           className="d-none d-lg-flex col-lg-6 bg-dark position-relative text-white align-items-center justify-content-center"
-          style={{ backgroundImage: "url('https://images.pexels.com/photos/4853295/pexels-photo-4853295.jpeg?auto=compress&cs=tinysrgb&w=600')", backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{ backgroundImage: "url('https://i.pinimg.com/736x/24/38/ea/2438eaf6806ab272433ce39ae30f7413.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}
         >
           <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
           <div className="position-relative text-center">
