@@ -68,14 +68,18 @@ const Navigation = () => {
         <div className="d-flex align-items-center">
           {userInfo ? (
             <button className="btn d-flex align-items-center" onClick={toggleDropdown}>
-              {userInfo.sex === "female" ? (
-                <FaFemale size={30} className="text-danger" />
-              ) : (
-                <FaMale size={30} className="text-primary" />
-              )}
-              <span className="ms-2">{userInfo.username}</span>
-              <i className="bi bi-chevron-down ms-1"></i>
-            </button>
+            <img
+              src={
+                userInfo.sex === "female"
+                  ? "https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg"
+                  : "https://www.svgrepo.com/show/382106/male-avatar-boy-face-man-user-9.svg"
+              }
+              alt="User Avatar"
+              style={{ width: "30px", height: "30px", marginRight: "8px" }}
+            />
+            <span className="ms-2">{userInfo.username}</span>
+            <i className="bi bi-chevron-down ms-1"></i>
+          </button>
           ) : (
             <div>
               {/* Show Login & Signup Links if NOT logged in */}
