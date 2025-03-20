@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-  {/*   <ToastContainer /> */}
+    <ToastContainer />
     {/* Show Navigation only if not on login/register */}
     {shouldShowNav && <Navigation />} 
 
