@@ -86,11 +86,9 @@ const userSchema = new mongoose.Schema(
     required: [true, "Please enter your fitness goal"],
   },
   dietaryPreferences: {
-    type: [String],
+    type: String,
     enum: ["Vegetarian", "Vegan", "Paleo", "Gluten-Free", "Keto", "Other"],
-    default: ["Other"], // Set default as "Other"
-    required: [true, "Please enter your dietary preferences"],
-    set: (arr) => [...new Set(arr)], // ✅ Remove duplicates automatically
+    default: ["Other"], 
   },  
   caloriesRecommended:{
     type: Number,

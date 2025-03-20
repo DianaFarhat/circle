@@ -38,6 +38,8 @@ const SignUp = () => {
         height, weight, targetWeight, activityLevel, fitnessGoal, dietaryPreferences
       };
 
+      console.log("User Data Sent from register.jsx frontend:", JSON.stringify(userData));  // Log the user data
+
       
       const response= await signup(userData).unwrap(); 
       toast.success("User successfully registered");

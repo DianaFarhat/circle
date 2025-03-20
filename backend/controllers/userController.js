@@ -44,7 +44,7 @@ return token; // ✅ Return the generated token
 
 
 exports.signup = async (req, res) => {
-    console.log("Request Body:", req.body); // Add this line to inspect the body
+    console.log("Request Body from signup backend:", req.body); // Add this line to inspect the body
     const { 
         firstName, 
         lastName, 
