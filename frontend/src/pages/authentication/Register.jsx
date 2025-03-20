@@ -34,7 +34,7 @@ const SignUp = () => {
 
     try {
       const userData = {
-        firstName, lastName, email, password, birthdate, sex,
+        firstName, lastName, email, password, passwordConfirm, birthdate, sex,
         height, weight, targetWeight, activityLevel, fitnessGoal, dietaryPreferences
       };
 
