@@ -51,7 +51,6 @@ exports.signup = async (req, res) => {
         email, 
         password, 
         passwordConfirm, 
-        role, 
         birthdate, 
         sex, 
         height, 
@@ -59,9 +58,7 @@ exports.signup = async (req, res) => {
         targetWeight,
         activityLevel, 
         fitnessGoal, 
-        dietaryPreferences= null,
-        caloriesRecommended,
-        proteinRecommended 
+        dietaryPreferences,
     } = req.body;
       
     try {
@@ -83,7 +80,6 @@ exports.signup = async (req, res) => {
         email,
         password,
         passwordConfirm,
-        role,
         birthdate,
         sex,
         height,
@@ -92,8 +88,6 @@ exports.signup = async (req, res) => {
         activityLevel,
         fitnessGoal,
         dietaryPreferences,
-        caloriesRecommended,
-        proteinRecommended
     });
 
     // Explicitly validate the document
@@ -220,7 +214,6 @@ exports.getCurrentUserProfile = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                role: user.role,
                 birthdate: user.birthdate,
                 sex: user.sex,
                 height: user.height,
@@ -228,9 +221,9 @@ exports.getCurrentUserProfile = async (req, res) => {
                 targetWeight: user.targetWeight,
                 activityLevel: user.activityLevel,
                 fitnessGoal: user.fitnessGoal,
+                dietaryPreferences: user.dietaryPreferences,
                 caloriesRecommended: user.caloriesRecommended,
                 proteinRecommended: user.proteinRecommended,
-                dietaryPreferences: user.dietaryPreferences,
                 createdAt: user.createdAt,
             },
         });
@@ -275,7 +268,6 @@ exports.updateCurrentUserProfile = async (req, res) => {
                 firstName: updatedUser.firstName,
                 lastName: updatedUser.lastName,
                 email: updatedUser.email,
-                role: updatedUser.role,
                 birthdate: updatedUser.birthdate,
                 sex: updatedUser.sex,
                 height: updatedUser.height,
