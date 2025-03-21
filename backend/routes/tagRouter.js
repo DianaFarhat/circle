@@ -5,16 +5,17 @@ const { authenticate } = require("../middlewares/authMiddleware");
 
 
 
-// Create a new tag 
+// Create a new tag (User)
 router.post("/createTag", authenticate, createTag);
 
-/* // Update a tag by ID 
-router.put("/:id", authenticate, updateTag);
+// Edit a private tag (User)
+router.put("/:tagId", authenticate, editTag);
 
-// Delete a tag by ID 
-router.delete("/:id", authenticate, deleteTag);
+// Delete a private tag (User)
+router.delete("/:tagId", authenticate, deleteTag);
 
-// Get all tags
-router.get("/", getTags); */
+// Make a meal public, and hence its tags (Admin only)
+router.put("/meal/makePublic", authenticate, makeMealPublic);
 
 module.exports = router;
+
