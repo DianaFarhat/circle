@@ -43,6 +43,7 @@ app.options('*', cors());
 
 // Routes
 app.use("/api/users", userRouter)
+app.use("/api/tags", tagRouter)
 app.use("/api/meals", mealRouter)
 
 

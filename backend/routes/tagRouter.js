@@ -7,7 +7,7 @@ const { authenticate } = require("../middleware/authMiddleware");
 router.get("/", getTags);
 
 // Create a new tag 
-router.post("/", authenticate, createTag);
+router.post("/createTag", authenticate, createTag);
 
 // Update a tag by ID 
 router.put("/:id", authenticate, updateTag);
