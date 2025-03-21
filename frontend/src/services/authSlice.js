@@ -24,8 +24,8 @@ const authSlice = createSlice({
         localStorage.setItem("userInfo", JSON.stringify(payload.data.user)); // ✅ Save only the user data
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
-        state.userInfo = payload;
-        localStorage.setItem("userInfo", JSON.stringify(payload)); // ✅ Save login info
+        state.userInfo = payload.data.user;
+        localStorage.setItem("userInfo", JSON.stringify(payload.data.user)); // ✅ Save login info
       });
 }, 
 });

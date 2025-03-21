@@ -70,7 +70,7 @@ const Navigation = () => {
             <button className="btn d-flex align-items-center" onClick={toggleDropdown}>
             <img
               src={
-                userInfo?.data?.user?.sex === "female"
+                userInfo?.sex === "female"
                   ? "https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg"
                   : "https://www.svgrepo.com/show/382106/male-avatar-boy-face-man-user-9.svg"
               }
