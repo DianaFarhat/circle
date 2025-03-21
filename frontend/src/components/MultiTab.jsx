@@ -16,20 +16,23 @@ const MultiTabComponent = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white py-2 border-t-4 border-b-4 border-lime-500">
-      <div className="flex space-x-8">
+    <div className="flex flex-col items-center justify-center py-2 bg-white">
+      <div className="flex space-x-2 relative">
+        {/* Continuous Yellow Line Below Tabs */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-[#FFEA00] rounded"></div>
         {tabs.map((tab) => (
           <button
             key={tab.id}
             className={`
-              flex items-center space-x-2 px-4 py-2 text-lg font-medium text-gray-600
-              transition-all duration-200
-              ${activeTab === tab.id ? 'text-yellow-500 border-b-2 border-yellow-500' : 'hover:text-gray-800'}
+              flex items-center space-x-2 px-4 py-2 text-lg font-medium
+              transition-all duration-200 ease-in-out
+              ${activeTab === tab.id ? 'text-black bg-[#FFF59D] rounded-t-md border-b-0' : 'text-gray-700 bg-[#FFFBCC] hover:bg-[#FFF59D]'}
             `}
+            style={{ borderBottom: activeTab === tab.id ? '4px solid #FFEA00' : '4px solid transparent' }}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.icon}
-            <span>{tab.name}</span>
+            <span> {tab.name}</span>
           </button>
         ))}
       </div>
