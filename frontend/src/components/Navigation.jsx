@@ -12,7 +12,6 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth); // ✅ Get user from Redux
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [logoutApiCall] = useLogoutMutation();
 
   const toggleDropdown = () => {
@@ -37,12 +36,10 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light px-4 py-2">
+    <nav className="navbar navbar-expand-lg navbar-light  px-4 py-2">
       <div className="container-fluid">
-        {/* Left Side (Logo & Menu) */}
-        <button className="btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          <AiOutlineMenu size={19} />
-        </button>
+        {/* Left Side (Logo) */}
+        
         <Link to="/" className="navbar-brand d-flex align-items-center">
           <span className="fs-3 fw-bold text-dark">thecircle</span>
           <span className="text-success fs-3 fw-bold">.</span>
