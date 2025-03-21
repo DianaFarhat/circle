@@ -8,13 +8,8 @@ const tabs = [
   { name: 'My Groceries', id: 'myGroceries', icon: <AiOutlineApple /> },
 ];
 
-const MultiTabComponent = () => {
-  const [activeTab, setActiveTab] = useState('allMeals');
-
-  const handleTabClick = (id) => {
-    setActiveTab(id);
-  };
-
+const MultiTabComponent = ({ activeTab, onTabClick }) => {
+  
   return (
     <div className="d-flex flex-column align-items-start justify-content-center py-2 bg-white w-100">
       <div className="d-flex position-relative w-100">
@@ -30,7 +25,7 @@ const MultiTabComponent = () => {
               outline: 'none',
               boxShadow: 'none',
             }}
-            onClick={() => handleTabClick(tab.id)}
+            onClick={() => onTabClick(tab.id)}  // Trigger tab change on click
           >
             {tab.icon}
             <span className="ms-1">{tab.name}</span>
