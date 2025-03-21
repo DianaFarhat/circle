@@ -33,6 +33,17 @@ const SignUp = () => {
    
 
     try {
+      // Check if passwords match
+      if (password !== passwordConfirm) {
+        toast.error("Passwords do not match!");
+        return;
+      }
+
+      // Check if password length is at least 8 characters
+      if (password.length < 8) {
+        toast.error("Password must be at least 8 characters long!");
+        return;
+      }
       const userData = {
         firstName, lastName, email, password, passwordConfirm, birthdate, sex,
         height, weight, targetWeight, activityLevel, fitnessGoal, dietaryPreferences
