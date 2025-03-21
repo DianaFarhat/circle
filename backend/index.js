@@ -5,6 +5,7 @@ const app= express();
 const DB= require('./database').connectToDatabase;
 const userRouter=require("./routes/userRouter"); 
 const mealRouter=require("./routes/mealRouter"); 
+const tagRouter=require("./routes/tagRouter"); 
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 
