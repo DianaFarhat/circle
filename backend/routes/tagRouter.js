@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createTag } = require("../controllers/tagController");
+const { createTag, editTag, deleteTag,makeMealPublic } = require("../controllers/tagController");
 const { authenticate } = require("../middlewares/authMiddleware");
 
 
