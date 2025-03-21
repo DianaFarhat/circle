@@ -14,7 +14,13 @@ const Login = () => {
     const sp = new URLSearchParams(search);
     const redirect = sp.get("redirect") || "/login";
     const [login, { isLoading }] = useLoginMutation();
-
+    
+    //Debug Code
+      useEffect(() => {
+      // Print user info to verify it was saved
+      console.log("User Info from Redux:", userInfo);
+    }, [userInfo]); // Run whenever userInfo changes
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

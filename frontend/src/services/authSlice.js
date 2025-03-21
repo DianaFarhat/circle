@@ -20,8 +20,8 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.getProfile.matchFulfilled, (state, { payload }) => {
-        state.userInfo = payload;
-        localStorage.setItem("userInfo", JSON.stringify(payload)); // ✅ Save to localStorage
+        state.userInfo = payload.data.user; // ✅ Correctly extract the user object
+        localStorage.setItem("userInfo", JSON.stringify(payload.data.user)); // ✅ Save only the user data
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
         state.userInfo = payload;
