@@ -65,7 +65,7 @@ exports.signup = async (req, res) => {
     // Check if email is already in use
     const emailCheck = await User.findOne({ email });
     if (emailCheck) {
-        return res.status(409).json({ message: "Email is in use." });
+        return res.status(409).json({ message: "Email already in use." });
     }
 
     // Validate email format

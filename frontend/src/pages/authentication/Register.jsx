@@ -45,7 +45,11 @@ const SignUp = () => {
       toast.success("User successfully registered");
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error occurred during signup');
+      if (error?.status === 409 && error?.data?.message === "Email already in use.") {
+        toast.error("This email is already registered, please use a different email.");
+      } else {
+        toast.error(error?.data?.message || 'Error occurred during signup');
+      }
 
     }
   };
