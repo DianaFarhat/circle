@@ -93,3 +93,23 @@ button:focus-visible {
   box-shadow: 0 0 5px #cddc39 !important; /* Lime Yellow glow */
   outline: none !important;
 }
+
+
+.btn:focus, .btn:active, .btn:hover, .btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove blue outline and shadow on all button states */
+button, button:focus, button:active, button:hover, button:focus-visible,
+.btn, .btn:focus, .btn:active, .btn:hover, .btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.no-outline {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}

@@ -68,8 +68,8 @@ const Navigation = () => {
             <img
               src={
                 userInfo?.sex === "female"
-                  ? "https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg"
-                  : "https://www.svgrepo.com/show/382106/male-avatar-boy-face-man-user-9.svg"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/6/6a/Green_Dot_%28Active%29.png"
+                  : "https://upload.wikimedia.org/wikipedia/commons/6/6a/Green_Dot_%28Active%29.png"
               }
               alt="User Avatar"
               style={{ width: "30px", height: "30px", marginRight: "8px" }}
