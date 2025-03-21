@@ -11,10 +11,11 @@ const mealSchema = new mongoose.Schema(
     description: { type: String, required: true },
     recipeUrl: { type: String },
     videoUrl: { type: String },
-    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+
+    // Reference to Tag documents
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag', index: true }], 
+
     nbOfTimesSaved: { type: Number, default: 0 },
-
-
     calories: { type: Number, required: true },
     servingSize: {
       value: { type: Number, required: true }, // Numeric value (e.g., 355 for "355ml")
