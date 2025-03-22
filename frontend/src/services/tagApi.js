@@ -1,5 +1,6 @@
-export const tagsApi = createApi({
-    reducerPath: "tagsApi",
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+export const tagApi = createApi({
+    reducerPath: "tagApi",
     baseQuery: fetchBaseQuery({
       baseUrl: "http://localhost:5000/api/tags", 
       credentials: "include",
@@ -28,5 +29,5 @@ export const tagsApi = createApi({
   export const {
     useGetPublicTagsQuery,
     useCreateTagMutation,
-} = tagsApi;
+} = tagApi;
   
