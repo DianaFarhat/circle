@@ -6,6 +6,7 @@ const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629e
 const CreateMeal = () => {
     const [image, setImage] = useState(fallbackImage);
     const [mealName, setMealName] = useState('Matcha Latte');
+    const [description, setDescription] = useState('');
     const [urlInputVisible, setUrlInputVisible] = useState(false);
     const [url, setUrl] = useState('');
 
@@ -28,11 +29,19 @@ const CreateMeal = () => {
         }
     };
 
+    const handleCreateMeal = () => {
+        if (!mealName.trim() || !description.trim()) {
+            alert('Both fields are required!');
+            return;
+        }
+        alert('Meal Created Successfully!');
+    };
+
     return (
-        <div className="container mt-5 text-center">
+        <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
-                    <div className="position-relative">
+                    <div className="position-relative text-center">
                         <img
                             src={image}
                             alt="Meal Image"
@@ -41,7 +50,7 @@ const CreateMeal = () => {
                         />
                         <div className="position-absolute" style={{ top: '20px', right: '20px' }}>
                             <div className="d-flex gap-0">
-                                <button onClick={() => setUrlInputVisible(!urlInputVisible)} className="btn px-3 py-1" style={{ backgroundColor: '#FDFD96', color: 'black', borderTopLeftRadius: '50px', borderBottomLeftRadius: '50px' }}>URL</button>
+                                <button onClick={() => setUrlInputVisible(!urlInputVisible)} className="btn px-3 py-1" style={{ backgroundColor: '#FDFD96', color: 'black', borderTopLeftRadius: '50px', borderBottomLeftRadius: '50px' }}>Image URL</button>
                                 <label htmlFor="file-upload" className="btn px-3 py-1" style={{ backgroundColor: '#b5fd94', color: 'black', borderTopRightRadius: '50px', borderBottomRightRadius: '50px' }}>
                                     Upload
                                     <input
@@ -71,15 +80,24 @@ const CreateMeal = () => {
                             </div>
                         )}
                     </div>
-                    <div className="card mt-4 shadow">
-                        <div className="card-body">
-                            <input
-                                value={mealName}
-                                onChange={(e) => setMealName(e.target.value)}
-                                className="form-control border-0 text-center fs-3 fw-bold"
-                                style={{ background: 'transparent' }}
-                            />
-                        </div>
+                    <div className="mt-4 text-start">
+                        <input
+                            value={mealName}
+                            onChange={(e) => setMealName(e.target.value)}
+                            className="form-control border-0 fs-3 fw-bold mb-2"
+                            placeholder="Meal Name"
+                            style={{ background: 'transparent', outline: 'none' }}
+                            required
+                        />
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="form-control border-0 mb-3"
+                            placeholder="Description..."
+                            style={{ background: 'transparent', outline: 'none', resize: 'none' }}
+                            required
+                        ></textarea>
+                        <button className="btn w-100" style={{ backgroundColor: '#b5fd94'}} onClick={handleCreateMeal}>Create Meal</button>
                     </div>
                 </div>
             </div>
