@@ -1,5 +1,18 @@
 const Tag = require("../models/tagModel");
 
+
+
+// Get Public Tags (Everyone can access)
+exports.getPublicTags = async (req, res) => {
+  try {
+      const tags = await Tag.find({ isPublic: true }); // Fetch only public tags
+      res.status(200).json(tags);
+  } catch (err) {
+      res.status(500).json({ message: "Error fetching tags" });
+  }
+};
+
+
 //Create Tag (User)
 exports.createTag = async (req, res) => {
     try {

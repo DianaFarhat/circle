@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { createTag, editTag, deleteTag,makeMealPublic } = require("../controllers/tagController");
+const { createTag, editTag, deleteTag,makeMealPublic, getPublicTags } = require("../controllers/tagController");
 const { authenticate } = require("../middlewares/authMiddleware");
 
 
+router.get("/getPublicTags", authenticate, getPublicTags);
 
-// Create a new tag (User)
+// Create Private Tag (User Specific)
 router.post("/createTag", authenticate, createTag);
 
 // Edit a private tag (User)
