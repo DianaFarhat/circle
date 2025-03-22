@@ -58,7 +58,7 @@ const mealSchema = new mongoose.Schema(
     version: { type: Number, default: 1 },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", index: true },
     parentMealId: { type: Schema.Types.ObjectId, ref: "Meal", default: null }, // Links local versions to public recipes
-    isPublic: { type: Boolean, default: true }, // Determines if a meal is public or a user’s private copy
+    isPublic: { type: Boolean, default: false }, // Determines if a meal is public or a user’s private copy
    
   },
   { timestamps: true }
