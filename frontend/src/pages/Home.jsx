@@ -2,10 +2,10 @@ import React from "react";
 import { useState } from "react";
 import MultiTabComponent from "../components/MultiTab";
 import TagFilterComponent from "../components/TagFilter";
-import AllMeals from '../components/AllMeals';
-import MyMeals from '../components/MyMeals';
-import MealPlan from '../components/MealPlan';
-import MyGroceries from '../components/MyGroceries';
+import AllMeals from '../components/tabs/AllMeals';
+import MyMeals from '../components/tabs/MyMeals';
+import MealPlan from '../components/tabs/MealPlan';
+import MyGroceries from '../components/tabs/MyGroceries';
 
 const Home = () => {
 

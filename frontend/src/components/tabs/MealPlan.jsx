@@ -3,9 +3,9 @@ import React from 'react'
 function MealPlan() {
   return (
     <div>
-      <h2>hello from meal plan</h2>
+      <h1>Hello From My Meal Plan</h1>
     </div>
   )
 }
 
-export default MealPlan
+export default MealPlan;
