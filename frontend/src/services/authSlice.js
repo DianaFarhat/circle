@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authApi } from "./authApi"; // Import API for backend authentication
 
+
 // 🔄 Load user data from localStorage (to persist session after refresh)
 const storedUser = JSON.parse(localStorage.getItem("userInfo")) || null;
 
