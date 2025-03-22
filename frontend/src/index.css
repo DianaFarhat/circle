@@ -20,29 +20,24 @@ body, html {
   overflow-x: hidden; /* Prevent horizontal scroll issues */
 }
 
+/* Bright yellow color for link text to make it stand out */
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #FAFA33; 
   text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: #ffff99; 
 }
 
-body {
-  /* Remove flex centering to allow full-width layouts */
-  display: block; 
-  min-width: 320px;
-  min-height: 100vh;
-}
-
+ 
 h1 {
   font-size: 2.5em; /* Reduce size for better responsiveness */
   line-height: 1.2;
   text-align: center; /* Ensure text is centered properly */
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -61,7 +56,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
+ */
 /* Fix Bootstrap conflicting styles */
 .container-fluid {
   padding: 0;
@@ -72,18 +67,7 @@ button:focus-visible {
   width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+
 
 /* Change focus color to lime yellow */
 .form-control:focus,
@@ -94,13 +78,13 @@ button:focus-visible {
   outline: none !important;
 }
 
-
+/* 
 .btn:focus, .btn:active, .btn:hover, .btn:focus-visible {
   outline: none !important;
   box-shadow: none !important;
 }
 
-/* Remove blue outline and shadow on all button states */
+
 button, button:focus, button:active, button:hover, button:focus-visible,
 .btn, .btn:focus, .btn:active, .btn:hover, .btn:focus-visible {
   outline: none !important;
@@ -113,3 +97,4 @@ button, button:focus, button:active, button:hover, button:focus-visible,
   box-shadow: none !important;
   border: none !important;
 }
+ */
