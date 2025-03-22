@@ -61,7 +61,7 @@ const Login = () => {
               <label className="form-label">Password</label>
               <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            <button type="submit" className="btn btn-success w-100" disabled={isLoading}>
+            <button type="submit" className="btn w-100" style={{ backgroundColor: '#b5fd94'}} disabled={isLoading}>
               {isLoading ? "Logging in..." : "Login"}
             </button>
             <div className="mt-3 text-center">
