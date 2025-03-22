@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FaBox, FaTag, FaFire, FaBirthdayCake } from 'react-icons/fa';
 
 const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg';
 
@@ -7,6 +9,11 @@ const CreateMeal = () => {
     const [image, setImage] = useState(fallbackImage);
     const [mealName, setMealName] = useState('Matcha Latte');
     const [description, setDescription] = useState('');
+    const [type, setType] = useState('Simple');
+    const [tag, setTag] = useState('');
+    const [calories, setCalories] = useState('');
+    const [servingSize, setServingSize] = useState('');
+    const [unit, setUnit] = useState('');
     const [urlInputVisible, setUrlInputVisible] = useState(false);
     const [url, setUrl] = useState('');
 
@@ -30,15 +37,16 @@ const CreateMeal = () => {
     };
 
     const handleCreateMeal = () => {
-        if (!mealName.trim() || !description.trim()) {
-            alert('Both fields are required!');
+        if (!mealName.trim() || !description.trim() || !calories || calories <= 0 || !servingSize || servingSize <= 0) {
+            toast.error('All fields are required and must be valid!');
             return;
         }
-        alert('Meal Created Successfully!');
+        toast.success('Meal Created Successfully!');
     };
 
     return (
         <div className="container mt-5">
+            <ToastContainer />
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
                     <div className="position-relative text-center">
@@ -63,41 +71,67 @@ const CreateMeal = () => {
                                 </label>
                             </div>
                         </div>
-                        {urlInputVisible && (
-                            <div className="card p-3 shadow position-absolute top-50 start-50 translate-middle bg-white">
-                                <h5 className="fw-bold mb-2">Paste an image link:</h5>
-                                <form onSubmit={handleUrlSubmit} className="d-flex">
-                                    <input
-                                        type="text"
-                                        className="form-control me-2"
-                                        placeholder="Paste an image link..."
-                                        value={url}
-                                        onChange={(e) => setUrl(e.target.value)}
-                                    />
-                                    <button type="submit" className="btn" style={{ backgroundColor: '#FDFD96', color: 'black' }}>Submit</button>
-                                </form>
-                                <p className="text-muted mt-2">Works with any image from the web.</p>
-                            </div>
-                        )}
                     </div>
-                    <div className="mt-4 text-start">
-                        <input
-                            value={mealName}
-                            onChange={(e) => setMealName(e.target.value)}
-                            className="form-control border-0 fs-3 fw-bold mb-2"
-                            placeholder="Meal Name"
-                            style={{ background: 'transparent', outline: 'none' }}
-                            required
-                        />
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="form-control border-0 mb-3"
-                            placeholder="Description..."
-                            style={{ background: 'transparent', outline: 'none', resize: 'none' }}
-                            required
-                        ></textarea>
-                        <button className="btn w-100" style={{ backgroundColor: '#b5fd94'}} onClick={handleCreateMeal}>Create Meal</button>
+                    <div className="mt-4 text-start shadow p-3 rounded bg-white">
+                        <div className="d-flex align-items-center gap-2 mb-2">
+                            <FaBox />
+                            <label className="form-label mb-0">Type:</label>
+                            <select className="form-select border-0" value={type} onChange={(e) => setType(e.target.value)} required style={{ outline: 'none', width: '150px' }}>
+                                <option value="Simple">Simple</option>
+                                <option value="Recipe">Recipe</option>
+                            </select>
+                        </div>
+                        <div className="d-flex align-items-center gap-2 mb-2">
+                            <FaTag />
+                            <label className="form-label mb-0">Tags:</label>
+                            <input
+                                type="text"
+                                className="form-control border-0"
+                                placeholder="Add a new private tag..."
+                                value={tag}
+                                onChange={(e) => setTag(e.target.value)}
+                                style={{ outline: 'none', width: '150px' }}
+                            />
+                        </div>
+                        <div className="d-flex align-items-center gap-2 mb-2">
+                            <FaFire />
+                            <label className="form-label mb-0">Calories:</label>
+                            <input
+                                type="number"
+                                max="3000"
+                                min="1"
+                                className="form-control border-0"
+                                placeholder="Calories"
+                                value={calories}
+                                onChange={(e) => setCalories(e.target.value)}
+                                style={{ outline: 'none', width: '150px' }}
+                                required
+                            />
+                        </div>
+                        <div className="d-flex align-items-center gap-2 mb-2">
+                            <FaBirthdayCake />
+                            <label className="form-label mb-0">Serving Size:</label>
+                            <input
+                                type="number"
+                                min="1"
+                                className="form-control border-0"
+                                placeholder="1"
+                                value={servingSize}
+                                onChange={(e) => setServingSize(e.target.value)}
+                                style={{ outline: 'none', width: '100px' }}
+                                required
+                            />
+                            <input
+                                type="text"
+                                className="form-control border-0"
+                                placeholder="loaf"
+                                value={unit}
+                                onChange={(e) => setUnit(e.target.value)}
+                                style={{ outline: 'none', width: '100px' }}
+                                required
+                            />
+                        </div>
+                        <button className="btn w-100 text-white" style={{ backgroundColor: '#b5fd94' }} onClick={handleCreateMeal}>Create Meal</button>
                     </div>
                 </div>
             </div>
