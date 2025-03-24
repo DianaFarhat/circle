@@ -15,6 +15,9 @@ const CreateMeal = () => {
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [nutrients, setNutrients] = useState({ carbs: '', proteins: '', fatsSat: '', fatsUnsat: '', sugar: '', fiber: '', sodium: '', caffeine: '', cholesterol: '' });
+    const [ingredients, setIngredients] = useState([]);
+    const [steps, setSteps] = useState([]);
+
 
     const addTag = () => {
         if (tag.trim() !== "" && tags.length < 20) {
@@ -25,6 +28,28 @@ const CreateMeal = () => {
 
     const removeTag = (index) => {
         setTags(tags.filter((_, i) => i !== index));
+    };
+
+    const addIngredient = () => {
+        if (ingredients.length < 30) {
+            setIngredients([...ingredients, { name: '', amount: '', unit: 'g', calories: '', brand: '', optional: 'No' }]);
+        }
+    };
+
+    const updateIngredient = (index, field, value) => {
+        const updatedIngredients = [...ingredients];
+        updatedIngredients[index][field] = value;
+        setIngredients(updatedIngredients);
+    };
+
+    const addStep = () => {
+        setSteps([...steps, '']);
+    };
+
+    const updateStep = (index, value) => {
+        const updatedSteps = [...steps];
+        updatedSteps[index] = value;
+        setSteps(updatedSteps);
     };
 
     const handleCreateMeal = () => {
@@ -59,6 +84,13 @@ const CreateMeal = () => {
                     <div className="row g-3">
                         <div className="col-md-6 p-3 bg-white shadow rounded">
                             <h4 className="fw-bold mb-3">General Info</h4>
+                            <div className="mb-3">
+                            <label>Meal Type</label>
+                            <select className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
+                                <option value="Simple">Simple</option>
+                                <option value="Recipe">Recipe</option>
+                            </select>
+                            </div>
                             <label>Calories</label>
                             <input type="number" className="form-control border-0" placeholder="Enter Calories" value={calories} onChange={(e) => setCalories(e.target.value)} />
                             <label>Recipe URL <FaLink /></label>
@@ -100,6 +132,28 @@ const CreateMeal = () => {
                             </table>
                         </div>
                     </div>
+                    {type === 'Recipe' && (
+                    <div className="mt-4 p-3 bg-white shadow rounded">
+                        <h4>Ingredients</h4>
+                        {ingredients.map((ingredient, index) => (
+                            <div key={index} className="d-flex gap-2 mb-2">
+                                <input type="text" className="form-control" placeholder="Name" required value={ingredient.name} onChange={(e) => updateIngredient(index, 'name', e.target.value)} />
+                                <input type="number" className="form-control" placeholder="Amount" required value={ingredient.amount} onChange={(e) => updateIngredient(index, 'amount', e.target.value)} />
+                                <select className="form-control" value={ingredient.unit} onChange={(e) => updateIngredient(index, 'unit', e.target.value)}>
+                                    {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
+                                        <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        ))}
+                        <button className="btn btn-secondary" onClick={addIngredient}>Add Ingredient</button>
+                        <h4 className="mt-4">Recipe Steps</h4>
+                        {steps.map((step, index) => (
+                            <input key={index} type="text" className="form-control mb-2" placeholder="Step description" required value={step} onChange={(e) => updateStep(index, e.target.value)} />
+                        ))}
+                        <button className="btn btn-secondary" onClick={addStep}>Add Step</button>
+                    </div>
+                    )}
                     <button className="btn btn-success w-100 mt-3" onClick={handleCreateMeal}>Create Meal</button>
                 </div>
             </div>
