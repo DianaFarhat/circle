@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaBox, FaTag, FaFire, FaBirthdayCake } from 'react-icons/fa';
+import { FaBox, FaTag, FaFire, FaBirthdayCake, FaEdit, FaTimes } from 'react-icons/fa';
 
 const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg';
 
@@ -10,12 +10,33 @@ const CreateMeal = () => {
     const [mealName, setMealName] = useState('Matcha Latte');
     const [description, setDescription] = useState('');
     const [type, setType] = useState('Simple');
-    const [tag, setTag] = useState('');
+    const [tag, setTag] = useState("");
+    const [tags, setTags] = useState([]);
     const [calories, setCalories] = useState('');
     const [servingSize, setServingSize] = useState('');
     const [unit, setUnit] = useState('');
     const [urlInputVisible, setUrlInputVisible] = useState(false);
     const [url, setUrl] = useState('');
+
+    const addTag = () => {
+        if (tag.trim() !== "" && tags.length < 20) {
+            setTags([...tags, tag]);
+            setTag("");
+        } else if (tags.length >= 20) {
+            toast.error("Maximum of 20 tags allowed.");
+        }
+    };
+
+    const removeTag = (index) => {
+        setTags(tags.filter((_, i) => i !== index));
+    };
+
+    const editTag = (index, newTag) => {
+        const updatedTags = [...tags];
+        updatedTags[index] = newTag;
+        setTags(updatedTags);
+    };
+
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -81,18 +102,42 @@ const CreateMeal = () => {
                                 <option value="Recipe">Recipe</option>
                             </select>
                         </div>
-                        <div className="d-flex align-items-center gap-2 mb-2">
-                            <FaTag />
-                            <label className="form-label mb-0">Tags:</label>
+                        <div className="space-y-2">
+                        
+                        <div className="flex items-center gap-2">
+                            <FaTag className="text-gray-500" />
                             <input
                                 type="text"
-                                className="form-control border-0"
-                                placeholder="Add a new private tag..."
+                                className="border border-gray-300 rounded px-3 py-1 focus:outline-none"
+                                placeholder="Tag..."
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
-                                style={{ outline: 'none', width: '150px' }}
+                                onKeyDown={(e) => e.key === "Enter" && addTag()}
                             />
+                            <button onClick={addTag} size="sm">Add</button>
                         </div>
+
+                        <div className="flex flex-wrap gap-2">
+                            {tags.map((t, index) => (
+                                <div key={index} className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm">
+                                    <input
+                                        type="text"
+                                        value={t}
+                                        onChange={(e) => editTag(index, e.target.value)}
+                                        className="bg-transparent border-none outline-none w-auto"
+                                    />
+                                    <FaEdit
+                                        className="ml-2 text-blue-500 cursor-pointer"
+                                        onClick={() => editTag(index, prompt("Edit tag:", t) || t)}
+                                    />
+                                    <FaTimes
+                                        className="ml-2 text-red-500 cursor-pointer"
+                                        onClick={() => removeTag(index)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                         <div className="d-flex align-items-center gap-2 mb-2">
                             <FaFire />
                             <label className="form-label mb-0">Calories:</label>
