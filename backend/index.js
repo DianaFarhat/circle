@@ -5,7 +5,6 @@ const app= express();
 const DB= require('./database').connectToDatabase;
 const userRouter=require("./routes/userRouter"); 
 const mealRouter=require("./routes/mealRouter"); 
-const tagRouter=require("./routes/tagRouter"); 
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 
@@ -44,7 +43,6 @@ app.options('*', cors());
 
 // Routes
 app.use("/api/users", userRouter)
-app.use("/api/tags", tagRouter)
 app.use("/api/meals", mealRouter)
 
 
