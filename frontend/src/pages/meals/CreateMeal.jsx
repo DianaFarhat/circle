@@ -7,6 +7,8 @@ const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629e
 
 const CreateMeal = () => {
     const [image, setImage] = useState(fallbackImage);
+    const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false);
+    const [imageUrl, setImageUrl] = useState("");
     const [mealName, setMealName] = useState('');
     const [type, setType] = useState('Simple');
     const [tag, setTag] = useState("");
@@ -18,6 +20,25 @@ const CreateMeal = () => {
     const [ingredients, setIngredients] = useState([]);
     const [steps, setSteps] = useState([]);
 
+    // Handle image upload from desktop
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // Handle image upload via URL
+    const handleUrlSubmit = () => {
+        if (imageUrl.trim() !== "") {
+            setImage(imageUrl);
+            setImageUrlInputVisible(false); // Hide input after submission
+        }
+    };
 
     const addTag = () => {
         if (tag.trim() !== "" && tags.length < 20) {
@@ -66,7 +87,30 @@ const CreateMeal = () => {
             <ToastContainer />
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
-                    <div className="text-center mb-4 p-3 bg-white shadow rounded">
+                    <div className="text-center mb-4 p-3 bg-white shadow rounded position-relative">
+                        {/* Pill Button on Top */}
+                        <div className="position-absolute" style={{ top: '20px', right: '20px' }}>
+                            <div className="d-flex gap-0">
+                                <button onClick={() => setImageUrlInputVisible(!imageUrlInputVisible)} 
+                                    className="btn px-3 py-1" 
+                                    style={{ backgroundColor: '#FDFD96', color: 'black', borderTopLeftRadius: '50px', borderBottomLeftRadius: '50px' }}>
+                                    Image URL
+                                </button>
+                                <label htmlFor="file-upload" className="btn px-3 py-1" 
+                                    style={{ backgroundColor: '#b5fd94', color: 'black', borderTopRightRadius: '50px', borderBottomRightRadius: '50px' }}>
+                                    Upload
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Existing Image & Input */}
                         <img
                             src={image}
                             alt="Meal Image"
