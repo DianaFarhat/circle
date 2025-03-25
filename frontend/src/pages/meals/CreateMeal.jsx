@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaBox, FaTag, FaFire, FaEdit, FaTimes, FaLink, FaVideo } from 'react-icons/fa';
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useCreateMealMutation } from '../../services/mealApi';
 
 const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg';
 
@@ -19,6 +22,11 @@ const CreateMeal = () => {
     const [nutrients, setNutrients] = useState({ carbs: '', proteins: '', fatsSat: '', fatsUnsat: '', sugar: '', fiber: '', sodium: '', caffeine: '', cholesterol: '' });
     const [ingredients, setIngredients] = useState([]);
     const [steps, setSteps] = useState([]);
+    
+    //Dispatches data to api then navigates 
+    const [createMeal] = useCreateMealMutation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Handle image upload from desktop
     const handleImageChange = (e) => {
@@ -84,7 +92,6 @@ const CreateMeal = () => {
 
     return (
         <div className="container mt-5">
-            <ToastContainer />
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
                     <div className="text-center mb-4 p-3 bg-white shadow rounded position-relative">
