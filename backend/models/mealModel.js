@@ -11,14 +11,7 @@ const mealSchema = new mongoose.Schema(
     recipeUrl: { type: String },
     videoUrl: { type: String },
 
-    tags: [
-      {
-        type: String, 
-        trim: true, 
-        index: true,
-        set: v => v.map(tag => tag.toLowerCase()) // Converts tags to lowercase
-      }
-    ],
+    tags:[{ type: String }],
     
     nbOfTimesSaved: { type: Number, default: 0 },
     calories: { type: Number, required: true },

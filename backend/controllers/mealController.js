@@ -53,32 +53,35 @@ exports.createMeal = async (req, res) => {
             unsaturatedFats,
             ingredients,
             recipeSteps,
-            isPublic=false,
+            isPublic
         } = req.body;
 
         // Validate required fields
         const errors = [];
 
-        // Check if the required fields are missing or invalid
         if (!name) errors.push("Name is required.");
         if (!type || !["simple", "recipe"].includes(type)) errors.push("Type is required and must be 'simple' or 'recipe'.");
         if (!image) errors.push("Image is required.");
-        if (!calories) errors.push("Calories are required.");
-        if (!servingSize || !servingSize.value || !servingSize.unit) errors.push("Serving size with value and unit is required.");
-        if (!macros || !macros.carbs || !macros.protein || !macros.fats) errors.push("Macros (carbs, protein, fats) are required.");
-        if (!sugar) errors.push("Sugar is required.");
-        if (!fiber) errors.push("Fiber is required.");
-        if (!sodium) errors.push("Sodium is required.");
-        if (!caffeine) errors.push("Caffeine is required.");
-        if (!cholesterol) errors.push("Cholesterol is required.");
-        if (!saturatedFats) errors.push("Saturated fats are required.");
-        if (!unsaturatedFats) errors.push("Unsaturated fats are required.");
+        if (!Number.isFinite(calories)) errors.push("Calories are required.");
+        if (!servingSize || !Number.isFinite(servingSize.value) || !servingSize.unit) errors.push("Serving size with value and unit is required.");
+        if (!macros || !Number.isFinite(macros.carbs) || !Number.isFinite(macros.protein) || !Number.isFinite(macros.fats)) errors.push("Macros (carbs, protein, fats) are required.");
+        if (!Number.isFinite(sugar)) errors.push("Sugar is required.");
+        if (!Number.isFinite(fiber)) errors.push("Fiber is required.");
+        if (!Number.isFinite(sodium)) errors.push("Sodium is required.");
+        if (!Number.isFinite(caffeine)) errors.push("Caffeine is required.");
+        if (!Number.isFinite(cholesterol)) errors.push("Cholesterol is required.");
+        if (!Number.isFinite(saturatedFats)) errors.push("Saturated fats are required.");
+        if (!Number.isFinite(unsaturatedFats)) errors.push("Unsaturated fats are required.");
         if (!ingredients || ingredients.length === 0) errors.push("At least one ingredient is required.");
 
-        // If there are errors, return them
         if (errors.length > 0) {
             return res.status(400).json({ message: "Validation Error", errors });
         }
+
+        //Meal is public based on role
+        const userRole = req.user.role;
+        const finalIsPublic = userRole === "admin" ? true : false;
+
 
         // Create new meal object
         const newMeal = new Meal({
@@ -100,43 +103,36 @@ exports.createMeal = async (req, res) => {
             unsaturatedFats,
             ingredients,
             recipeSteps,
-            isPublic: isPublic !== undefined ? isPublic : false, // Default to false if not provided
-            createdBy: req.user.id // Assign authenticated user as creator
+            isPublic: finalIsPublic,
+            createdBy: req.user.id
         });
 
         // Save to database
         const savedMeal = await newMeal.save();
 
-        // Return success response
         res.status(201).json({
             message: "Meal created successfully!",
             meal: savedMeal
         });
-
     } catch (error) {
-        console.error("Error creating meal:", error); // Log full error stack
+        console.error("Error creating meal:", error);
 
-        // Handle Mongoose Validation Errors
         if (error.name === "ValidationError") {
-            const validationErrors = [];
-            for (const [field, errorDetail] of Object.entries(error.errors)) {
-                validationErrors.push(`${field}: ${errorDetail.message}`);
-            }
+            const validationErrors = Object.entries(error.errors).map(([field, err]) => `${field}: ${err.message}`);
             return res.status(400).json({ message: "Validation Error", errors: validationErrors });
         }
 
-        // Handle Duplicate Key Errors (e.g., unique constraints)
         if (error.code === 11000) {
             return res.status(400).json({ message: "Duplicate entry detected. The meal name might already exist." });
         }
 
-        // Handle Other Errors (e.g., Database Connection Issues)
         res.status(500).json({
             message: "An unexpected error occurred while creating the meal.",
             error: error.message
         });
     }
 };
+
 
 
 
