@@ -25,82 +25,6 @@ exports.savePublicMealAsPrivate = (req, res) => {
     res.send("savePublicMealAsPrivate function not implemented yet.");
 };
 
-// Create a new meal (user must be authenticated)
-/* exports.createMeal = async (req, res) => {
-    try {
-        // Ensure the user is authenticated
-        if (!req.user || !req.user.id) {
-            return res.status(401).json({ message: "Unauthorized. Please log in." });
-        }
-
-        // Extract meal details from the request body
-        const {
-            name,
-            type,
-            image,
-            description,
-            recipeUrl,
-            videoUrl,
-            tags,
-            calories,
-            servingSize,
-            macros,
-            sugar,
-            fiber,
-            sodium,
-            caffeine,
-            cholesterol,
-            saturatedFats,
-            unsaturatedFats,
-            ingredients,
-            recipeSteps,
-            isPublic
-        } = req.body;
-
-        // Validate required fields
-        if (!name || !type || !image || !description || !calories || !servingSize || !macros) {
-            return res.status(400).json({ message: "Missing required fields." });
-        }
-
-        // Create new meal object
-        const newMeal = new Meal({
-            name,
-            type,
-            image,
-            description,
-            recipeUrl,
-            videoUrl,
-            tags,
-            calories,
-            servingSize,
-            macros,
-            sugar,
-            fiber,
-            sodium,
-            caffeine,
-            cholesterol,
-            saturatedFats,
-            unsaturatedFats,
-            ingredients,
-            recipeSteps,
-            isPublic: false, // Default to public if not provided
-            createdBy: req.user.id // Assign authenticated user as creator
-        });
-
-        // Save to database
-        const savedMeal = await newMeal.save();
-
-        // Return success response
-        res.status(201).json({
-            message: "Meal created successfully!",
-            meal: savedMeal
-        });
-
-    } catch (error) {
-        console.error("Error creating meal:", error);
-        res.status(500).json({ message: "Server error while creating meal." });
-    }
-}; */
 
 exports.createMeal = async (req, res) => {
     try {
@@ -114,7 +38,6 @@ exports.createMeal = async (req, res) => {
             name,
             type,
             image,
-            description,
             recipeUrl,
             videoUrl,
             tags,
@@ -134,8 +57,27 @@ exports.createMeal = async (req, res) => {
         } = req.body;
 
         // Validate required fields
-        if (!name || !type || !image || !description || !calories || !servingSize || !macros) {
-            return res.status(400).json({ message: "Missing required fields. Ensure all mandatory fields are provided." });
+        const errors = [];
+
+        // Check if the required fields are missing or invalid
+        if (!name) errors.push("Name is required.");
+        if (!type || !["simple", "recipe"].includes(type)) errors.push("Type is required and must be 'simple' or 'recipe'.");
+        if (!image) errors.push("Image is required.");
+        if (!calories) errors.push("Calories are required.");
+        if (!servingSize || !servingSize.value || !servingSize.unit) errors.push("Serving size with value and unit is required.");
+        if (!macros || !macros.carbs || !macros.protein || !macros.fats) errors.push("Macros (carbs, protein, fats) are required.");
+        if (!sugar) errors.push("Sugar is required.");
+        if (!fiber) errors.push("Fiber is required.");
+        if (!sodium) errors.push("Sodium is required.");
+        if (!caffeine) errors.push("Caffeine is required.");
+        if (!cholesterol) errors.push("Cholesterol is required.");
+        if (!saturatedFats) errors.push("Saturated fats are required.");
+        if (!unsaturatedFats) errors.push("Unsaturated fats are required.");
+        if (!ingredients || ingredients.length === 0) errors.push("At least one ingredient is required.");
+
+        // If there are errors, return them
+        if (errors.length > 0) {
+            return res.status(400).json({ message: "Validation Error", errors });
         }
 
         // Create new meal object
@@ -143,7 +85,6 @@ exports.createMeal = async (req, res) => {
             name,
             type,
             image,
-            description,
             recipeUrl,
             videoUrl,
             tags,
@@ -177,7 +118,11 @@ exports.createMeal = async (req, res) => {
 
         // Handle Mongoose Validation Errors
         if (error.name === "ValidationError") {
-            return res.status(400).json({ message: "Validation Error", errors: error.errors });
+            const validationErrors = [];
+            for (const [field, errorDetail] of Object.entries(error.errors)) {
+                validationErrors.push(`${field}: ${errorDetail.message}`);
+            }
+            return res.status(400).json({ message: "Validation Error", errors: validationErrors });
         }
 
         // Handle Duplicate Key Errors (e.g., unique constraints)
@@ -192,6 +137,7 @@ exports.createMeal = async (req, res) => {
         });
     }
 };
+
 
 
 exports.updateMeal = (req, res) => {
