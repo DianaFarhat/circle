@@ -53,7 +53,7 @@ exports.createMeal = async (req, res) => {
             unsaturatedFats,
             ingredients,
             recipeSteps,
-            isPublic
+            isPublic=false,
         } = req.body;
 
         // Validate required fields

@@ -17,6 +17,13 @@ const {
 const {authenticate}= require('../middlewares/authMiddleware')
 
 
+
+
+// Create a new meal (private if authorized)
+router.post("/createMeal", authenticate, createMeal);
+
+
+
 // Get all public meals
 router.get("/public", getPublicMeals);
 
@@ -31,9 +38,6 @@ router.get("/:id", authenticate, getMealById);
 
 // Save a public meal as a private copy
 router.post("/:id/save", authenticate, savePublicMealAsPrivate);
-
-// Create a new meal (private if authorized)
-router.post("/addmeal", authenticate, createMeal);
 
 // Update a private meal
 router.put("/:id", authenticate, updateMeal);
