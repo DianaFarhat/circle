@@ -212,15 +212,72 @@ const CreateMeal = () => {
                     <div className="mt-4 p-3 bg-white shadow rounded">
                         <h4>Ingredients</h4>
                         {ingredients.map((ingredient, index) => (
-                            <div key={index} className="d-flex gap-2 mb-2">
-                                <input type="text" className="form-control" placeholder="Name" required value={ingredient.name} onChange={(e) => updateIngredient(index, 'name', e.target.value)} />
-                                <input type="number" className="form-control" placeholder="Amount" required value={ingredient.amount} onChange={(e) => updateIngredient(index, 'amount', e.target.value)} />
-                                <select className="form-control" value={ingredient.unit} onChange={(e) => updateIngredient(index, 'unit', e.target.value)}>
+                            <div key={index} className="mb-3">
+                            {/* Name, Amount, Unit Inputs */}
+                            <div className="d-flex gap-2 mb-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Name"
+                                    required
+                                    value={ingredient.name}
+                                    onChange={(e) => updateIngredient(index, 'name', e.target.value)}
+                                />
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="Amount"
+                                    required
+                                    value={ingredient.amount}
+                                    onChange={(e) => updateIngredient(index, 'amount', e.target.value)}
+                                />
+                                <select
+                                    className="form-control"
+                                    value={ingredient.unit}
+                                    onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
+                                >
                                     {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
                                         <option key={unit} value={unit}>{unit}</option>
                                     ))}
                                 </select>
                             </div>
+                
+                            {/* Only display labels for the second ingredient row (index 1) */}
+                            {index === 1 && (
+                                <div className="d-flex gap-2 mb-2">
+                                    <label className="form-label">Calories</label>
+                                    <label className="form-label">Brand</label>
+                                    <label className="form-label">Is Optional</label>
+                                </div>
+                            )}
+                
+                            {/* Calories, Brand, Optional Fields */}
+                            <div className="d-flex gap-2 mb-2">
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="Calories"
+                                    required
+                                    value={ingredient.calories}
+                                    onChange={(e) => updateIngredient(index, 'calories', e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Brand (Optional)"
+                                    value={ingredient.brand}
+                                    onChange={(e) => updateIngredient(index, 'brand', e.target.value)}
+                                />
+                                <select
+                                    className="form-control"
+                                    value={ingredient.optional}
+                                    onChange={(e) => updateIngredient(index, 'optional', e.target.value)}
+                                >
+                                    <option value="No">Required</option>
+                                    <option value="Yes">Optional</option>
+                                </select>
+                            </div>
+                        </div>
                         ))}
                         <button className="btn btn-secondary" onClick={addIngredient}>Ingredient</button>
                         <h4 className="mt-4">Recipe Steps</h4>
