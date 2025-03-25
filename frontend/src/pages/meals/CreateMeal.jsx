@@ -110,6 +110,31 @@ const CreateMeal = () => {
                             </div>
                         </div>
 
+                        {/* Image URL Input (Appears Below the Pill Buttons) */}
+                        {imageUrlInputVisible && (
+                            <div className="position-absolute d-flex align-items-center"
+                                style={{
+                                    top: '60px',  // 20px below the pill (pill is at 20px)
+                                    right: '20px', // 20px from the right
+                                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                    padding: '10px',
+                                    borderRadius: '8px',
+                                    boxShadow: '0px 0px 10px rgba(0,0,0,0.2)',
+                                }}>
+                                <input
+                                    type="text"
+                                    className="form-control me-2"
+                                    placeholder="Paste an image URL..."
+                                    value={imageUrl}
+                                    onChange={(e) => setImageUrl(e.target.value)}
+                                />
+                                <button className="btn btn-primary" onClick={() => {
+                                    handleUrlSubmit();
+                                    setImageUrlInputVisible(false); // Hide input after submitting
+                                }}>Set</button>
+                            </div>
+                        )}
+         
                         {/* Existing Image & Input */}
                         <img
                             src={image}
@@ -120,7 +145,7 @@ const CreateMeal = () => {
                         <input 
                             type="text" 
                             className="form-control text-center border-0 fs-4 fw-bold" 
-                            placeholder="Meal Title" 
+                            placeholder="Matcha Latte" 
                             value={mealName} 
                             onChange={(e) => setMealName(e.target.value)} 
                         />
@@ -190,12 +215,12 @@ const CreateMeal = () => {
                                 </select>
                             </div>
                         ))}
-                        <button className="btn btn-secondary" onClick={addIngredient}>Add Ingredient</button>
+                        <button className="btn btn-secondary" onClick={addIngredient}>Ingredient</button>
                         <h4 className="mt-4">Recipe Steps</h4>
                         {steps.map((step, index) => (
                             <input key={index} type="text" className="form-control mb-2" placeholder="Step description" required value={step} onChange={(e) => updateStep(index, e.target.value)} />
                         ))}
-                        <button className="btn btn-secondary" onClick={addStep}>Add Step</button>
+                        <button className="btn btn-secondary" onClick={addStep}>Instruction</button>
                     </div>
                     )}
                     <button className="btn btn-success w-100 mt-3" onClick={handleCreateMeal}>Create Meal</button>
