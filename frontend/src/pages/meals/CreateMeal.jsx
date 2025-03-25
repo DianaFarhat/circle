@@ -9,8 +9,9 @@ import { useCreateMealMutation } from '../../services/mealApi';
 const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg';
 
 const CreateMeal = () => {
+    //Image State
     const [image, setImage] = useState(fallbackImage);
-    const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false);
+    const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false); //is visible if user decides to add imageUrl
     const [imageUrl, setImageUrl] = useState("");
     const [mealName, setMealName] = useState('');
     const [type, setType] = useState('Simple');
@@ -20,6 +21,18 @@ const CreateMeal = () => {
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [nutrients, setNutrients] = useState({ carbs: '', proteins: '', fatsSat: '', fatsUnsat: '', sugar: '', fiber: '', sodium: '', caffeine: '', cholesterol: '' });
+    const nutrientsUnits = {
+        carbs: "g",
+        proteins: "g",
+        fatsSat: "g",
+        fatsUnsat: "g",
+        sugar: "g",
+        fiber: "g",
+        sodium: "mg",
+        caffeine: "mg",
+        cholesterol: "mg"
+     
+    };
     const [ingredients, setIngredients] = useState([]);
     const [steps, setSteps] = useState([]);
     
@@ -192,7 +205,9 @@ const CreateMeal = () => {
                                 <tbody>
                                     {Object.keys(nutrients).map((key) => (
                                         <tr key={key}>
-                                            <td className="fw-bold">{key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                            <td className="fw-bold">
+                                                {key.charAt(0).toUpperCase() + key.slice(1)} ({nutrientsUnits[key]})
+                                            </td>
                                             <td>
                                                 <input
                                                     type="text"
@@ -205,6 +220,7 @@ const CreateMeal = () => {
                                         </tr>
                                     ))}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
