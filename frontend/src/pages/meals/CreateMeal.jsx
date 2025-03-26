@@ -94,7 +94,7 @@ const CreateMeal = () => {
         setSteps(updatedSteps);
     };
 
-    const handleCreateMeal = () => {
+    const handleCreateMeal = async () => {
         if (!mealName.trim()) return toast.error('Meal Name is required!');
         if (!calories || calories <= 0 || calories>3000) return toast.error('Valid Calories are required!');
         // Nutrient Validation
@@ -133,7 +133,7 @@ const CreateMeal = () => {
             }
         
             // Validate Amount (positive and max 10000)
-            if (!ingredient.amount || ingredient.amount <= 0) {
+            if (!ingredient.amount || ingredient.amount < 0) {
                 return toast.error(`Amount is required for ingredient at position ${index + 1}!`);
             }
             if (ingredient.amount > 10000) {
@@ -146,7 +146,7 @@ const CreateMeal = () => {
             }
         
             // Validate Calories (positive and max 1000)
-            if (!ingredient.calories || ingredient.calories <= 0) {
+            if (!ingredient.calories || ingredient.calories < 0) {
                 return toast.error(`Calories are required for ingredient at position ${index + 1}!`);
             }
             if (ingredient.calories > 1000) {
@@ -167,7 +167,57 @@ const CreateMeal = () => {
             }
         });
 
-        toast.success('Meal Created Successfully!');
+        // All validations passed, now proceed with meal creation //TODO: check this please 
+        const mealData = {
+            name: mealName, 
+            type: type,  
+            image: mealImage, 
+            recipeUrl: recipeUrl, 
+            videoUrl: videoUrl, 
+            tags: tags,  
+            calories: calories, 
+            servingSize: {
+                value: servingSizeValue, 
+                unit: servingSizeUnit,    
+            },
+            macros: {
+                carbs: carbs,  
+                protein: proteins,
+                fats: fats,
+            },
+            sugar: nutrients.sugar,
+            fiber: nutrients.fiber,
+            sodium: nutrients.sodium,
+            caffeine: nutrients.caffeine,
+            cholesterol: nutrients.cholesterol,
+            saturatedFats: nutrients.saturatedFats,
+            unsaturatedFats: nutrients.unsaturatedFats,
+            ingredients: ingredients.map(ingredient => ({
+                name: ingredient.name,  // Ingredient name from the form
+                amount: {
+                    value: ingredient.amount,  // Ingredient amount (value) from the form
+                    unit: ingredient.unit,     // Ingredient unit (e.g., "g", "tbsp")
+                },
+                calories: ingredient.calories,  // Ingredient calories from the form
+                brand: ingredient.brand,        // Ingredient brand from the form (if available)
+                isOptional: ingredient.optional === "Yes",  // Whether ingredient is optional
+            })),
+            recipeSteps: steps,  // Steps from the form
+            version: 1,          // Assuming it's version 1
+            createdBy: userId,   // Assuming userId is from the session or state
+        };
+
+        try {
+            // Assuming createMeal is an API call function that returns a promise
+            await createMeal(mealData);
+
+            // On success
+            toast.success('Meal Created Successfully!');
+            navigate('/home'); // Navigate to home or wherever you want
+        } catch (error) {
+            // Handle failure
+            toast.error('Error creating meal! Please try again.');
+        }
     };
 
     return (
