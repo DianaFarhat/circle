@@ -96,10 +96,77 @@ const CreateMeal = () => {
 
     const handleCreateMeal = () => {
         if (!mealName.trim()) return toast.error('Meal Name is required!');
-        if (!calories || calories <= 0) return toast.error('Valid Calories are required!');
+        if (!calories || calories <= 0 || calories>3000) return toast.error('Valid Calories are required!');
+        // Nutrient Validation
         for (const [key, value] of Object.entries(nutrients)) {
-            if (!value.trim()) return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} is required!`);
+            if (!value.trim()) {
+                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} is required!`);
+            }
+
+            // Check if the value is a valid positive number (no alphabets, only numbers)
+            const numericValue = parseFloat(value);
+            if (isNaN(numericValue) || numericValue <= 0) {
+                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a positive number!`);
+            }
+
+            // Check if the numeric value exceeds 1000
+            if (numericValue > 1000) {
+                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} cannot exceed 1000!`);
+            }
+
+            // Ensure no alphabets are present, only numbers
+            if (!/^\d+(\.\d+)?$/.test(value)) {
+                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a valid number (no alphabets allowed)!`);
+            }
         }
+        // Ingredient Validation
+        ingredients.forEach((ingredient, index) => {
+            // Validate Ingredient Name (alphabetic only and max 200 chars)
+            if (!ingredient.name.trim()) {
+                return toast.error(`Ingredient name is required at position ${index + 1}!`);
+            }
+            if (!/^[A-Za-z\s]+$/.test(ingredient.name)) {
+                return toast.error(`Ingredient name must contain only alphabetic characters at position ${index + 1}!`);
+            }
+            if (ingredient.name.length > 200) {
+                return toast.error(`Ingredient name cannot exceed 200 characters at position ${index + 1}!`);
+            }
+        
+            // Validate Amount (positive and max 10000)
+            if (!ingredient.amount || ingredient.amount <= 0) {
+                return toast.error(`Amount is required for ingredient at position ${index + 1}!`);
+            }
+            if (ingredient.amount > 10000) {
+                return toast.error(`Amount cannot exceed 10,000 for ingredient at position ${index + 1}!`);
+            }
+        
+            // Validate Unit (required)
+            if (!ingredient.unit) {
+                return toast.error(`Unit is required for ingredient at position ${index + 1}!`);
+            }
+        
+            // Validate Calories (positive and max 1000)
+            if (!ingredient.calories || ingredient.calories <= 0) {
+                return toast.error(`Calories are required for ingredient at position ${index + 1}!`);
+            }
+            if (ingredient.calories > 1000) {
+                return toast.error(`Calories cannot exceed 1,000 for ingredient at position ${index + 1}!`);
+            }
+        });
+        
+        // Step Validation
+        if (steps.length > 30) {
+            return toast.error('You can only add a maximum of 30 steps!');
+        }
+        steps.forEach((step, index) => {
+            if (!step.trim()) {
+                return toast.error(`Step description is required at position ${index + 1}!`);
+            }
+            if (step.length > 500) {
+                return toast.error(`Step description cannot exceed 500 characters at position ${index + 1}!`);
+            }
+        });
+
         toast.success('Meal Created Successfully!');
     };
 
@@ -225,83 +292,73 @@ const CreateMeal = () => {
                         </div>
                     </div>
                     {type === 'Recipe' && (
-                    <div className="mt-4 p-3 bg-white shadow rounded">
-                        <h4>Ingredients</h4>
-                        {ingredients.map((ingredient, index) => (
-                            <div key={index} className="mb-3">
-                            {/* Name, Amount, Unit Inputs */}
-                            <div className="d-flex gap-2 mb-2">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Name"
-                                    required
-                                    value={ingredient.name}
-                                    onChange={(e) => updateIngredient(index, 'name', e.target.value)}
-                                />
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder="Amount"
-                                    required
-                                    value={ingredient.amount}
-                                    onChange={(e) => updateIngredient(index, 'amount', e.target.value)}
-                                />
-                                <select
-                                    className="form-control"
-                                    value={ingredient.unit}
-                                    onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
-                                >
-                                    {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
-                                        <option key={unit} value={unit}>{unit}</option>
-                                    ))}
-                                </select>
-                            </div>
-                
-                            {/* Only display labels for the second ingredient row (index 1) */}
-                            {index === 1 && (
-                                <div className="d-flex gap-2 mb-2">
-                                    <label className="form-label">Calories</label>
-                                    <label className="form-label">Brand</label>
-                                    <label className="form-label">Is Optional</label>
+                        <div className="mt-4 p-3 bg-white shadow rounded">
+                            <h4>Ingredients</h4>
+                            {ingredients.map((ingredient, index) => (
+                                <div key={index} className="mb-3">
+                                    {/* Name, Amount, Unit Inputs */}
+                                    <div className="d-flex gap-2 mb-2">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Name"
+                                            required
+                                            value={ingredient.name}
+                                            onChange={(e) => updateIngredient(index, 'name', e.target.value)}
+                                        />
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="Amount"
+                                            required
+                                            value={ingredient.amount}
+                                            onChange={(e) => updateIngredient(index, 'amount', e.target.value)}
+                                        />
+                                        <select
+                                            className="form-control"
+                                            value={ingredient.unit}
+                                            onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
+                                        >
+                                            {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
+                                                <option key={unit} value={unit}>{unit}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {/* Calories, Brand, Optional Fields */}
+                                    <div className="d-flex gap-2 mb-2">
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="Calories"
+                                            required
+                                            value={ingredient.calories}
+                                            onChange={(e) => updateIngredient(index, 'calories', e.target.value)}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Brand (Optional)"
+                                            value={ingredient.brand}
+                                            onChange={(e) => updateIngredient(index, 'brand', e.target.value)}
+                                        />
+                                        <select
+                                            className="form-control"
+                                            value={ingredient.optional}
+                                            onChange={(e) => updateIngredient(index, 'optional', e.target.value)}
+                                        >
+                                            <option value="No">Required</option>
+                                            <option value="Yes">Optional</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            )}
-                
-                            {/* Calories, Brand, Optional Fields */}
-                            <div className="d-flex gap-2 mb-2">
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder="Calories"
-                                    required
-                                    value={ingredient.calories}
-                                    onChange={(e) => updateIngredient(index, 'calories', e.target.value)}
-                                />
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Brand (Optional)"
-                                    value={ingredient.brand}
-                                    onChange={(e) => updateIngredient(index, 'brand', e.target.value)}
-                                />
-                                <select
-                                    className="form-control"
-                                    value={ingredient.optional}
-                                    onChange={(e) => updateIngredient(index, 'optional', e.target.value)}
-                                >
-                                    <option value="No">Required</option>
-                                    <option value="Yes">Optional</option>
-                                </select>
-                            </div>
+                            ))}
+                            <button className="btn btn-secondary" onClick={addIngredient}>Ingredient</button>
+                            <h4 className="mt-4">Recipe Steps</h4>
+                            {steps.map((step, index) => (
+                                <input key={index} type="text" className="form-control mb-2" placeholder="Step description" required value={step} onChange={(e) => updateStep(index, e.target.value)} />
+                            ))}
+                            <button className="btn btn-secondary" onClick={addStep}>Instruction</button>
                         </div>
-                        ))}
-                        <button className="btn btn-secondary" onClick={addIngredient}>Ingredient</button>
-                        <h4 className="mt-4">Recipe Steps</h4>
-                        {steps.map((step, index) => (
-                            <input key={index} type="text" className="form-control mb-2" placeholder="Step description" required value={step} onChange={(e) => updateStep(index, e.target.value)} />
-                        ))}
-                        <button className="btn btn-secondary" onClick={addStep}>Instruction</button>
-                    </div>
                     )}
                     <button className="btn btn-success w-100 mt-3" onClick={handleCreateMeal}>Create Meal</button>
                 </div>
