@@ -5,10 +5,14 @@ import { FaBox, FaTag, FaFire, FaEdit, FaTimes, FaLink, FaVideo } from 'react-ic
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useCreateMealMutation } from '../../services/mealApi';
+import { useSelector } from "react-redux";
 
 const fallbackImage = 'https://i.pinimg.com/736x/f3/35/3d/f3353da22218a4de90629ea801d6d0ff.jpg';
 
 const CreateMeal = () => {
+    //Get User
+    const userId = useSelector((state) => state.auth.userInfo?._id);
+    
     //Image State
     const [image, setImage] = useState(fallbackImage);
     const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false); //is visible if user decides to add imageUrl
@@ -42,6 +46,7 @@ const CreateMeal = () => {
     const [createMeal] = useCreateMealMutation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
 
     // Handle image upload from desktop
     const handleImageChange = (e) => {
@@ -96,10 +101,9 @@ const CreateMeal = () => {
         setSteps(updatedSteps);
     };
 
-    const handleCreateMeal = async () => {
 
-        //Local Storage
-        const userId = localStorage.getItem('userId');  
+
+    const handleCreateMeal = async () => {
         if (!userId) {
             return toast.error('User not authenticated!');
         }

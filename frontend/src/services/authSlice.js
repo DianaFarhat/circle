@@ -7,6 +7,7 @@ const storedUser = JSON.parse(localStorage.getItem("userInfo")) || null;
 
 const initialState = {
   userInfo: storedUser, // ✅ Load user info from localStorage on start
+ 
 };
 
 const authSlice = createSlice({
