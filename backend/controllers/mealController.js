@@ -1,43 +1,17 @@
 const Meal= require("../models/mealModel");
 
-// Top of your file (recommended)
+// Nutrition facts validation
 const nutritionFacts = [
-    { key: 'carbs', label: 'Carbs' },
-    { key: 'protein', label: 'Protein' },
-    { key: 'saturatedFats', label: 'Saturated fats' },
-    { key: 'unsaturatedFats', label: 'Unsaturated fats' },
-    { key: 'sugar', label: 'Sugar' },
-    { key: 'fiber', label: 'Fiber' },
-    { key: 'sodium', label: 'Sodium' },
-    { key: 'caffeine', label: 'Caffeine' },
-    { key: 'cholesterol', label: 'Cholesterol' }
+{ key: 'sugar', label: 'Sugar' },
+{ key: 'fiber', label: 'Fiber' },
+{ key: 'sodium', label: 'Sodium' },
+{ key: 'caffeine', label: 'Caffeine' },
+{ key: 'cholesterol', label: 'Cholesterol' },
+{ key: 'saturatedFats', label: 'Saturated Fats' },
+{ key: 'unsaturatedFats', label: 'Unsaturated Fats' },
+{ key: 'protein', label: 'Protein' },
+{ key: 'carbs', label: 'Carbohydrates' }
 ];
-
-
-// Get all public meals
-exports.getPublicMeals = async (req, res) => {
-    try {
-        const publicMeals = await Meal.find({ isPublic: true }); // Fetch meals where isPublic is true
-        res.status(200).json(publicMeals);
-    } catch (error) {
-        console.error("Error fetching public meals:", error);
-        res.status(500).json({ message: "Server error fetching public meals." });
-    }
-};
-
-exports.getUserMeals = (req, res) => {
-    res.send("getUserMeals function not implemented yet.");
-};
-
-exports.getMealById = (req, res) => {
-    res.send("getMealById function not implemented yet.");
-};
-
-exports.savePublicMealAsPrivate = (req, res) => {
-    res.send("savePublicMealAsPrivate function not implemented yet.");
-};
-
-
 
 exports.createMeal = async (req, res) => {
     try {
@@ -63,6 +37,8 @@ exports.createMeal = async (req, res) => {
             cholesterol,
             saturatedFats,
             unsaturatedFats,
+            protein,
+            carbs,
             ingredients,
             recipeSteps,
             isPublic
@@ -78,8 +54,8 @@ exports.createMeal = async (req, res) => {
         if (!Number.isFinite(calories)) errors.push("Calories are required.");
         if (!servingSize || !Number.isFinite(servingSize.value) || !servingSize.unit) 
             errors.push("Serving size with value and unit is required.");
-        
-        // Nutrition facts validation
+
+        //Validate Nutrition Facts
         nutritionFacts.forEach(fact => {
             if (!Number.isFinite(req.body[fact.key]) || req.body[fact.key] < 0) {
                 errors.push(`${fact.label} is required and must be a positive number or zero.`);
@@ -111,6 +87,8 @@ exports.createMeal = async (req, res) => {
             cholesterol,
             saturatedFats,
             unsaturatedFats,
+            protein,
+            carbs,
             ingredients,
             recipeSteps,
             isPublic: finalIsPublic,
@@ -142,6 +120,35 @@ exports.createMeal = async (req, res) => {
         });
     }
 };
+
+
+
+
+
+// Get all public meals
+exports.getPublicMeals = async (req, res) => {
+    try {
+        const publicMeals = await Meal.find({ isPublic: true }); // Fetch meals where isPublic is true
+        res.status(200).json(publicMeals);
+    } catch (error) {
+        console.error("Error fetching public meals:", error);
+        res.status(500).json({ message: "Server error fetching public meals." });
+    }
+};
+
+exports.getUserMeals = (req, res) => {
+    res.send("getUserMeals function not implemented yet.");
+};
+
+exports.getMealById = (req, res) => {
+    res.send("getMealById function not implemented yet.");
+};
+
+exports.savePublicMealAsPrivate = (req, res) => {
+    res.send("savePublicMealAsPrivate function not implemented yet.");
+};
+
+
 
 
 
