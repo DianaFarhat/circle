@@ -19,12 +19,9 @@ const mealSchema = new mongoose.Schema(
       value: { type: Number, required: true }, // Numeric value (e.g., 355 for "355ml")
       unit: { type: String, required: true } // Unit as a string (e.g., "ml", "g", "cup")
     },
-    macros: {
-      carbs: { type: Number, required: true },
-      protein: { type: Number, required: true },
-      fats: { type: Number, required: true }
-    },
     
+    carbs: { type: Number, required: true },
+    protein: { type: Number, required: true },
     sugar: { type: Number, required: true },
     fiber: { type: Number, required: true },
     sodium: { type: Number, required: true },

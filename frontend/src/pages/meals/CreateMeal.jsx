@@ -26,12 +26,12 @@ const CreateMeal = () => {
     const [servingSizeUnit, setServingSizeUnit] = useState('');
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
-    const [nutrients, setNutrients] = useState({ carbs:0, proteins:0, fatsSat:0, fatsUnsat:0, sugar:0, fiber:0, sodium: 0, caffeine:0, cholesterol:0});
+    const [nutrients, setNutrients] = useState({ carbs:0, proteins:0, saturatedFats:0, unsaturatedFats: 0, sugar:0, fiber:0, sodium: 0, caffeine:0, cholesterol:0});
     const nutrientsUnits = {
         carbs: "g",
         proteins: "g",
-        fatsSat: "g",
-        fatsUnsat: "g",
+        saturatedFats: "g",
+        unsaturatedFats: "g",
         sugar: "g",
         fiber: "g",
         sodium: "mg",
@@ -185,11 +185,9 @@ const CreateMeal = () => {
                 value: parseFloat(servingSizeValue),  // Directly parse the float here
                 unit: servingSizeUnit.trim(),
             },
-            macros: {
-                carbs: parseFloat(nutrients.carbs),
-                protein: parseFloat(nutrients.proteins),
-                fats: parseFloat(nutrients.fats),
-            },
+            
+            carbs: parseFloat(nutrients.carbs),
+            protein: parseFloat(nutrients.proteins),
             sugar: parseFloat(nutrients.sugar),
             fiber: parseFloat(nutrients.fiber),
             sodium: parseFloat(nutrients.sodium),
