@@ -18,6 +18,8 @@ const CreateMeal = () => {
     const [tag, setTag] = useState("");
     const [tags, setTags] = useState([]);
     const [calories, setCalories] = useState('');
+    const [servingSizeValue, setServingSizeValue] = useState('');
+    const [servingSizeUnit, setServingSizeUnit] = useState('');
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [nutrients, setNutrients] = useState({ carbs: '', proteins: '', fatsSat: '', fatsUnsat: '', sugar: '', fiber: '', sodium: '', caffeine: '', cholesterol: '' });
@@ -95,66 +97,63 @@ const CreateMeal = () => {
     };
 
     const handleCreateMeal = async () => {
+
+        //Local Storage
+        const userId = localStorage.getItem('userId');  
+        if (!userId) {
+            return toast.error('User not authenticated!');
+        }
+
         if (!mealName.trim()) return toast.error('Meal Name is required!');
-        if (!calories || calories <= 0 || calories>3000) return toast.error('Valid Calories are required!');
+        if (!calories || calories <= 0 || calories > 3000) return toast.error('Valid Calories are required!');
+        
+      
+        // Validate Serving Size
+        if (!servingSizeValue.trim() || isNaN(parseFloat(servingSizeValue)) || parseFloat(servingSizeValue) <= 0) 
+            return toast.error('Serving size value must be a positive number!');
+        if (!servingSizeUnit.trim()) 
+            return toast.error('Serving size unit is required!');
+
+
         // Nutrient Validation
         for (const [key, value] of Object.entries(nutrients)) {
-            if (!value.trim()) {
-                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} is required!`);
-            }
-
-            // Check if the value is a valid positive number (no alphabets, only numbers)
             const numericValue = parseFloat(value);
-            if (isNaN(numericValue) || numericValue <= 0) {
-                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a positive number!`);
+    
+            if (!value.trim()) return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} is required!`);
+            if (isNaN(numericValue) || numericValue < 0 || numericValue > 1000) {
+                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a positive number and cannot exceed 1000!`);
             }
-
-            // Check if the numeric value exceeds 1000
-            if (numericValue > 1000) {
-                return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} cannot exceed 1000!`);
-            }
-
-            // Ensure no alphabets are present, only numbers
             if (!/^\d+(\.\d+)?$/.test(value)) {
                 return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a valid number (no alphabets allowed)!`);
             }
         }
-        // Ingredient Validation
-        ingredients.forEach((ingredient, index) => {
-            // Validate Ingredient Name (alphabetic only and max 200 chars)
-            if (!ingredient.name.trim()) {
-                return toast.error(`Ingredient name is required at position ${index + 1}!`);
-            }
-            if (!/^[A-Za-z\s]+$/.test(ingredient.name)) {
-                return toast.error(`Ingredient name must contain only alphabetic characters at position ${index + 1}!`);
-            }
-            if (ingredient.name.length > 200) {
-                return toast.error(`Ingredient name cannot exceed 200 characters at position ${index + 1}!`);
-            }
-        
-            // Validate Amount (positive and max 10000)
-            if (!ingredient.amount || ingredient.amount < 0) {
-                return toast.error(`Amount is required for ingredient at position ${index + 1}!`);
-            }
-            if (ingredient.amount > 10000) {
-                return toast.error(`Amount cannot exceed 10,000 for ingredient at position ${index + 1}!`);
-            }
-        
-            // Validate Unit (required)
-            if (!ingredient.unit) {
-                return toast.error(`Unit is required for ingredient at position ${index + 1}!`);
-            }
-        
-            // Validate Calories (positive and max 1000)
-            if (!ingredient.calories || ingredient.calories < 0) {
-                return toast.error(`Calories are required for ingredient at position ${index + 1}!`);
-            }
-            if (ingredient.calories > 1000) {
-                return toast.error(`Calories cannot exceed 1,000 for ingredient at position ${index + 1}!`);
-            }
-        });
-        
-        // Step Validation
+    
+        // Ingredient Validation (only if ingredients are provided)
+        if (type === "Recipe" && ingredients.length > 0) {
+            ingredients.forEach((ingredient, index) => {
+                if (!ingredient.name.trim()) {
+                    return toast.error(`Ingredient name is required at position ${index + 1}!`);
+                }
+                if (!/^[A-Za-z\s]+$/.test(ingredient.name)) {
+                    return toast.error(`Ingredient name must contain only alphabetic characters at position ${index + 1}!`);
+                }
+                if (ingredient.name.length > 200) {
+                    return toast.error(`Ingredient name cannot exceed 200 characters at position ${index + 1}!`);
+                }
+                if (isNaN(parseFloat(ingredient.amount)) || parseFloat(ingredient.amount) < 0 || parseFloat(ingredient.amount) > 10000) {
+                    return toast.error(`Amount for ingredient at position ${index + 1} must be between 0 and 10,000!`);
+                }
+                if (!ingredient.unit) {
+                    return toast.error(`Unit is required for ingredient at position ${index + 1}!`);
+                }
+                if (isNaN(parseFloat(ingredient.calories)) || parseFloat(ingredient.calories) < 0 || parseFloat(ingredient.calories) > 1000) {
+                    return toast.error(`Calories for ingredient at position ${index + 1} must be between 0 and 1,000!`);
+                }
+            });
+        }
+
+    // Step Validation (only if steps are provided)
+    if (type === "Recipe" && steps.length > 0) {
         if (steps.length > 30) {
             return toast.error('You can only add a maximum of 30 steps!');
         }
@@ -166,60 +165,57 @@ const CreateMeal = () => {
                 return toast.error(`Step description cannot exceed 500 characters at position ${index + 1}!`);
             }
         });
+}
 
-        // All validations passed, now proceed with meal creation //TODO: check this please 
+    
+        // All validations passed, now proceed with meal creation
         const mealData = {
-            name: mealName, 
-            type: type,  
-            image: mealImage, 
-            recipeUrl: recipeUrl, 
-            videoUrl: videoUrl, 
-            tags: tags,  
-            calories: calories, 
+            name: mealName,
+            type: type,
+            image: image,
+            recipeUrl: recipeUrl,
+            videoUrl: videoUrl,
+            tags: tags,
+            calories: parseFloat(calories),
             servingSize: {
-                value: servingSizeValue, 
-                unit: servingSizeUnit,    
+                value: parseFloat(servingSizeValue),  // Directly parse the float here
+                unit: servingSizeUnit.trim(),
             },
             macros: {
-                carbs: carbs,  
-                protein: proteins,
-                fats: fats,
+                carbs: parseFloat(nutrients.carbs),
+                protein: parseFloat(nutrients.proteins),
+                fats: parseFloat(nutrients.fats),
             },
-            sugar: nutrients.sugar,
-            fiber: nutrients.fiber,
-            sodium: nutrients.sodium,
-            caffeine: nutrients.caffeine,
-            cholesterol: nutrients.cholesterol,
-            saturatedFats: nutrients.saturatedFats,
-            unsaturatedFats: nutrients.unsaturatedFats,
+            sugar: parseFloat(nutrients.sugar),
+            fiber: parseFloat(nutrients.fiber),
+            sodium: parseFloat(nutrients.sodium),
+            caffeine: parseFloat(nutrients.caffeine),
+            cholesterol: parseFloat(nutrients.cholesterol),
+            saturatedFats: parseFloat(nutrients.saturatedFats),
+            unsaturatedFats: parseFloat(nutrients.unsaturatedFats),
             ingredients: ingredients.map(ingredient => ({
-                name: ingredient.name,  // Ingredient name from the form
+                name: ingredient.name,
                 amount: {
-                    value: ingredient.amount,  // Ingredient amount (value) from the form
-                    unit: ingredient.unit,     // Ingredient unit (e.g., "g", "tbsp")
+                    value: parseFloat(ingredient.amount),
+                    unit: ingredient.unit,
                 },
-                calories: ingredient.calories,  // Ingredient calories from the form
-                brand: ingredient.brand,        // Ingredient brand from the form (if available)
-                isOptional: ingredient.optional === "Yes",  // Whether ingredient is optional
+                calories: parseFloat(ingredient.calories),
+                brand: ingredient.brand,
+                isOptional: ingredient.optional === "Yes",
             })),
-            recipeSteps: steps,  // Steps from the form
-            version: 1,          // Assuming it's version 1
-            createdBy: userId,   // Assuming userId is from the session or state
+            recipeSteps: steps,
+            version: 1,
+            createdBy: userId,
         };
-
         try {
-            // Assuming createMeal is an API call function that returns a promise
             await createMeal(mealData);
-
-            // On success
             toast.success('Meal Created Successfully!');
-            navigate('/home'); // Navigate to home or wherever you want
+            navigate('/home');
         } catch (error) {
-            // Handle failure
             toast.error('Error creating meal! Please try again.');
         }
     };
-
+    
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -299,6 +295,24 @@ const CreateMeal = () => {
                             </div>
                             <label>Calories</label>
                             <input type="number" className="form-control border-0" placeholder="Enter Calories" value={calories} onChange={(e) => setCalories(e.target.value)} />
+                            <label>Serving Size Value</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                placeholder="Enter serving size value"
+                                required
+                                value={servingSizeValue}
+                                onChange={(e) => setServingSizeValue(e.target.value)}
+                            />
+                            <label>Serving Size Unit</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter unit (e.g., g, ml, slice)"
+                                required
+                                value={servingSizeUnit}
+                                onChange={(e) => setServingSizeUnit(e.target.value)}
+                            />
                             <label>Recipe URL <FaLink /></label>
                             <input type="text" className="form-control border-0" placeholder="Enter Recipe URL" value={recipeUrl} onChange={(e) => setRecipeUrl(e.target.value)} />
                             <label>Video URL <FaVideo /></label>
