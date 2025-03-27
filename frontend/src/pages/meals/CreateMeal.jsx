@@ -293,8 +293,8 @@ const CreateMeal = () => {
                             onChange={(e) => setMealName(e.target.value)} 
                         />
                     </div>
-                    <div className="row g-3">
-                        <div className="col-md-6 p-3 bg-white shadow rounded">
+                    <div className="row g-3 shadow">
+                        <div className="col-md-6 p-3 bg-white rounded">
                             <h4 className="fw-bold mb-3">General Info</h4>
                             <div className="mb-3">
                             <label>Meal Type</label>
@@ -354,7 +354,7 @@ const CreateMeal = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="col-md-6 p-3 bg-white shadow rounded">
+                        <div className="col-md-6 p-3 bg-white rounded">
                             <h4 className="fw-bold mb-3">Nutrition Facts</h4>
                             <table className="table">
                                 <tbody>
