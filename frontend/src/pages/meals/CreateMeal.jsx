@@ -227,7 +227,7 @@ const CreateMeal = () => {
     };
     
     return (
-        <div className="container mt-5">
+        <div className="container mt-0">
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
                     <div className="text-center mb-4 p-3 bg-white shadow rounded position-relative">
