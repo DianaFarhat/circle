@@ -175,7 +175,7 @@ const CreateMeal = () => {
         // All validations passed, now proceed with meal creation
         const mealData = {
             name: mealName,
-            type: type,
+            type: type.toLowerCase(),
             image: image,
             recipeUrl: recipeUrl,
             videoUrl: videoUrl,
@@ -299,8 +299,8 @@ const CreateMeal = () => {
                             <div className="mb-3">
                             <label>Meal Type</label>
                             <select className="form-control" value={type} onChange={(e) => setType(e.target.value)}>
-                                <option value="Simple">Simple</option>
-                                <option value="Recipe">Recipe</option>
+                                <option value="simple">Simple</option>
+                                <option value="recipe">Recipe</option>
                             </select>
                             </div>
                             <label>Calories</label>

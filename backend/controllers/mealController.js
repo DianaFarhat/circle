@@ -1,5 +1,17 @@
 const Meal= require("../models/mealModel");
 
+// Top of your file (recommended)
+const nutritionFacts = [
+    { key: 'carbs', label: 'Carbs' },
+    { key: 'protein', label: 'Protein' },
+    { key: 'saturatedFats', label: 'Saturated fats' },
+    { key: 'unsaturatedFats', label: 'Unsaturated fats' },
+    { key: 'sugar', label: 'Sugar' },
+    { key: 'fiber', label: 'Fiber' },
+    { key: 'sodium', label: 'Sodium' },
+    { key: 'caffeine', label: 'Caffeine' },
+    { key: 'cholesterol', label: 'Cholesterol' }
+];
 
 
 // Get all public meals
@@ -26,6 +38,7 @@ exports.savePublicMealAsPrivate = (req, res) => {
 };
 
 
+
 exports.createMeal = async (req, res) => {
     try {
         // Ensure the user is authenticated
@@ -43,7 +56,6 @@ exports.createMeal = async (req, res) => {
             tags,
             calories,
             servingSize,
-            macros,
             sugar,
             fiber,
             sodium,
@@ -60,28 +72,27 @@ exports.createMeal = async (req, res) => {
         const errors = [];
 
         if (!name) errors.push("Name is required.");
-        if (!type || !["simple", "recipe"].includes(type)) errors.push("Type is required and must be 'simple' or 'recipe'.");
+        if (!type || !["simple", "recipe"].includes(type.toLowerCase())) 
+            errors.push("Type is required and must be 'simple' or 'recipe'.");
         if (!image) errors.push("Image is required.");
         if (!Number.isFinite(calories)) errors.push("Calories are required.");
-        if (!servingSize || !Number.isFinite(servingSize.value) || !servingSize.unit) errors.push("Serving size with value and unit is required.");
-        if (!macros || !Number.isFinite(macros.carbs) || !Number.isFinite(macros.protein) || !Number.isFinite(macros.fats)) errors.push("Macros (carbs, protein, fats) are required.");
-        if (!Number.isFinite(sugar)) errors.push("Sugar is required.");
-        if (!Number.isFinite(fiber)) errors.push("Fiber is required.");
-        if (!Number.isFinite(sodium)) errors.push("Sodium is required.");
-        if (!Number.isFinite(caffeine)) errors.push("Caffeine is required.");
-        if (!Number.isFinite(cholesterol)) errors.push("Cholesterol is required.");
-        if (!Number.isFinite(saturatedFats)) errors.push("Saturated fats are required.");
-        if (!Number.isFinite(unsaturatedFats)) errors.push("Unsaturated fats are required.");
-        if (!ingredients || ingredients.length === 0) errors.push("At least one ingredient is required.");
+        if (!servingSize || !Number.isFinite(servingSize.value) || !servingSize.unit) 
+            errors.push("Serving size with value and unit is required.");
+        
+        // Nutrition facts validation
+        nutritionFacts.forEach(fact => {
+            if (!Number.isFinite(req.body[fact.key]) || req.body[fact.key] < 0) {
+                errors.push(`${fact.label} is required and must be a positive number or zero.`);
+            }
+        });
 
         if (errors.length > 0) {
             return res.status(400).json({ message: "Validation Error", errors });
         }
 
-        //Meal is public based on role
+        // Determine public status based on user role
         const userRole = req.user.role;
         const finalIsPublic = userRole === "admin" ? true : false;
-
 
         // Create new meal object
         const newMeal = new Meal({
@@ -93,7 +104,6 @@ exports.createMeal = async (req, res) => {
             tags,
             calories,
             servingSize,
-            macros,
             sugar,
             fiber,
             sodium,
@@ -115,7 +125,7 @@ exports.createMeal = async (req, res) => {
             meal: savedMeal
         });
     } catch (error) {
-        console.error("Error creating meal:", error);
+        console.error("Error creating meal:", error.message);
 
         if (error.name === "ValidationError") {
             const validationErrors = Object.entries(error.errors).map(([field, err]) => `${field}: ${err.message}`);
@@ -132,7 +142,6 @@ exports.createMeal = async (req, res) => {
         });
     }
 };
-
 
 
 
