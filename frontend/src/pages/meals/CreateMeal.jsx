@@ -26,7 +26,7 @@ const CreateMeal = () => {
     const [servingSizeUnit, setServingSizeUnit] = useState('');
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
-    const [nutrients, setNutrients] = useState({ carbs: '', proteins: '', fatsSat: '', fatsUnsat: '', sugar: '', fiber: '', sodium: '', caffeine: '', cholesterol: '' });
+    const [nutrients, setNutrients] = useState({ carbs:0, proteins:0, fatsSat:0, fatsUnsat:0, sugar:0, fiber:0, sodium: 0, caffeine:0, cholesterol:0});
     const nutrientsUnits = {
         carbs: "g",
         proteins: "g",
@@ -123,7 +123,7 @@ const CreateMeal = () => {
         for (const [key, value] of Object.entries(nutrients)) {
             const numericValue = parseFloat(value);
     
-            if (!value.trim()) return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} is required!`);
+          
             if (isNaN(numericValue) || numericValue < 0 || numericValue > 1000) {
                 return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a positive number and cannot exceed 1000!`);
             }
@@ -156,20 +156,20 @@ const CreateMeal = () => {
             });
         }
 
-    // Step Validation (only if steps are provided)
-    if (type === "Recipe" && steps.length > 0) {
-        if (steps.length > 30) {
-            return toast.error('You can only add a maximum of 30 steps!');
+        // Step Validation (only if steps are provided)
+        if (type === "Recipe" && steps.length > 0) {
+            if (steps.length > 30) {
+                return toast.error('You can only add a maximum of 30 steps!');
+            }
+            steps.forEach((step, index) => {
+                if (!step.trim()) {
+                    return toast.error(`Step description is required at position ${index + 1}!`);
+                }
+                if (step.length > 500) {
+                    return toast.error(`Step description cannot exceed 500 characters at position ${index + 1}!`);
+                }
+            });
         }
-        steps.forEach((step, index) => {
-            if (!step.trim()) {
-                return toast.error(`Step description is required at position ${index + 1}!`);
-            }
-            if (step.length > 500) {
-                return toast.error(`Step description cannot exceed 500 characters at position ${index + 1}!`);
-            }
-        });
-}
 
     
         // All validations passed, now proceed with meal creation
@@ -212,11 +212,19 @@ const CreateMeal = () => {
             createdBy: userId,
         };
         try {
+            console.log("Sending meal data:", mealData); // Debugging line
             await createMeal(mealData);
             toast.success('Meal Created Successfully!');
-            navigate('/home');
+            navigate('/');
         } catch (error) {
-            toast.error('Error creating meal! Please try again.');
+            console.error('Error creating meal:', error);
+            if (error?.data?.message) {
+                toast.error(`Error: ${error.data.message}`);
+            } else if (error?.message) {
+                toast.error(`Error: ${error.message}`);
+            } else {
+                toast.error('An unknown error occurred. Please try again.');
+            }
         }
     };
     
@@ -302,21 +310,35 @@ const CreateMeal = () => {
                             <label>Serving Size Value</label>
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control border-0"
                                 placeholder="Enter serving size value"
                                 required
                                 value={servingSizeValue}
-                                onChange={(e) => setServingSizeValue(e.target.value)}
+                                min="0"
+                                max="1000"
+                                step="0.01"
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (/^\d+(\.\d{0,2})?$/.test(value) && parseFloat(value) <= 1000) {
+                                        setServingSizeValue(value);
+                                    }
+                                }}
                             />
                             <label>Serving Size Unit</label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className="form-control border-0"
                                 placeholder="Enter unit (e.g., g, ml, slice)"
                                 required
                                 value={servingSizeUnit}
-                                onChange={(e) => setServingSizeUnit(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (/^[A-Za-z\s]*$/.test(value)) {
+                                        setServingSizeUnit(value);
+                                    }
+                                }}
                             />
+
                             <label>Recipe URL <FaLink /></label>
                             <input type="text" className="form-control border-0" placeholder="Enter Recipe URL" value={recipeUrl} onChange={(e) => setRecipeUrl(e.target.value)} />
                             <label>Video URL <FaVideo /></label>
