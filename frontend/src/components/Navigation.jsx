@@ -36,7 +36,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-success  px-4 py-2">
+    <nav className="navbar navbar-expand-lg navbar-light px-4 py-2"  style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
       <div className="container-fluid">
         {/* Left Side (Logo) */}
         

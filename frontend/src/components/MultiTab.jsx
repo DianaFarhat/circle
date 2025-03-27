@@ -11,7 +11,7 @@ const tabs = [
 const MultiTabComponent = ({ activeTab, onTabClick }) => {
   
   return (
-    <div className="d-flex flex-column align-items-start justify-content-center py-1 bg-white w-100">
+    <div className="d-flex flex-column align-items-start justify-content-center bg-white w-100">
       <div className="d-flex position-relative w-100">
         {/* Gradient Yellow Line Below Tabs (Extended to Screen End) */}
         <div className="position-absolute bottom-0 start-0" style={{ height: '4px', width: '100vw', background: 'linear-gradient(to right, #FAFA33, #FDFD96)', opacity: '0.7' }}></div>
