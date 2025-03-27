@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector } from 'react-redux';
 import MultiTabComponent from "../components/MultiTab";
 import TagFilterComponent from "../components/TagFilter";
 import AllMeals from '../components/tabs/AllMeals';
@@ -8,6 +9,10 @@ import MealPlan from '../components/tabs/MealPlan';
 import MyGroceries from '../components/tabs/MyGroceries';
 
 const Home = () => {
+
+  //Step 0: Get Current User
+  const userId = useSelector((state) => state.auth.userInfo?._id);
+      
 
   // Step 1: State to manage the active tab
   const [activeTab, setActiveTab] = useState('allMeals');
