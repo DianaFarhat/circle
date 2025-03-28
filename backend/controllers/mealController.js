@@ -41,6 +41,7 @@ exports.createMeal = async (req, res) => {
             carbs,
             ingredients,
             recipeSteps,
+            nbOfTimesSaved,
             isPublic
         } = req.body;
 
