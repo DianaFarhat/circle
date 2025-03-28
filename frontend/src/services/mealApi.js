@@ -13,8 +13,17 @@ export const mealApi = createApi({
             url: '/createMeal', // Ensure this matches your backend route for creating a meal
             method: 'POST',
             body: mealData, // Data you want to send in the request body
+          }),
         }),
-        })
+        
+        // ✅ Get Public Meals
+        getPublicMeals: builder.query({
+          query: () => ({
+              url: '/publicMeals',
+              method: 'GET',
+          }),
+        }),
+  
     })
    
 });
@@ -22,4 +31,5 @@ export const mealApi = createApi({
 // Export hooks for easy access in components
 export const {
   useCreateMealMutation,
+  useGetPublicMealsQuery,
 } = mealApi;

@@ -122,19 +122,28 @@ exports.createMeal = async (req, res) => {
 };
 
 
-
-
-
-// Get all public meals
+//Get Public Meals (All Meals)
 exports.getPublicMeals = async (req, res) => {
     try {
-        const publicMeals = await Meal.find({ isPublic: true }); // Fetch meals where isPublic is true
-        res.status(200).json(publicMeals);
+        // Fetch all meals where isPublic is true
+        const publicMeals = await Meal.find({ isPublic: true });
+
+        // Respond with the list of public meals
+        res.status(200).json({
+            message: "Public meals retrieved successfully.",
+            meals: publicMeals
+        });
     } catch (error) {
-        console.error("Error fetching public meals:", error);
-        res.status(500).json({ message: "Server error fetching public meals." });
+        console.error("Error retrieving public meals:", error.message);
+        res.status(500).json({
+            message: "An error occurred while fetching public meals.",
+            error: error.message
+        });
     }
 };
+
+
+/*
 
 exports.getUserMeals = (req, res) => {
     res.send("getUserMeals function not implemented yet.");
@@ -176,3 +185,4 @@ exports.getMealSaves = (req, res) => {
     res.send("getMealSaves function not implemented yet.");
 };
 
+*/

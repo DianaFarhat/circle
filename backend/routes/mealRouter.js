@@ -2,16 +2,7 @@ const express= require('express')
 const router = express.Router();
 const { 
     getPublicMeals, 
-    getUserMeals, 
-    getMealById, 
-    savePublicMealAsPrivate, 
     createMeal, 
-    updateMeal, 
-    deleteMeal, 
-    searchMeals, 
-    filterMeals, 
-    sortMeals, 
-    getMealSaves 
 } = require('../controllers/mealController');  // Ensure the path is correct
 
 const {authenticate}= require('../middlewares/authMiddleware')
@@ -22,11 +13,11 @@ const {authenticate}= require('../middlewares/authMiddleware')
 // Create a new meal (private if authorized)
 router.post("/createMeal", authenticate, createMeal);
 
+// Route to get all public meals
+router.get("/publicMeals", getPublicMeals);
 
 
-// Get all public meals
-router.get("/public", getPublicMeals);
-
+/*
 // Get user's private meals (requires authentication)
 router.get("/private", authenticate, getUserMeals);
 
@@ -58,7 +49,7 @@ router.get("/sort", authenticate, sortMeals);
 router.get("/:id/saves", getMealSaves);
 
 
-
+*/
 
 
 
