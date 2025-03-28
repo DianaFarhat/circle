@@ -3,6 +3,7 @@ const router = express.Router();
 const { 
     getPublicMeals, 
     createMeal, 
+    getMealById
 } = require('../controllers/mealController');  // Ensure the path is correct
 
 const {authenticate}= require('../middlewares/authMiddleware')
@@ -16,6 +17,8 @@ router.post("/createMeal", authenticate, createMeal);
 // Route to get all public meals
 router.get("/publicMeals", getPublicMeals);
 
+// Route to get a meal by ID
+router.get('/:mealId', getMealById);
 
 /*
 // Get user's private meals (requires authentication)

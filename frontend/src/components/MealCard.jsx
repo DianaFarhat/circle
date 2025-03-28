@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite }) => {
     const [isPressed, setIsPressed] = useState(false);
-
-    console.log('Meal object:', meal); // Will print every time the component renders
-
-    const isOwnedByUser = meal.createdBy === meal.userId;
+    const navigate = useNavigate();
+    const isOwnedByUser = meal.createdBy === meal.userId; 
+   
+    //Handle Card Click
+    const handleCardClick = () => {
+        navigate(`/${meal._id}`);
+    };
 
     return (
-        <div className="position-relative" style={{ width: '24rem', height: '28rem', margin: '0 auto' }}>
+        <div className="position-relative" style={{ width: '24rem', height: '28rem', margin: '0 auto' }} onClick={handleCardClick}>
             {/* Bookmark with 3D effect */}
             <div 
                 className={`position-absolute top-0 end-0 p-2 ${isPressed ? 'pressed' : ''}`} 

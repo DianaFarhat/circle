@@ -9,6 +9,7 @@ import Login from "./pages/authentication/Login.jsx";
 import Register from "./pages/authentication/Register.jsx";
 import { Provider } from "react-redux";
 import CreateMeal from "./pages/meals/CreateMeal.jsx";
+import MealPage from "./pages/meals/MealPage.jsx";
 
 // Define the router with App as a layout
 const router = createBrowserRouter([
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> }, // Login page
       { path: "register", element: <Register /> }, // Register page
       {path: "createmeal", element: <CreateMeal/>}, //Create Meal Page, which probably will need to be nested further but till now
+      { path: "/:mealId", element: <MealPage /> },
     ],
   },
 ]);
