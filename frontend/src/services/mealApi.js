@@ -23,14 +23,15 @@ export const mealApi = createApi({
               method: 'GET',
           }),
         }),
-
+        
         // ✅ Get Meal By Id
         getMealById: builder.query({
-          query: () => ({
-              url: '/:mealId',
-              method: 'GET',
+          query: (mealId) => ({
+            url: `/${mealId.trim()}`,  // Dynamically include the mealId in the URL path
+            method: 'GET',
           }),
         }),
+
   
     })
    

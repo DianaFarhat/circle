@@ -146,7 +146,7 @@ exports.getPublicMeals = async (req, res) => {
 //Get Meal By Id
 exports.getMealById = async (req, res) => {
     try {
-        const mealId = req.params.mealId.trim();
+        const mealId = req.params.mealId;
         const userId = req.user ? req.user.id : null;
         const meal = await Meal.findById(mealId);
 
@@ -159,7 +159,7 @@ exports.getMealById = async (req, res) => {
             return res.status(403).json({ message: 'Access denied. You are not authorized to view this meal.' });
         }
 
-        res.status(200).json({ meal });
+        res.status(200).json(meal);
     } catch (error) {
         console.error('Error fetching meal:', error.message);
         res.status(500).json({ message: 'An error occurred while fetching the meal', error: error.message });

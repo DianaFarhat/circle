@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> }, // Login page
       { path: "register", element: <Register /> }, // Register page
       {path: "createmeal", element: <CreateMeal/>}, //Create Meal Page, which probably will need to be nested further but till now
-      { path: "/:mealId", element: <MealPage /> },
+      {path:"/meals/:mealId", element: <MealPage />},
     ],
   },
 ]);

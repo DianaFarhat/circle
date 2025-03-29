@@ -8,7 +8,7 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
    
     //Handle Card Click
     const handleCardClick = () => {
-        navigate(`/${meal._id}`);
+        navigate(`/meals/${meal._id}`);
     };
 
     return (
@@ -53,7 +53,7 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
                             >
                                 💛
                             </span>
-                            <span style={{ fontSize: '1rem', color: 'gray' }}>{meal.favorites || 0}</span>
+                            <span style={{ fontSize: '1rem', color: 'gray' }}>{meal.nbOfTimesSaved || 0}</span>
                         </div>
                         <div className="d-flex justify-content-center gap-1 flex-wrap mb-2">
                             {meal.tags.slice(0, 5).map((tag, index) => (
