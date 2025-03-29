@@ -24,6 +24,12 @@ export const mealApi = createApi({
           }),
         }),
         
+        getUserMeals: builder.query({
+          query: () => ({
+            url: '/userMeals',
+            method: 'GET',
+          })  
+      }),
         // ✅ Get Meal By Id
         getMealById: builder.query({
           query: (mealId) => ({
@@ -41,5 +47,6 @@ export const mealApi = createApi({
 export const {
   useCreateMealMutation,
   useGetPublicMealsQuery,
+  useGetUserMealsQuery,
   useGetMealByIdQuery,
 } = mealApi;
