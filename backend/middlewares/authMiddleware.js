@@ -38,3 +38,47 @@ exports.authenticate = asyncHandler(async (req, res, next) => {
       return res.status(401).json({ message: "Not authorized, token failed." });
   }
 });
+
+
+//Used for use cases where authentication is optional, but grants features
+exports.optionalAuthenticate = asyncHandler(async (req, res, next) => {
+    let token = req.cookies.jwt;
+  
+    // If no token, continue without authentication
+    if (!token) {
+        console.log("No token found in cookies, proceeding without user.");
+        req.user = null;
+        return next();
+    }
+  
+    try {
+        // Decode the JWT
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded Token:", decoded); // ✅ Debugging
+  
+        // Find the user and exclude password
+        const user = await User.findById(decoded.id).select("-password");
+  
+        if (!user) {
+            console.log("User not found in database");
+            req.user = null;
+            return next();
+        }
+  
+        // Check if the password was changed after the token was issued
+        if (user.passwordChangedAfterTokenIssued(decoded.iat)) {
+            console.log("User changed password after token was issued");
+            req.user = null;
+            return next();
+        }
+  
+        // Attach user to request
+        req.user = user;
+        console.log("Authenticated User:", req.user);
+        next();
+    } catch (error) {
+        console.error("JWT Verification Error:", error);
+        req.user = null; // Continue without user if verification fails
+        next();
+    }
+  });

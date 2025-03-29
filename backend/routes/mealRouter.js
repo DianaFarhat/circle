@@ -6,7 +6,7 @@ const {
     getMealById
 } = require('../controllers/mealController');  // Ensure the path is correct
 
-const {authenticate}= require('../middlewares/authMiddleware')
+const {authenticate, optionalAuthenticate}= require('../middlewares/authMiddleware')
 
 
 
@@ -18,7 +18,7 @@ router.post("/createMeal", authenticate, createMeal);
 router.get("/publicMeals", getPublicMeals);
 
 // Route to get a meal by ID
-router.get('/:mealId', getMealById);
+router.get('/:mealId', optionalAuthenticate, getMealById);
 
 /*
 // Get user's private meals (requires authentication)

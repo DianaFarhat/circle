@@ -148,6 +148,7 @@ exports.getMealById = async (req, res) => {
     try {
         const mealId = req.params.mealId;
         const userId = req.user ? req.user.id : null;
+
         const meal = await Meal.findById(mealId);
 
         if (!meal) {
