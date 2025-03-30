@@ -36,7 +36,7 @@ const Home = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <MultiTabComponent  activeTab={activeTab} onTabClick={onTabClick}/>
+      <MultiTabComponent  activeTab={activeTab} onTabClick={onTabClick}   onCalendarClick={() => setShowMealPlan(true)}/>
       <div className="mt-3">
         {renderTabContent()}
       </div>
