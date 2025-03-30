@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
 import MultiTabComponent from "../components/MultiTab";
-import TagFilterComponent from "../components/TagFilter";
 import AllMeals from '../components/tabs/AllMeals';
 import MyMeals from '../components/tabs/MyMeals';
 import MyGroceries from '../components/tabs/MyGroceries';
