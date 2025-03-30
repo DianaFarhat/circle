@@ -44,13 +44,20 @@ const MultiTabComponent = ({ activeTab, onTabClick, onCalendarClick }) => {
 
         {/* Plain Calendar Icon (Right-Aligned, Clickable) */}
         <div className="ms-auto pe-2">
-          <AiOutlineCalendar
-            size={22}
-            style={{ color: 'green', cursor: 'pointer' }}
-            onClick={onCalendarClick}
-            title="Meal Plan"
-          />
-        </div>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShW9pIdx7YFAH-kOyrZf3tgysDa4JvB48xyA&s"
+          alt="Meal Plan"
+          onClick={onCalendarClick}
+          title="Meal Plan"
+          style={{
+            width: '26px',
+            height: '26px',
+            cursor: 'pointer',
+            objectFit: 'contain',
+          }}
+        />
+      </div>
+
       </div>
     </div>
   );
