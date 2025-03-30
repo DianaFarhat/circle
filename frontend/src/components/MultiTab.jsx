@@ -4,7 +4,6 @@ import { AiOutlineUnorderedList, AiOutlineStar, AiOutlineCalendar, AiOutlineAppl
 const tabs = [
   { name: 'All Meals', id: 'allMeals', icon: <AiOutlineUnorderedList /> },
   { name: 'My Meals', id: 'myMeals', icon: <AiOutlineStar /> },
-  { name: 'Meal Plan', id: 'mealPlan', icon: <AiOutlineCalendar /> },
   { name: 'My Groceries', id: 'myGroceries', icon: <AiOutlineApple /> },
 ];
 

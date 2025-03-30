@@ -5,7 +5,6 @@ import MultiTabComponent from "../components/MultiTab";
 import TagFilterComponent from "../components/TagFilter";
 import AllMeals from '../components/tabs/AllMeals';
 import MyMeals from '../components/tabs/MyMeals';
-import MealPlan from '../components/tabs/MealPlan';
 import MyGroceries from '../components/tabs/MyGroceries';
 
 const Home = () => {
@@ -29,8 +28,6 @@ const Home = () => {
         return <AllMeals />;
       case 'myMeals':
         return <MyMeals />;
-      case 'mealPlan':
-        return <MealPlan />;
       case 'myGroceries':
         return <MyGroceries />;
       default:
