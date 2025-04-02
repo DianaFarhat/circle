@@ -2,6 +2,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navigation from "./components/Navigation"; // Bootstrap Navbar
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 
 
@@ -14,13 +16,14 @@ function App() {
 
   return (
     <>
-    <ToastContainer />
-    {/* Show Navigation only if not on login/register */}
-    {shouldShowNav && <Navigation />} 
+     <DndProvider backend={HTML5Backend}>
+      <ToastContainer />
+      {shouldShowNav && <Navigation />}
 
-    <main className="container-fluid px-0">
-      <Outlet/>
-    </main>
+      <main className="container-fluid px-0">
+        <Outlet />
+      </main>
+    </DndProvider>
      
    </>
   );

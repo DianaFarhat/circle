@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDrag } from 'react-dnd';
+
 
 const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite }) => {
     const [isPressed, setIsPressed] = useState(false);
@@ -11,8 +13,18 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
         navigate(`/meals/${meal._id}`);
     };
 
+    //Handle Card Drag
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'MEAL',
+        item: { ...meal },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    }));
+    
+
     return (
-        <div className="position-relative" style={{ width: '24rem', height: '28rem', margin: '0 auto' }} onClick={handleCardClick}>
+        <div ref={drag} className="position-relative" style={{ width: '24rem', height: '28rem', margin: '0 auto' }} onClick={handleCardClick}>
             {/* Bookmark with 3D effect */}
             <div 
                 className={`position-absolute top-0 end-0 p-2 ${isPressed ? 'pressed' : ''}`} 
