@@ -24,7 +24,14 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
     
 
     return (
-        <div ref={drag} className="position-relative" style={{ width: '24rem', height: '28rem', margin: '0 auto' }} onClick={handleCardClick}>
+        <div ref={drag} className="position-relative" 
+            style={{ width: '24rem', height: '28rem', margin: '0 auto', cursor: 'move',
+                opacity: isDragging ? 0.4 : 1,
+                transform: isDragging ? 'scale(1.05)' : 'scale(1)',
+                border: isDragging ? '2px dashed yellow' : 'none',
+                transition: 'all 0.2s ease', }} 
+            onClick={handleCardClick}>
+            
             {/* Bookmark with 3D effect */}
             <div 
                 className={`position-absolute top-0 end-0 p-2 ${isPressed ? 'pressed' : ''}`} 
