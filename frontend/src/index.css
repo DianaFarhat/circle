@@ -98,3 +98,13 @@ button, button:focus, button:active, button:hover, button:focus-visible,
   border: none !important;
 }
  */
+
+ /* Calendar Overlay */
+
+ .custom-event {
+  border-radius: 5px;
+  color: white;
+  border: none;
+  padding: 4px;
+  background-color: #28a745; /* fallback if no color is passed */
+}

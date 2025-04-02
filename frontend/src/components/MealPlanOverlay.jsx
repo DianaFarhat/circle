@@ -11,12 +11,9 @@ const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, events })
 
   const getEventStyle = (event) => {
     return {
+      className: 'custom-event',
       style: {
-        backgroundColor: event.color || '#28a745',
-        borderRadius: '5px',
-        color: 'white',
-        border: 'none',
-        padding: '4px',
+        backgroundColor: event.color || undefined, // override CSS if custom color is passed
       },
     };
   };
