@@ -18,7 +18,7 @@ const CreateMeal = () => {
     const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false); //is visible if user decides to add imageUrl
     const [imageUrl, setImageUrl] = useState("");
     const [mealName, setMealName] = useState('');
-    const [type, setType] = useState('Simple');
+    const [type, setType] = useState('simple');
     const [tag, setTag] = useState("");
     const [tags, setTags] = useState([]);
     const [calories, setCalories] = useState('');
@@ -379,7 +379,7 @@ const CreateMeal = () => {
                             </table>
                         </div>
                     </div>
-                    {type === 'Recipe' && (
+                    {type === 'recipe' && (
                         <div className="mt-4 p-3 bg-white shadow rounded">
                             <h4>Ingredients</h4>
                             {ingredients.map((ingredient, index) => (
