@@ -1,9 +1,9 @@
 // controllers/mealPlanController.js
-import MealPlan from '../models/mealPlan.js';
-import Meal from '../models/Meal.js';
+const MealPlan= require('../models/mealPlan.js');
+const Meal = require('../models/mealModel.js');
 
-import moment from 'moment';
-export const addMealToPlan = async (req, res) => {
+const moment= require('moment');
+exports.addMealToPlan = async (req, res) => {
   try {
     const { userId, mealId, start, end } = req.body;
 
@@ -33,7 +33,7 @@ export const addMealToPlan = async (req, res) => {
 };
 
 // controllers/mealPlanController.js
-export const removeMealFromPlan = async (req, res) => {
+exports.removeMealFromPlan = async (req, res) => {
     try {
       const { id } = req.params;
   
@@ -51,7 +51,7 @@ export const removeMealFromPlan = async (req, res) => {
 };
   
 
-export const getUserMealPlan = async (req, res) => {
+exports.getUserMealPlan = async (req, res) => {
   try {
     const { userId } = req.params;
     const { start, end } = req.query;

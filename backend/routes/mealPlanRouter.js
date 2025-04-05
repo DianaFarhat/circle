@@ -7,7 +7,7 @@ const {
   deleteMealFromPlan,
   updateCalorieLimit
 } = require("../controllers/mealPlanController");
-const { authenticate } = require("../middleware/authMiddleware");
+const { authenticate } = require("../middlewares/authMiddleware");
 
 //Add meal to user plan
 router.post('/', addMealToPlan);
