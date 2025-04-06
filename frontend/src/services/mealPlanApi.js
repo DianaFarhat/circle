@@ -32,7 +32,7 @@ export const mealPlanApi = createApi({
         if (endDate) params.append('endDate', endDate);
 
         return {
-          url: `/user/${userId}?${params.toString()}`,
+          url: `/userMealPlan/${userId}?${params.toString()}`,
           method: 'GET',
         };
       },

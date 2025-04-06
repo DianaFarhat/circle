@@ -21,7 +21,7 @@ exports.addMealToPlan = async (req, res) => {
         calories: meal.calories,
         protein: meal.protein,
         carbs: meal.carbs,
-        fats: meal.fats,
+        fats:(meal.saturatedFats || 0) + (meal.unsaturatedFats || 0),
       },
     });
 

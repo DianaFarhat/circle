@@ -1,22 +1,124 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { AiOutlineClose, AiOutlineExpandAlt, AiOutlineShrink } from 'react-icons/ai';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import { useAddMealToPlanMutation, useRemoveMealFromPlanMutation, useGetUserMealPlanQuery } from '../services/mealPlanApi'; 
+
+const DnDCalendar = withDragAndDrop(Calendar);
+
 
 const localizer = momentLocalizer(moment);
 
-const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, events }) => {
+const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId }) => {
+  const [events, setEvents] = useState([]);
+  const [draggedMeal, setDraggedMeal] = useState(null);
+
+  const [addMealToPlan] = useAddMealToPlanMutation();
+  const [removeMealFromPlan] = useRemoveMealFromPlanMutation();
+
+  // Date range
+  const startDate = new Date().toISOString();
+  const endDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  // RTK Query fetch
+  const { data, isLoading, isError } = useGetUserMealPlanQuery(
+    { userId, startDate, endDate },
+    { skip: !visible || !userId }
+  );
+
+  // Update events when data comes in
+  useEffect(() => {
+    if (data) {
+      const formatted = data.map((meal) => ({
+        id: meal._id,
+        title: meal.meal.name,
+        start: new Date(meal.start),
+        end: new Date(meal.end),
+        calories: meal.meal.calories,
+        protein: meal.meal.protein,
+        carbs: meal.meal.carbs,
+        fat: meal.meal.fat,
+      }));      
+      setEvents(formatted);
+    }
+  }, [data]);
+
+  const handleExternalDrop = async ({ start, end }) => {
+    if (!draggedMeal || !userId) return;
+
+    try {
+      const res = await addMealToPlan({
+        userId,
+        mealId: draggedMeal._id,
+        start,
+        end,
+        nutrients: {
+          calories: draggedMeal.calories || 0,
+          protein: draggedMeal.protein || 0,
+          carbs: draggedMeal.carbs || 0,
+          fats: (draggedMeal.saturatedFats || 0) + (draggedMeal.unsaturatedFats || 0),
+        }  
+      }).unwrap();
+
+      setEvents((prev) => [
+        ...prev,
+        {
+          id: res._id,
+          title: draggedMeal.name,
+          start: new Date(res.start),
+          end: new Date(res.end),
+        },
+      ]);
+    } catch (err) {
+      console.error('Failed to add meal:', err);
+    }
+  };
+
+  const handleDelete = async (eventId) => {
+    try {
+      await removeMealFromPlan(eventId).unwrap();
+      setEvents((prev) => prev.filter((e) => e.id !== eventId));
+    } catch (err) {
+      console.error('Failed to delete event:', err);
+    }
+  };
+
+  const getEventStyle = () => ({
+    className: 'custom-event',
+    style: {
+      backgroundColor: '#82c91e',
+      color: '#fff',
+    },
+  });
+  
+  const CustomEvent = ({ event }) => (
+    <div className="p-1">
+      <div className="d-flex justify-content-between align-items-center">
+        <strong>{event.title}</strong>
+        <AiOutlineClose
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(event.id);
+          }}
+          style={{ marginLeft: 6, cursor: 'pointer' }}
+        />
+      </div>
+      <small>
+        🔥 {event.calories || 0} kcal |
+        🥩 {event.protein || 0}g P |
+        🍚 {event.carbs || 0}g C |
+        🧈 {event.fat || 0}g F
+      </small>
+    </div>
+  );
+  
+  
   if (!visible) return null;
 
-  const getEventStyle = (event) => {
-    return {
-      className: 'custom-event',
-      style: {
-        backgroundColor: event.color || undefined, // override CSS if custom color is passed
-      },
-    };
-  };
+
 
   const renderDayTotals = () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

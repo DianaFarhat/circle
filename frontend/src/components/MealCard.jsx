@@ -16,10 +16,14 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
     //Handle Card Drag
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'MEAL',
-        item: { ...meal },
+        item: () => {
+            if (onDragStart) onDragStart(meal); // <– still works here
+            return { ...meal };
+        },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
+        
     }));
     
 

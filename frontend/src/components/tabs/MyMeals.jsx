@@ -27,6 +27,7 @@ function MyMeals() {
                             onDelete={() => {}}
                             onSaveToMyMeals={() => {}}
                             onToggleFavorite={() => {}}
+                            onDragStart={(meal) => setDraggedMeal(meal)}
                         />
                     </div>
                 ))}
