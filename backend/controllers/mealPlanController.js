@@ -33,7 +33,7 @@ exports.addMealToPlan = async (req, res) => {
   }
 };
 
-// controllers/mealPlanController.js
+
 exports.removeMealFromPlan = async (req, res) => {
     try {
       //1. Get Meal Id from Request Params
@@ -61,20 +61,41 @@ exports.removeMealFromPlan = async (req, res) => {
 
 exports.getUserMealPlan = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { start, end } = req.query;
+    const { userId } = req.user._id;
+    let { startDate, endDate } = req.query;
 
-    const startDate = moment(start).startOf('day').toDate();
-    const endDate = moment(end).endOf('day').toDate();
+    const today = new Date();
 
-    const mealPlans = await MealPlan.find({
+    // Default range: current week (Sunday to Saturday)
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7); // next Sunday (exclusive)
+    endOfWeek.setHours(0, 0, 0, 0);
+
+    // Parse incoming dates or fallback to default
+    startDate = startDate ? new Date(startDate) : startOfWeek;
+    endDate = endDate ? new Date(endDate) : endOfWeek;
+
+    // Enforce max planning window (1 year ahead only)
+    const oneYearFromNow = new Date();
+    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
+    if (endDate > oneYearFromNow) {
+      return res.status(400).json({ message: 'Cannot fetch meal plans more than 1 year in advance' });
+    }
+
+    // Query meal plans within the selected range
+    const meals = await MealPlan.find({
       user: userId,
-      start: { $gte: startDate, $lte: endDate },
+      start: { $gte: startDate, $lt: endDate }
     }).populate('meal');
 
-    res.status(200).json(mealPlans);
+    res.status(200).json(meals);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching meal plan:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
