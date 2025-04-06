@@ -4,13 +4,16 @@ const {
   getMealHistory,
   getMealsByDate,
   addMealToPlan,
-  deleteMealFromPlan,
+  removeMealFromPlan,
   updateCalorieLimit
 } = require("../controllers/mealPlanController");
 const { authenticate } = require("../middlewares/authMiddleware");
 
 //Add meal to user plan
-router.post('/', addMealToPlan);
+router.post('/addMealToPlan', addMealToPlan);
 
+
+//Remove meal to user plan
+router.post('/removeMealFromPlan/:mealId', removeMealFromPlan);
 
 module.exports = router;

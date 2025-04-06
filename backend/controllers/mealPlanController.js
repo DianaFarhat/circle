@@ -3,6 +3,7 @@ const MealPlan= require('../models/mealPlan.js');
 const Meal = require('../models/mealModel.js');
 
 const moment= require('moment');
+
 exports.addMealToPlan = async (req, res) => {
   try {
     const { userId, mealId, start, end } = req.body;
@@ -35,14 +36,21 @@ exports.addMealToPlan = async (req, res) => {
 // controllers/mealPlanController.js
 exports.removeMealFromPlan = async (req, res) => {
     try {
-      const { id } = req.params;
-  
-      const mealPlan = await MealPlan.findById(id);
+      //1. Get Meal Id from Request Params
+      const { mealId} = req.params;
+      
+      //2. Make sure id exists in mongoDB
+      const mealPlan = await MealPlan.findById(mealId);
       if (!mealPlan) {
         return res.status(404).json({ message: 'Meal plan entry not found' });
       }
   
-      await mealPlan.remove();
+      const deleted = await MealPlan.findByIdAndDelete(mealId);
+
+      if (!deleted) {
+        return res.status(404).json({ message: 'Error deleting meal plan' });
+      }
+  
       res.status(200).json({ message: 'Meal plan entry deleted' });
     } catch (err) {
       console.error(err);
