@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MealCard from '../MealCard';
 import { useGetUserMealsQuery } from '../../services/mealApi';
 
-function MyMeals() {
+function MyMeals({setDraggedMeal}) {
     const { data: mealsData, isLoading, error } = useGetUserMealsQuery();
     const [meals, setMeals] = useState([]);
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 
 
-const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite }) => {
+const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite, onDragStart }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     const isOwnedByUser = meal.createdBy === meal.userId; 
@@ -17,7 +17,10 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'MEAL',
         item: () => {
-            if (onDragStart) onDragStart(meal); // <– still works here
+            if (onDragStart){
+                console.log("Dragging meal:", meal);
+                onDragStart(meal); 
+            } 
             return { ...meal };
         },
         collect: (monitor) => ({
@@ -34,7 +37,8 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
                 transform: isDragging ? 'scale(1.05)' : 'scale(1)',
                 border: isDragging ? '2px dashed yellow' : 'none',
                 transition: 'all 0.2s ease', }} 
-            onClick={handleCardClick}>
+            onClick={handleCardClick}
+           >
             
             {/* Bookmark with 3D effect */}
             <div 

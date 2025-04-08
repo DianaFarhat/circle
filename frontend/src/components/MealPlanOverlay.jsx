@@ -12,9 +12,9 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 const localizer = momentLocalizer(moment);
 
-const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId }) => {
+const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId, draggedMeal }) => {
   const [events, setEvents] = useState([]);
-  const [draggedMeal, setDraggedMeal] = useState(null);
+  
 
   const [addMealToPlan] = useAddMealToPlanMutation();
   const [removeMealFromPlan] = useRemoveMealFromPlanMutation();
@@ -165,7 +165,7 @@ const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId })
       </div>
 
       <div className="p-3">
-        <Calendar
+      <DnDCalendar
           localizer={localizer}
           events={events}
           startAccessor="start"
@@ -173,6 +173,15 @@ const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId })
           defaultView="week"
           style={{ height: '70vh' }}
           eventPropGetter={getEventStyle}
+          components={{ event: CustomEvent }}
+          
+          // 🆕 Add these 2 lines:
+          onDropFromOutside={handleExternalDrop}
+          dragFromOutsideItem={() => {
+            console.log("Drag item from outside:", draggedMeal);
+            return draggedMeal ? { title: draggedMeal.name } : null;
+          }}
+          
         />
       </div>
 

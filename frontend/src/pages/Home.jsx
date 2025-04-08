@@ -38,6 +38,10 @@ const Home = () => {
     }
   };
 
+  //Step 4: Dragging Logic
+  const [draggedMeal, setDraggedMeal] = useState(null);
+
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <MultiTabComponent  activeTab={activeTab} onTabClick={onTabClick}  onCalendarClick={() => setShowMealPlan(prev => !prev)}/>
@@ -50,6 +54,7 @@ const Home = () => {
           onClose={() => setShowMealPlan(false)}
           fullWidth={fullWidth}
           onToggleWidth={() => setFullWidth(prev => !prev)}
+          draggedMeal={draggedMeal}
         />
         </div>
       
