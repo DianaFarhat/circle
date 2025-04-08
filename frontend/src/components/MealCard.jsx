@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDrag } from 'react-dnd';
+import { useDraggable } from '@dnd-kit/core';
 
 
 const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite, onDragStart }) => {
@@ -13,30 +13,27 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
         navigate(`/meals/${meal._id}`);
     };
 
-    //Handle Card Drag
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: 'MEAL',
-        item: () => {
-            if (onDragStart){
-                console.log("Dragging meal:", meal);
-                onDragStart(meal); 
-            } 
-            return { ...meal };
-        },
-        collect: (monitor) => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-        
-    }));
+    //Handle Drag
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: meal._id,
+        data: { meal }, // you can access this in onDragEnd
+    });
+
+    const dragStyle = {
+        transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+        cursor: 'grab',
+        transition: 'transform 0.2s ease',
+    };
+   
     
 
     return (
-        <div ref={drag} className="position-relative" 
-            style={{ width: '24rem', height: '28rem', margin: '0 auto', cursor: 'move',
-                opacity: isDragging ? 0.4 : 1,
-                transform: isDragging ? 'scale(1.05)' : 'scale(1)',
-                border: isDragging ? '2px dashed yellow' : 'none',
-                transition: 'all 0.2s ease', }} 
+        <div 
+            ref={setNodeRef}
+            style={dragStyle}
+            {...listeners}
+            {...attributes}
+            className="position-relative" 
             onClick={handleCardClick}
            >
             

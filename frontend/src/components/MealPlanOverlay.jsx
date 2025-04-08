@@ -180,8 +180,7 @@ const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId, d
           dragFromOutsideItem={() => {
             console.log("Drag item from outside:", draggedMeal);
             return draggedMeal ? { title: draggedMeal.name } : null;
-          }}
-          
+          }}          
         />
       </div>
 

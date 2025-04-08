@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MealCard from '../MealCard';
 import { useGetUserMealsQuery } from '../../services/mealApi';
 
-function MyMeals({setDraggedMeal}) {
+function MyMeals() {
     const { data: mealsData, isLoading, error } = useGetUserMealsQuery();
     const [meals, setMeals] = useState([]);
 
@@ -27,7 +27,6 @@ function MyMeals({setDraggedMeal}) {
                             onDelete={() => {}}
                             onSaveToMyMeals={() => {}}
                             onToggleFavorite={() => {}}
-                            onDragStart={(meal) => setDraggedMeal(meal)}
                         />
                     </div>
                 ))}
