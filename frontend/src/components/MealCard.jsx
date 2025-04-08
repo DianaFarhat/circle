@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
 import { useSelector } from 'react-redux';
 import useSaveToMyMeals from '../hooks/useSaveToMyMeals';
+import useDeleteMyMeal from '../hooks/useDeleteMyMeal';
 
-const MealCard = ({ meal, onClick, onEdit, onDelete, onToggleFavorite }) => {
+
+const MealCard = ({ meal, onClick, onEdit,  onToggleFavorite }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     
@@ -31,6 +33,8 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onToggleFavorite }) => {
 
     //Handle Save
     const { saveMeal } = useSaveToMyMeals();
+    const { onDelete } = useDeleteMyMeal();
+
 
 
     return (

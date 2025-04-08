@@ -255,7 +255,7 @@ exports.saveMealAsCopy = async (req, res) => {
 //Delete a User's Meal
 exports.deleteMeal = async (req, res) => {
     try {
-      const mealId = req.params.id;
+      const mealId = req.params.mealId;
       const userId = req.user._id; // assuming you get the user from JWT middleware
   
       const meal = await Meal.findById(mealId);

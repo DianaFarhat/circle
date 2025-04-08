@@ -68,4 +68,5 @@ export const {
   useGetUserMealsQuery,
   useGetMealByIdQuery,
   useSaveMealAsCopyMutation,
+  useDeleteMealMutation,
 } = mealApi;
