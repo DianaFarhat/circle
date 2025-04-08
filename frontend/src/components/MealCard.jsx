@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
-
+import { useSelector } from 'react-redux';
 
 const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite, onDragStart }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
-    const isOwnedByUser = meal.createdBy === meal.userId; 
+    
+    //MealCard Author 
+    const currentUserId = useSelector((state) => state.auth.userInfo?._id);
+    const isOwnedByUser = meal.createdBy === currentUserId;
    
     //Handle Card Click
     const handleCardClick = () => {
@@ -42,9 +45,10 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
            >
             
             {/* Bookmark with 3D effect */}
-            <div 
-                className={`position-absolute top-0 end-0 p-2 ${isPressed ? 'pressed' : ''}`} 
-                style={{
+            {!isOwnedByUser && (
+                <div 
+                    className={`position-absolute top-0 end-0 p-2 ${isPressed ? 'pressed' : ''}`} 
+                    style={{
                     backgroundColor: 'green',
                     color: 'white',
                     fontWeight: 'bold',
@@ -58,15 +62,16 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
                     textAlign: 'center',
                     borderBottomLeftRadius: '5px',
                     zIndex: 1
-                }}
-                onClick={(e) => {
+                    }}
+                    onClick={(e) => {
                     e.stopPropagation();
                     setIsPressed(!isPressed);
                     onSaveToMyMeals(meal);
-                }}
-            >
-                SAVE
-            </div>
+                    }}
+                >
+                    SAVE
+                </div>
+            )}
 
             {/* Meal Card */}
             <div className="card text-center shadow-sm p-3 mb-3 bg-light border rounded-3" style={{ cursor: 'pointer', overflow: 'hidden', height: '100%' }} onClick={() => onClick(meal._id)}>
