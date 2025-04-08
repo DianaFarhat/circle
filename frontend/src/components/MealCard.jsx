@@ -127,8 +127,26 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onToggleFavorite }) => {
                     <div className="d-flex justify-content-center gap-3 mt-2">
                         {isOwnedByUser ? (
                             <>
-                                <span style={{ cursor: 'pointer', fontSize: '1.2rem', color: 'gray' }} onClick={(e) => { e.stopPropagation(); onEdit(meal); }}>✏️</span>
-                                <span style={{ cursor: 'pointer', fontSize: '1.2rem', color: 'red' }} onClick={(e) => { e.stopPropagation(); onDelete(meal); }}>🗑️</span>
+                                 <div className="d-flex justify-content-center gap-2 mt-2">
+                                    <button
+                                    className="btn mealCardButton btn-outline-warning"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onEdit(meal);
+                                    }}
+                                    >
+                                    Edit
+                                    </button>
+                                    <button
+                                    className="btn mealCardButton btn-outline-success"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDelete(meal);
+                                    }}
+                                    >
+                                    Delete
+                                    </button>
+                                </div>
                             </>
                         ) : null}
                     </div>

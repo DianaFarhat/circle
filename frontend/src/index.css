@@ -99,7 +99,25 @@ button, button:focus, button:active, button:hover, button:focus-visible,
 }
  */
 
- /* Calendar Overlay */
+
+ /* Meal Card */
+
+ .mealCardButton {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 6px;
+  width: 6rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.mealCardButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Calendar Overlay */
 
  .custom-event {
   border-radius: 5px;
