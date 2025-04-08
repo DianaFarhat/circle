@@ -252,49 +252,27 @@ exports.saveMealAsCopy = async (req, res) => {
 };
   
 
+//Delete a User's Meal
+const deleteMeal = async (req, res) => {
+    try {
+      const mealId = req.params.id;
+      const userId = req.user._id; // assuming you get the user from JWT middleware
+  
+      const meal = await Meal.findById(mealId);
+      if (!meal) {
+        return res.status(404).json({ message: 'Meal not found' });
+      }
+  
+      // ✅ Check ownership
+      if (meal.createdBy.toString() !== userId.toString()) {
+        return res.status(403).json({ message: 'Not authorized to delete this meal' });
+      }
+  
+      await Meal.findByIdAndDelete(mealId);
+      res.status(200).json({ message: 'Meal deleted successfully' });
+    } catch (err) {
+      console.error('Error deleting meal:', err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
 
-
-
-/*
-
-exports.getUserMeals = (req, res) => {
-    res.send("getUserMeals function not implemented yet.");
-};
-
-exports.getMealById = (req, res) => {
-    res.send("getMealById function not implemented yet.");
-};
-
-exports.savePublicMealAsPrivate = (req, res) => {
-    res.send("savePublicMealAsPrivate function not implemented yet.");
-};
-
-
-
-
-
-exports.updateMeal = (req, res) => {
-    res.send("updateMeal function not implemented yet.");
-};
-
-exports.deleteMeal = (req, res) => {
-    res.send("deleteMeal function not implemented yet.");
-};
-
-exports.searchMeals = (req, res) => {
-    res.send("searchMeals function not implemented yet.");
-};
-
-exports.filterMeals = (req, res) => {
-    res.send("filterMeals function not implemented yet.");
-};
-
-exports.sortMeals = (req, res) => {
-    res.send("sortMeals function not implemented yet.");
-};
-
-exports.getMealSaves = (req, res) => {
-    res.send("getMealSaves function not implemented yet.");
-};
-
-*/

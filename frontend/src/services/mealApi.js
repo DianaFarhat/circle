@@ -40,7 +40,7 @@ export const mealApi = createApi({
           }),
         }),
 
-        // ✅ ave Meal To User's My Meals
+        // ✅ Save Meal To User's My Meals
         saveMealAsCopy: builder.mutation({
           query: ({ mealId, mealData }) => ({
             url: `/saveToMyMeals/${mealId.trim()}`,
@@ -49,6 +49,13 @@ export const mealApi = createApi({
           }),
         }),
         
+        // ✅ Delete meal mutation
+        deleteMeal: builder.mutation({
+          query: (mealId) => ({
+            url: `/deleteMeal/${mealId}`,
+            method: 'DELETE',
+          }),
+        }),
   
     })
    
