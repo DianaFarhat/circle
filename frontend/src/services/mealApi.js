@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+
 export const mealApi = createApi({
   reducerPath: 'mealApi',
   baseQuery: fetchBaseQuery({
@@ -24,6 +25,7 @@ export const mealApi = createApi({
           }),
         }),
         
+        // ✅ Get User Meals
         getUserMeals: builder.query({
           query: () => ({
             url: '/userMeals',
@@ -38,6 +40,15 @@ export const mealApi = createApi({
           }),
         }),
 
+        // ✅ ave Meal To User's My Meals
+        saveMealAsCopy: builder.mutation({
+          query: ({ mealId, mealData }) => ({
+            url: `/saveToMyMeals/${mealId.trim()}`,
+            method: 'POST',
+            body: mealData,
+          }),
+        }),
+        
   
     })
    
@@ -49,4 +60,5 @@ export const {
   useGetPublicMealsQuery,
   useGetUserMealsQuery,
   useGetMealByIdQuery,
+  useSaveMealAsCopyMutation,
 } = mealApi;

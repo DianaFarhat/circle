@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
 import { useSelector } from 'react-redux';
 
-const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite, onDragStart }) => {
+const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     
