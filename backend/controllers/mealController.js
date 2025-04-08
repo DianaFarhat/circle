@@ -189,6 +189,69 @@ exports.getMealById = async (req, res) => {
 };
 
 
+//Save Public Meal To My Meals
+exports.saveMealAsCopy = async (req, res) => {
+    try {
+      const userId = req.user?.id;
+  
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized. Please log in." });
+      }
+  
+      const { mealId } = req.params;
+  
+      const originalMeal = await Meal.findById(mealId);
+      if (!originalMeal || !originalMeal.isPublic) {
+        return res.status(404).json({ message: "Public meal not found." });
+      }
+  
+      // Increment save count
+      originalMeal.nbOfTimesSaved += 1;
+      await originalMeal.save();
+  
+      // Create the private copy
+      const copiedMeal = new Meal({
+        name: originalMeal.name,
+        type: originalMeal.type,
+        image: originalMeal.image,
+        recipeUrl: originalMeal.recipeUrl,
+        videoUrl: originalMeal.videoUrl,
+        tags: originalMeal.tags,
+        calories: originalMeal.calories,
+        servingSize: originalMeal.servingSize,
+        sugar: originalMeal.sugar,
+        fiber: originalMeal.fiber,
+        sodium: originalMeal.sodium,
+        caffeine: originalMeal.caffeine,
+        cholesterol: originalMeal.cholesterol,
+        saturatedFats: originalMeal.saturatedFats,
+        unsaturatedFats: originalMeal.unsaturatedFats,
+        protein: originalMeal.protein,
+        carbs: originalMeal.carbs,
+        ingredients: originalMeal.ingredients,
+        recipeSteps: originalMeal.recipeSteps,
+        version: originalMeal.nbOfTimesSaved,
+        parentMealId: originalMeal._id,
+        createdBy: userId,
+        isPublic: false
+      });
+  
+      const savedCopy = await copiedMeal.save();
+  
+      res.status(201).json({
+        message: "Meal saved to your meals.",
+        meal: savedCopy
+      });
+    } catch (error) {
+      console.error("Error saving meal copy:", error.message);
+      res.status(500).json({
+        message: "An error occurred while saving the meal.",
+        error: error.message
+      });
+    }
+};
+  
+
 
 
 
