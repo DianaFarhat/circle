@@ -87,15 +87,19 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onToggleFavorite }) => {
                 <div className="card-body d-flex flex-column justify-content-between p-2">
                     <div>
                         <h5 className="card-title text-truncate" style={{ marginBottom: '0.5rem' }}>{meal.name}</h5>
-                        <div className="d-flex justify-content-center align-items-center gap-2" style={{ marginBottom: '0.5rem' }}>
-                            <span 
+                        {meal.isPublic && (
+                            <div className="d-flex justify-content-center align-items-center gap-2" style={{ marginBottom: '0.5rem' }}>
+                                <span 
                                 style={{ color: 'gold', fontSize: '1.2rem', cursor: 'pointer' }} 
                                 onClick={(e) => { e.stopPropagation(); onToggleFavorite(meal); }}
-                            >
+                                >
                                 💛
-                            </span>
-                            <span style={{ fontSize: '1rem', color: 'gray' }}>{meal.nbOfTimesSaved || 0}</span>
-                        </div>
+                                </span>
+                                <span style={{ fontSize: '1rem', color: 'gray' }}>
+                                {meal.nbOfTimesSaved || 0}
+                                </span>
+                            </div>
+                            )}
                         <div className="d-flex justify-content-center gap-1 flex-wrap mb-2">
                             {meal.tags.slice(0, 5).map((tag, index) => (
                                 <span 
