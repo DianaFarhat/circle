@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { AiOutlineClose, AiOutlineExpandAlt, AiOutlineShrink } from 'react-icons/ai';
 import { useAddMealToPlanMutation, useRemoveMealFromPlanMutation, useGetUserMealPlanQuery } from '../services/mealPlanApi'; 
-
+import CalendarOverlayGrid from './CalendarOverlayGrid';
 
 
 
@@ -132,17 +132,20 @@ const MealPlanOverlay = ({ visible, onClose, fullWidth, onToggleWidth, userId })
         </button>
       </div>
 
-      <div className="p-3" ref={calendarRef}>
-      <Calendar
+      <div className="p-3" ref={calendarRef} style={{ position: 'relative', zIndex: 5 }}>
+        <Calendar
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
           defaultView="week"
-          style={{ height: '70vh' }}
+          style={{ height: '70vh', pointerEvents: 'none' }} // ✅ corrected
           eventPropGetter={getEventStyle}
-          components={{ event: CustomEvent }}        
+          components={{ event: CustomEvent }}
         />
+        
+        {/* 👇 New @dnd-kit overlay grid */}
+        <CalendarOverlayGrid calendarRef={calendarRef} />
       </div>
 
       {renderDayTotals()}

@@ -30,7 +30,11 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
     return (
         <div 
             ref={setNodeRef}
-            style={dragStyle}
+            style={{
+                ...dragStyle,
+                height: '28rem',                    
+                margin: '0 auto',
+            }}
             {...listeners}
             {...attributes}
             className="position-relative" 
