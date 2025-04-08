@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDraggable } from '@dnd-kit/core';
 import { useSelector } from 'react-redux';
+import useSaveToMyMeals from '../hooks/useSaveToMyMeals';
 
-const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFavorite }) => {
+const MealCard = ({ meal, onClick, onEdit, onDelete, onToggleFavorite }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     
-    //MealCard Author 
+    //Meal Card Author 
     const currentUserId = useSelector((state) => state.auth.userInfo?._id);
     const isOwnedByUser = meal.createdBy === currentUserId;
    
@@ -27,8 +28,10 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
         cursor: 'grab',
         transition: 'transform 0.2s ease',
     };
-   
-    
+
+    //Handle Save
+    const { saveMeal } = useSaveToMyMeals();
+
 
     return (
         <div 
@@ -63,11 +66,16 @@ const MealCard = ({ meal, onClick, onEdit, onDelete, onSaveToMyMeals, onToggleFa
                     borderBottomLeftRadius: '5px',
                     zIndex: 1
                     }}
-                    onClick={(e) => {
-                    e.stopPropagation();
-                    setIsPressed(!isPressed);
-                    onSaveToMyMeals(meal);
-                    }}
+                    onClick={async (e) => {
+                        e.stopPropagation();
+                        setIsPressed(!isPressed);
+                        try {
+                          await saveMeal(meal);
+                          console.log('Meal saved!');
+                        } catch (err) {
+                          console.error('Save failed:', err);
+                        }
+                    }}                                         
                 >
                     SAVE
                 </div>
