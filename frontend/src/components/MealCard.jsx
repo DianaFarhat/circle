@@ -5,7 +5,7 @@ import useSaveToMyMeals from '../hooks/useSaveToMyMeals';
 import useDeleteMyMeal from '../hooks/useDeleteMyMeal';
 
 
-const MealCard = ({ meal, onClick, onEdit,  onToggleFavorite }) => {
+const MealCard = ({ meal, onClick }) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     

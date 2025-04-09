@@ -23,10 +23,6 @@ function MyMeals() {
                         <MealCard
                             meal={meal}
                             onClick={() => {}}
-                            onEdit={() => {}}
-                            onDelete={() => {}}
-                            onSaveToMyMeals={() => {}}
-                            onToggleFavorite={() => {}}
                         />
                     </div>
                 ))}
