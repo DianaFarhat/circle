@@ -23,6 +23,7 @@ export const mealApi = createApi({
               url: '/publicMeals',
               method: 'GET',
           }),
+        
         }),
         
         // ✅ Get User Meals
@@ -30,7 +31,8 @@ export const mealApi = createApi({
           query: () => ({
             url: '/userMeals',
             method: 'GET',
-          })  
+          }),
+          providesTags: ['MyMeals'],
       }),
         // ✅ Get Meal By Id
         getMealById: builder.query({
@@ -47,6 +49,7 @@ export const mealApi = createApi({
             method: 'POST',
             body: mealData,
           }),
+          invalidatesTags: ['MyMeals'], 
         }),
         
         // ✅ Delete meal mutation
@@ -55,6 +58,7 @@ export const mealApi = createApi({
             url: `/deleteMeal/${mealId}`,
             method: 'DELETE',
           }),
+          invalidatesTags: ['MyMeals'], 
         }),
   
     })
