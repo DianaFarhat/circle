@@ -1,4 +1,5 @@
 const Meal= require("../models/mealModel");
+const Tag= require("../models/tagModel");
 
 // Nutrition facts validation
 const nutritionFacts = [
@@ -70,6 +71,18 @@ exports.createMeal = async (req, res) => {
         // Determine public status based on user role
         const userRole = req.user.role;
         const finalIsPublic = userRole === "admin" ? true : false;
+
+        // Save unique tags 🏷️
+        if (isPublic && tags.length > 0) {
+            for (const tag of tags) {
+            const existingTag = await Tag.findOne({ name: tag.toLowerCase() });
+        
+            if (!existingTag) {
+                await Tag.create({ name: tag.toLowerCase() });
+            }
+            }
+        }
+  
 
         // Create new meal object
         const newMeal = new Meal({
