@@ -4,10 +4,11 @@ import { AiOutlineUnorderedList, AiOutlineStar, AiOutlineCalendar, AiOutlineAppl
 const tabs = [
   { name: 'All Meals', id: 'allMeals', icon: <AiOutlineUnorderedList /> },
   { name: 'My Meals', id: 'myMeals', icon: <AiOutlineStar /> },
+  { name: 'Meal Plan', id: 'mealPlan', icon: <AiOutlineCalendar /> }, 
   { name: 'My Groceries', id: 'myGroceries', icon: <AiOutlineApple /> },
 ];
 
-const MultiTabComponent = ({ activeTab, onTabClick, onCalendarClick }) => {
+const MultiTabComponent = ({ activeTab, onTabClick }) => {
   return (
     <div className="d-flex flex-column align-items-start justify-content-center bg-white w-100">
       <div className="d-flex position-relative w-100 align-items-center">
@@ -41,23 +42,6 @@ const MultiTabComponent = ({ activeTab, onTabClick, onCalendarClick }) => {
             <span className="ms-1">{tab.name}</span>
           </button>
         ))}
-
-        {/* Plain Calendar Icon (Right-Aligned, Clickable) */}
-        <div className="ms-auto pe-2">
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShW9pIdx7YFAH-kOyrZf3tgysDa4JvB48xyA&s"
-          alt="Meal Plan"
-          onClick={onCalendarClick}
-          title="Meal Plan"
-          style={{
-            width: '26px',
-            height: '26px',
-            cursor: 'pointer',
-            objectFit: 'contain',
-          }}
-        />
-      </div>
-
       </div>
     </div>
   );
