@@ -6,18 +6,22 @@ const useDeleteMyMeal = () => {
   const [deleteMeal, { isLoading, error }] = useDeleteMealMutation();
 
   const onDelete = async (meal) => {
-    const confirmed = window.confirm(`Are you sure you want to delete "${meal.name}"?`);
-    if (!confirmed) return;
-
     try {
       await deleteMeal(meal._id).unwrap();
       console.log('Meal deleted!');
-      toast.success(`Deleted "${meal.name}"`); // Optional feedback
+  
+      // Show toast very briefly then dismiss
+      const id = toast.success(`Deleted "${meal.name}"`);
+      setTimeout(() => {
+        toast.dismiss(id);
+        window.location.reload(); // reload the page to reflect deletion
+      }, 100); // toast shows briefly before reload
     } catch (err) {
       console.error('Delete failed:', err);
-      toast.error('Failed to delete meal'); // Optional feedback
+      toast.error('Failed to delete meal');
     }
   };
+  
 
   return { onDelete, isLoading, error };
 };
