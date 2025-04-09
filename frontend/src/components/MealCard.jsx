@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDraggable } from '@dnd-kit/core';
 import { useSelector } from 'react-redux';
 import useSaveToMyMeals from '../hooks/useSaveToMyMeals';
 import useDeleteMyMeal from '../hooks/useDeleteMyMeal';
@@ -19,19 +18,8 @@ const MealCard = ({ meal, onClick, onEdit,  onToggleFavorite }) => {
         navigate(`/meals/${meal._id}`);
     };
 
-    //Handle Drag
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id: meal._id,
-        data: { meal }, // you can access this in onDragEnd
-    });
 
-    const dragStyle = {
-        transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
-        cursor: 'grab',
-        transition: 'transform 0.2s ease',
-    };
-
-    //Handle Save
+    //Handle Save, Edit & Delete
     const { saveMeal } = useSaveToMyMeals();
     const { onDelete } = useDeleteMyMeal();
 
@@ -39,14 +27,10 @@ const MealCard = ({ meal, onClick, onEdit,  onToggleFavorite }) => {
 
     return (
         <div 
-            ref={setNodeRef}
             style={{
-                ...dragStyle,
                 height: '28rem',                    
                 margin: '0 auto',
             }}
-            {...listeners}
-            {...attributes}
             className="position-relative" 
             onClick={handleCardClick}
            >
