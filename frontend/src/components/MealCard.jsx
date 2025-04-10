@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useSaveToMyMeals from '../hooks/useSaveToMyMeals';
 import useDeleteMyMeal from '../hooks/useDeleteMyMeal';
+import DatePicker from 'react-datepicker';
+import { useDispatch } from 'react-redux';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from 'react-icons/fa'; // install with `npm i react-icons` if not already
+//import { addMealToMealPlan } from '../redux/slices/mealPlanSlice'; // adjust import path
 
 
-const MealCard = ({ meal, onClick }) => {
+const MealCard = ({ meal}) => {
     const [isPressed, setIsPressed] = useState(false);
     const navigate = useNavigate();
     
@@ -23,6 +28,11 @@ const MealCard = ({ meal, onClick }) => {
     const { saveMeal } = useSaveToMyMeals();
     const { onDelete } = useDeleteMyMeal();
 
+    //Handle Add to Meal Plan
+    const dispatch = useDispatch();
+    const datePickerRef = useRef(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+
 
 
     return (
@@ -32,7 +42,6 @@ const MealCard = ({ meal, onClick }) => {
                 margin: '0 auto',
             }}
             className="position-relative" 
-            onClick={handleCardClick}
            >
             
             {/* Bookmark with 3D effect */}
@@ -70,8 +79,8 @@ const MealCard = ({ meal, onClick }) => {
             )}
 
             {/* Meal Card */}
-            <div className="card text-center shadow-sm p-3 mb-3 bg-light border rounded-3" style={{ cursor: 'pointer', overflow: 'hidden', height: '100%' }} onClick={() => onClick(meal._id)}>
-                <img src={meal.image} alt={meal.name} className="card-img-top rounded-3" style={{ height: '180px', objectFit: 'cover' }} />
+            <div className="card text-center shadow-sm p-3 mb-3 bg-light border rounded-3" style={{ cursor: 'pointer', overflow: 'hidden', height: '100%' }}>
+                <img src={meal.image} alt={meal.name} className="card-img-top rounded-3" style={{ height: '180px', objectFit: 'cover' }} onClick={handleCardClick} />
                 <div className="card-body d-flex flex-column justify-content-between p-2">
                     <div>
                         <h5 className="card-title text-truncate" style={{ marginBottom: '0.5rem' }}>{meal.name}</h5>
@@ -139,6 +148,52 @@ const MealCard = ({ meal, onClick }) => {
                         ) : null}
                     </div>
                 </div>
+                
+                {/* Calendar Button */}
+                <div className="d-flex align-items-center gap-3 mt-2">
+                    {/* Hidden DatePicker */}
+                    <DatePicker
+                        ref={datePickerRef}
+                        selected={selectedDate}
+                        onChange={(date) => setSelectedDate(date)}
+                        showTimeSelect
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        className="d-none"
+                        popperPlacement="bottom-start"
+                    />
+
+                    {/* Calendar Icon to open the picker */}
+                    <FaRegCalendarAlt
+                        size={24}
+                        onClick={(e) => {
+                        e.stopPropagation(); // prevents triggering meal card click
+                        if (datePickerRef.current) {
+                            datePickerRef.current.setOpen(true); // open the popper
+                        }
+                        }}
+                        style={{ cursor: 'pointer', color: '#007bff' }}
+                    />
+
+                    {/* Confirm Button */}
+                    <button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={(e) => {
+                        e.stopPropagation();
+                        if (!selectedDate) {
+                            alert("Please select a date and time.");
+                            return;
+                        }
+                        dispatch(addMealToMealPlan({ mealId: meal._id, date: selectedDate }))
+                            .unwrap()
+                            .then(() => console.log("Meal added to plan!"))
+                            .catch((err) => console.error("Error:", err));
+                        }}
+                    >
+                        Add
+                    </button>
+                    </div>
+
+                {/* End of Calendar Button */}
             </div>
         </div>
     );
