@@ -149,50 +149,47 @@ const MealCard = ({ meal}) => {
                     </div>
                 </div>
                 
-                {/* Calendar Button */}
-                <div className="d-flex align-items-center gap-3 mt-2">
-                    {/* Hidden DatePicker */}
-                    <DatePicker
-                        ref={datePickerRef}
-                        selected={selectedDate}
-                        onChange={(date) => setSelectedDate(date)}
-                        showTimeSelect
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        className="d-none"
-                        popperPlacement="bottom-start"
-                    />
+                {/* Calendar Icon with Popup DatePicker (Bottom Right Corner) */}
+                <div 
+                className="position-absolute bottom-0 end-0 m-2" 
+                style={{ zIndex: 2 }}
+                onClick={(e) => e.stopPropagation()} // Prevent card click
+                >
+                {/* Hidden DatePicker */}
+                <DatePicker
+                    ref={datePickerRef}
+                    selected={selectedDate}
+                    onChange={(date) => {
+                    setSelectedDate(date);
+                    dispatch(addMealToMealPlan({ mealId: meal._id, date }))
+                        .unwrap()
+                        .then(() => console.log("Meal added to plan!"))
+                        .catch((err) => console.error("Error:", err));
+                    }}
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    className="d-none"
+                    popperPlacement="top-end"
+                />
 
-                    {/* Calendar Icon to open the picker */}
-                    <FaRegCalendarAlt
-                        size={24}
-                        onClick={(e) => {
-                        e.stopPropagation(); // prevents triggering meal card click
-                        if (datePickerRef.current) {
-                            datePickerRef.current.setOpen(true); // open the popper
-                        }
-                        }}
-                        style={{ cursor: 'pointer', color: '#007bff' }}
-                    />
-
-                    {/* Confirm Button */}
-                    <button
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={(e) => {
-                        e.stopPropagation();
-                        if (!selectedDate) {
-                            alert("Please select a date and time.");
-                            return;
-                        }
-                        dispatch(addMealToMealPlan({ mealId: meal._id, date: selectedDate }))
-                            .unwrap()
-                            .then(() => console.log("Meal added to plan!"))
-                            .catch((err) => console.error("Error:", err));
-                        }}
-                    >
-                        Add
-                    </button>
-                    </div>
-
+                {/* Lime green calendar icon */}
+                <FaRegCalendarAlt
+                    size={24}
+                    onClick={() => {
+                    if (datePickerRef.current) {
+                        datePickerRef.current.setOpen(true);
+                    }
+                    }}
+                    style={{ 
+                    cursor: 'pointer', 
+                    color: 'limegreen',
+                    backgroundColor: 'white',
+                    borderRadius: '50%',
+                    padding: '4px',
+                    boxShadow: '0 1px 5px rgba(0,0,0,0.2)' 
+                    }}
+                />
+                </div>
                 {/* End of Calendar Button */}
             </div>
         </div>
