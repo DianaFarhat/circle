@@ -29,9 +29,9 @@ const MealCard = ({ meal}) => {
     const { onDelete } = useDeleteMyMeal();
 
     //Handle Add to Meal Plan
-    const dispatch = useDispatch();
     const datePickerRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [tempDate, setTempDate] = useState(null);
     const [addMealToMealPlan] = useAddMealToPlanMutation();
     
 
@@ -159,34 +159,37 @@ const MealCard = ({ meal}) => {
                 >
                 {/* Hidden DatePicker */}
                 <DatePicker
-                    ref={datePickerRef}
-                    selected={selectedDate}
-                    onChange={(date) => {
-                        const endDate = new Date(date.getTime() + 15 * 60000); // add 15 minutes
-                      
-                        setSelectedDate(date);
-                      
-                        addMealToMealPlan({
-                            mealId: meal._id,
-                            userId: currentUserId,
-                            start: date.toISOString(),
-                            end: endDate.toISOString(),
-                          })
-                            .unwrap()
-                            .then(() => {
-                              console.log("Meal added to plan!");
-                              datePickerRef.current?.setOpen(false);
-                            })
-                            .catch((err) => {
-                              console.error("Error adding meal to plan:", err);
-                              datePickerRef.current?.setOpen(false);
-                            });
-                          
-                    }}
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    className="d-none"
-                    popperPlacement="top-end"
+                ref={datePickerRef}
+                selected={tempDate || selectedDate}
+                onChange={(date) => {
+                    setTempDate(date); // Only update the date, no submission yet
+                }}
+                onCalendarClose={() => {
+                    if (tempDate) {
+                    const endDate = new Date(tempDate.getTime() + 15 * 60000);
+                    setSelectedDate(tempDate);
+
+                    addMealToMealPlan({
+                        mealId: meal._id,
+                        userId: currentUserId,
+                        start: tempDate.toISOString(),
+                        end: endDate.toISOString(),
+                    })
+                        .unwrap()
+                        .then(() => {
+                        console.log("Meal added to plan!");
+                        })
+                        .catch((err) => {
+                        console.error("Error adding meal to plan:", err);
+                        });
+
+                    setTempDate(null); // Reset temp
+                    }
+                }}
+                showTimeSelect
+                dateFormat="MMMM d, yyyy h:mm aa"
+                className="d-none"
+                popperPlacement="top-end"
                 />
 
                 {/* Lime green calendar icon */}
