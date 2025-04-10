@@ -6,8 +6,8 @@ import useDeleteMyMeal from '../hooks/useDeleteMyMeal';
 import DatePicker from 'react-datepicker';
 import { useDispatch } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FaRegCalendarAlt } from 'react-icons/fa'; // install with `npm i react-icons` if not already
-//import { addMealToMealPlan } from '../redux/slices/mealPlanSlice'; // adjust import path
+import { FaRegCalendarAlt } from 'react-icons/fa'; 
+import {useAddMealToPlanMutation } from '../services/mealPlanApi'; 
 
 
 const MealCard = ({ meal}) => {
@@ -32,6 +32,8 @@ const MealCard = ({ meal}) => {
     const dispatch = useDispatch();
     const datePickerRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [addMealToMealPlan] = useAddMealToPlanMutation();
+    
 
 
 
@@ -160,11 +162,26 @@ const MealCard = ({ meal}) => {
                     ref={datePickerRef}
                     selected={selectedDate}
                     onChange={(date) => {
-                    setSelectedDate(date);
-                    dispatch(addMealToMealPlan({ mealId: meal._id, date }))
-                        .unwrap()
-                        .then(() => console.log("Meal added to plan!"))
-                        .catch((err) => console.error("Error:", err));
+                        const endDate = new Date(date.getTime() + 15 * 60000); // add 15 minutes
+                      
+                        setSelectedDate(date);
+                      
+                        addMealToMealPlan({
+                            mealId: meal._id,
+                            userId: currentUserId,
+                            start: date.toISOString(),
+                            end: endDate.toISOString(),
+                          })
+                            .unwrap()
+                            .then(() => {
+                              console.log("Meal added to plan!");
+                              datePickerRef.current?.setOpen(false);
+                            })
+                            .catch((err) => {
+                              console.error("Error adding meal to plan:", err);
+                              datePickerRef.current?.setOpen(false);
+                            });
+                          
                     }}
                     showTimeSelect
                     dateFormat="MMMM d, yyyy h:mm aa"

@@ -12,21 +12,34 @@ exports.addMealToPlan = async (req, res) => {
     const meal = await Meal.findById(mealId);
     if (!meal) return res.status(404).json({ message: 'Meal not found' });
 
-    const mealPlan = new MealPlan({
-      user: userId,
-      meal: mealId,
-      start,
-      end,
-      nutrients: {
-        calories: meal.calories,
-        protein: meal.protein,
-        carbs: meal.carbs,
-        fats:(meal.saturatedFats || 0) + (meal.unsaturatedFats || 0),
-      },
-    });
+    // Prevent overlap
+    const overlappingMeal = await MealPlan.findOne({
+    user: userId,
+    $or: [
+      { start: { $lt: end }, end: { $gt: start } }
+    ]
+  });
 
-    await mealPlan.save();
-    res.status(201).json(mealPlan);
+  if (overlappingMeal) {
+    return res.status(400).json({ message: 'Meal plan already exists for this time slot' });
+  }
+  
+
+  const mealPlan = new MealPlan({
+    user: userId,
+    meal: mealId,
+    start,
+    end,
+    nutrients: {
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fats:(meal.saturatedFats || 0) + (meal.unsaturatedFats || 0),
+    },
+  });
+
+  await mealPlan.save();
+  res.status(201).json(mealPlan);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
