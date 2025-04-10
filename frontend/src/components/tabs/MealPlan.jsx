@@ -4,19 +4,30 @@ import moment from 'moment';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useGetUserMealPlanQuery } from '../../services/mealPlanApi';
+import { useSelector } from 'react-redux'; // To get current user
 
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const MealPlan = () => {
-  const [events, setEvents] = useState([
-    {
-      start: moment().toDate(),
-      end: moment().add(1, 'hours').toDate(),
-      title: 'Sample Meal'
+  const currentUserId = useSelector((state) => state.auth.userInfo?._id);
+  const { data: mealPlans, isLoading } = useGetUserMealPlanQuery(currentUserId);
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    if (mealPlans && mealPlans.length > 0) {
+      const transformed = mealPlans.map((plan) => ({
+        title: plan.mealName || 'Meal',
+        start: new Date(plan.start),
+        end: new Date(plan.end),
+        id: plan._id,
+      }));
+      setEvents(transformed);
     }
-  ]);
+  }, [mealPlans]);
 
   const onEventResize = (data) => {
     const { start, end } = data;
