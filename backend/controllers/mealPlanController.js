@@ -74,7 +74,7 @@ exports.removeMealFromPlan = async (req, res) => {
 
 exports.getUserMealPlan = async (req, res) => {
   try {
-    const { userId } = req.user._id;
+    const {userId}= req.user._id;
     let { startDate, endDate } = req.query;
 
     const today = new Date();

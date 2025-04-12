@@ -13,10 +13,30 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 const MealPlan = () => {
   const currentUserId = useSelector((state) => state.auth.userInfo?._id);
-  const { data: mealPlans, isLoading } = useGetUserMealPlanQuery(currentUserId);
+  
 
+  //Calendar Visible Range
+  const [visibleRange, setVisibleRange] = useState({ start: null, end: null });
+  const skip = !visibleRange.start || !visibleRange.end || !currentUserId;
+  
+  useEffect(() => {
+    const start = moment().startOf('month').toDate();
+    const end = moment().endOf('month').toDate();
+    setVisibleRange({ start, end });
+  }, []);
+  
+  const { data: mealPlans, isLoading } = useGetUserMealPlanQuery(
+    {
+      userId: currentUserId,
+      startDate: visibleRange.start?.toISOString(),
+      endDate: visibleRange.end?.toISOString(),
+    },
+    { skip }
+  );
+  
+  
+  
   const [events, setEvents] = useState([]);
-
   useEffect(() => {
     if (mealPlans && mealPlans.length > 0) {
       const transformed = mealPlans.map((plan) => ({
@@ -74,6 +94,13 @@ const MealPlan = () => {
         localizer={localizer}
         onEventDrop={onEventDrop}
         onEventResize={onEventResize}
+        onRangeChange={(range) => {
+          if (Array.isArray(range)) {
+            setVisibleRange({ start: range[0], end: range[range.length - 1] });
+          } else {
+            setVisibleRange({ start: range.start, end: range.end });
+          }
+        }}
         resizable
         style={{ height: '80vh' }}
       />
