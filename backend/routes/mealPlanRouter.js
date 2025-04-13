@@ -13,7 +13,7 @@ const { authenticate } = require("../middlewares/authMiddleware");
 router.post('/addMealToPlan', addMealToPlan);
 
 //Remove meal to user plan
-router.post('/removeMealFromPlan/:mealId', removeMealFromPlan);
+router.delete('/removeMealFromPlan/:mealPlanId', authenticate, removeMealFromPlan);
 
 // GET /user/:userId
 // With optional query parameters for filtering by date range

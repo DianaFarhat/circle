@@ -19,7 +19,7 @@ export const mealPlanApi = createApi({
     // ✅ Remove Meal from Plan
     removeMealFromPlan: builder.mutation({
       query: (mealId) => ({
-        url: `/removeMealFromPlan/${mealId}`,
+        url: `/removeMealFromPlan/${mealPlanId}`,
         method: 'DELETE',
       }),
     }),

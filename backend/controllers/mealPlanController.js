@@ -48,29 +48,29 @@ exports.addMealToPlan = async (req, res) => {
 
 
 exports.removeMealFromPlan = async (req, res) => {
-    try {
-      //1. Get Meal Id from Request Params
-      const { mealId} = req.params;
-      
-      //2. Make sure id exists in mongoDB
-      const mealPlan = await MealPlan.findById(mealId);
-      if (!mealPlan) {
-        return res.status(404).json({ message: 'Meal plan entry not found' });
-      }
-  
-      const deleted = await MealPlan.findByIdAndDelete(mealId);
+  try {
+    // 1. Get Meal Plan ID from Request Params
+    const { mealPlanId } = req.params;
 
-      if (!deleted) {
-        return res.status(404).json({ message: 'Error deleting meal plan' });
-      }
-  
-      res.status(200).json({ message: 'Meal plan entry deleted' });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server error' });
+    // 2. Make sure the ID exists in MongoDB
+    const mealPlan = await MealPlan.findById(mealPlanId);
+    if (!mealPlan) {
+      return res.status(404).json({ message: 'Meal plan entry not found' });
     }
+
+    // 3. Delete the Meal Plan entry
+    const deleted = await MealPlan.findByIdAndDelete(mealPlanId);
+    if (!deleted) {
+      return res.status(404).json({ message: 'Error deleting meal plan' });
+    }
+
+    // 4. Respond with success
+    res.status(200).json({ message: 'Meal plan entry deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
-  
 
 exports.getUserMealPlan = async (req, res) => {
   try {
