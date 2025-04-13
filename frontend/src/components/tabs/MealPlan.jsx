@@ -33,36 +33,38 @@ const MealPlan = () => {
     { skip }
   );
 
-  
-  
-  
-  
+  //Set Meal Plans as Calendar Events
   const [events, setEvents] = useState([]);
   useEffect(() => {
     if (mealPlans && mealPlans.length > 0) {
       const transformed = mealPlans.map((plan) => ({
-        title: plan.mealName || 'Meal',
+        id: plan._id,
+        title: plan.meal?.name || 'Meal',
         start: new Date(plan.start),
         end: new Date(plan.end),
-        id: plan._id,
       }));
       setEvents(transformed);
     }
   }, [mealPlans]);
+  
 
-  const onEventResize = (data) => {
-    const { start, end } = data;
-
-    setEvents((prev) => {
-      const updated = [...prev];
-      updated[0] = { ...updated[0], start, end };
-      return updated;
-    });
+  const onEventResize = ({ event, start, end }) => {
+    setEvents((prev) =>
+      prev.map((ev) =>
+        ev.id === event.id ? { ...ev, start, end } : ev
+      )
+    );
   };
+  
 
-  const onEventDrop = (data) => {
-    console.log(data);
+  const onEventDrop = ({ event, start, end }) => {
+    setEvents((prev) =>
+      prev.map((ev) =>
+        ev.id === event.id ? { ...ev, start, end } : ev
+      )
+    );
   };
+  
 
   const renderDayTotals = () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
