@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
+import MealPlanEvent from '../MealPlanEvent';
 import moment from 'moment';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useGetUserMealPlanQuery } from '../../services/mealPlanApi';
+import { useGetUserMealPlanQuery, useRemoveMealFromPlanMutation } from '../../services/mealPlanApi';
 import { useSelector } from 'react-redux'; // To get current user
 
 
@@ -38,6 +39,9 @@ const MealPlan = () => {
     { skip }
   );
 
+  // Meal Event Mutations
+  const [removeMealFromPlan] = useRemoveMealFromPlanMutation();
+
   //Set Meal Plans as Calendar Events
   const [events, setEvents] = useState([]);
   useEffect(() => {
@@ -47,7 +51,12 @@ const MealPlan = () => {
         title: plan.meal?.name || 'Meal',
         start: new Date(plan.start),
         end: new Date(plan.end),
+        image: plan.meal?.image,
+        calories: plan.nutrients?.calories,
+        protein: plan.nutrients?.protein,
+        mealId: plan.meal?._id,
       }));
+      
       setEvents(transformed);
     }
   }, [mealPlans]);
@@ -152,7 +161,7 @@ const MealPlan = () => {
     <div style={{ width: '100%', height: '100vh' }} className="bg-white">
       <DnDCalendar
         defaultDate={moment().toDate()}
-        defaultView="month"
+        defaultView="week"
         events={events}
         localizer={localizer}
         onEventDrop={onEventDrop}
@@ -166,6 +175,15 @@ const MealPlan = () => {
         }}
         resizable
         style={{ height: '80vh' }}
+        components={{
+          event: (props) => (
+            <MealPlanEvent
+              {...props}
+              removeMealFromPlan={removeMealFromPlan}
+              setEvents={setEvents}
+            />
+          ),
+        }}
       />
 
       {renderDayTotals()}
