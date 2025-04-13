@@ -26,17 +26,17 @@ export const mealPlanApi = createApi({
 
     // ✅ Get User's Meal Plan (with optional date range)
     getUserMealPlan: builder.query({
-      query: ({ userId, startDate, endDate }) => {
+      query: ({ startDate, endDate }) => {
         const params = new URLSearchParams();
         if (startDate) params.append('startDate', startDate);
         if (endDate) params.append('endDate', endDate);
-
+    
         return {
-          url: `/userMealPlan/${userId}?${params.toString()}`,
+          url: `/userMealPlan?${params.toString()}`,
           method: 'GET',
         };
       },
-    }),
+    }),    
   }),
 });
 

@@ -17,8 +17,8 @@ const MealPlan = () => {
 
   //Calendar Visible Range
   const [visibleRange, setVisibleRange] = useState({ start: null, end: null });
-  const skip = !visibleRange.start || !visibleRange.end || !currentUserId;
-  
+  const skip = !visibleRange.start || !visibleRange.end;
+
   useEffect(() => {
     const start = moment().startOf('month').toDate();
     const end = moment().endOf('month').toDate();
@@ -27,12 +27,13 @@ const MealPlan = () => {
   
   const { data: mealPlans, isLoading } = useGetUserMealPlanQuery(
     {
-      userId: currentUserId,
       startDate: visibleRange.start?.toISOString(),
       endDate: visibleRange.end?.toISOString(),
     },
     { skip }
   );
+
+  
   
   
   

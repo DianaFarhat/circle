@@ -17,7 +17,7 @@ router.post('/removeMealFromPlan/:mealId', removeMealFromPlan);
 
 // GET /user/:userId
 // With optional query parameters for filtering by date range
-router.get('/userMealPlan/:userId', getUserMealPlan);
+router.get('/userMealPlan', authenticate, getUserMealPlan);
 
 
 module.exports = router;
