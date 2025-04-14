@@ -34,24 +34,30 @@ const mealSchema = new mongoose.Schema(
     //Recipe Section
     sectionedRecipe: [
       {
-        title: { type: String, required: true }, // Section title is required for structure
-        ingredients: [
-          {
-            name: { type: String, required: true, trim: true },
-            amount: {
-              value: { type: Number, required: true },
-              unit: {
-                type: String,
-                required: true,
-                enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag"]
-              }
-            },
-            calories: { type: Number, required: true },
-            brand: { type: String, trim: true },
-            isOptional: { type: Boolean, default: false }
-          }
-        ],
-        steps: [{ type: String }] // Optional: can be an empty array
+        title: { type: String, required: true },
+        ingredients: {
+          type: [
+            {
+              name: { type: String, required: true, trim: true },
+              amount: {
+                value: { type: Number, required: true },
+                unit: {
+                  type: String,
+                  required: true,
+                  enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag"]
+                }
+              },
+              calories: { type: Number, required: true },
+              brand: { type: String, trim: true },
+              isOptional: { type: Boolean, default: false }
+            }
+          ],
+          default: []
+        },
+        steps: {
+          type: [String],
+          default: []
+        }
       }
     ],
     

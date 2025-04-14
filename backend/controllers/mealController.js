@@ -40,8 +40,7 @@ exports.createMeal = async (req, res) => {
             unsaturatedFats,
             protein,
             carbs,
-            ingredients,
-            recipeSteps,
+            sectionedRecipe,
             nbOfTimesSaved,
             isPublic
         } = req.body;
@@ -64,16 +63,32 @@ exports.createMeal = async (req, res) => {
             }
         });
 
+        // Validate sectionedRecipe if it's a recipe
+        if (type.toLowerCase() === "recipe") {
+            if (!Array.isArray(sectionedRecipe) || sectionedRecipe.length === 0) {
+                errors.push("At least one section with ingredients or steps is required for recipe-type meals.");
+            } else {
+                sectionedRecipe.forEach((section, idx) => {
+                    if (!section.title) {
+                        errors.push(`Section ${idx + 1} is missing a title.`);
+                    }
+                });
+            }
+        }
+
         if (errors.length > 0) {
             return res.status(400).json({ message: "Validation Error", errors });
         }
+
+
+        
 
         // Determine public status based on user role
         const userRole = req.user.role;
         const finalIsPublic = userRole === "admin" ? true : false;
 
         // Save unique tags 🏷️
-        if (isPublic && tags.length > 0) {
+        if (isPublic && Array.isArray(tags) && tags.length > 0) {
             for (const tag of tags) {
             const existingTag = await Tag.findOne({ name: tag.toLowerCase() });
         
@@ -103,8 +118,8 @@ exports.createMeal = async (req, res) => {
             unsaturatedFats,
             protein,
             carbs,
-            ingredients,
-            recipeSteps,
+            sectionedRecipe: type.toLowerCase() === "recipe" ? sectionedRecipe : [],
+            nbOfTimesSaved: nbOfTimesSaved || 0,
             isPublic: finalIsPublic,
             createdBy: req.user.id
         });
