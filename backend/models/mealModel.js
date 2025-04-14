@@ -17,7 +17,8 @@ const mealSchema = new mongoose.Schema(
     calories: { type: Number, required: true },
     servingSize: {
       value: { type: Number, required: true }, // Numeric value (e.g., 355 for "355ml")
-      unit: { type: String, required: true } // Unit as a string (e.g., "ml", "g", "cup")
+      unit: { type: String, required: true }, // Unit as a string (e.g., "ml", "g", "cup")
+      description: { type: String },
     },
     
     carbs: { type: Number, required: true },
@@ -30,24 +31,30 @@ const mealSchema = new mongoose.Schema(
     saturatedFats: { type: Number, required: true },
     unsaturatedFats: { type: Number, required: true },
     
-    ingredients: [
+    //Recipe Section
+    sectionedRecipe: [
       {
-        name: { type: String, required: true, trim: true },
-        amount: {
-          value: { type: Number, required: true }, // Numeric value
-          unit: {
-            type: String,
-            required: true,
-            enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag"]
+        title: { type: String, required: true }, // Section title is required for structure
+        ingredients: [
+          {
+            name: { type: String, required: true, trim: true },
+            amount: {
+              value: { type: Number, required: true },
+              unit: {
+                type: String,
+                required: true,
+                enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag"]
+              }
+            },
+            calories: { type: Number, required: true },
+            brand: { type: String, trim: true },
+            isOptional: { type: Boolean, default: false }
           }
-        },
-        calories: { type: Number, required: true },
-        brand: { type: String, trim: true },
-        isOptional: { type: Boolean, default: false }
+        ],
+        steps: [{ type: String }] // Optional: can be an empty array
       }
     ],
-  
-    recipeSteps: [{ type: String }], 
+    
     
     // Versioning and User-Specific Copies
     version: { type: Number, default: 1 },
