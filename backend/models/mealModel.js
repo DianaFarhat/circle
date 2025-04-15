@@ -44,7 +44,7 @@ const mealSchema = new mongoose.Schema(
                 unit: {
                   type: String,
                   required: true,
-                  enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag"]
+                  enum: ["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop", "cloves", "bag", "can", "handful", "head"]
                 }
               },
               calories: { type: Number, required: true },
