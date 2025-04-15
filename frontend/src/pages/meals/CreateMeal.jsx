@@ -24,6 +24,7 @@ const CreateMeal = () => {
     const [calories, setCalories] = useState('');
     const [servingSizeValue, setServingSizeValue] = useState('');
     const [servingSizeUnit, setServingSizeUnit] = useState('');
+    const [servingSizeDescription, setServingSizeDescription] = useState('');
     const [recipeUrl, setRecipeUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [nutrients, setNutrients] = useState({ carbs:0, protein:0, saturatedFats:0, unsaturatedFats: 0, sugar:0, fiber:0, sodium: 0, caffeine:0, cholesterol:0});
@@ -39,8 +40,17 @@ const CreateMeal = () => {
         cholesterol: "mg"
      
     };
-    const [ingredients, setIngredients] = useState([]);
-    const [steps, setSteps] = useState([]);
+   
+    const [sectionedRecipe, setSectionedRecipe] = useState([
+        {
+          title: '',
+          ingredients: [],
+          steps: [],
+        }
+    ]);
+      
+   
+      
     
     //Dispatches data to api then navigates 
     const [createMeal] = useCreateMealMutation();
@@ -336,7 +346,14 @@ const CreateMeal = () => {
                                     }
                                 }}
                             />
-
+                            <label>Serving Description</label>
+                            <input
+                            type="text"
+                            className="form-control border-0"
+                            placeholder="e.g., 1 bowl with sauce and rice"
+                            value={servingSizeDescription}
+                            onChange={(e) => setServingSizeDescription(e.target.value)}
+                            />
                             <label>Recipe URL <FaLink /></label>
                             <input type="text" className="form-control border-0" placeholder="Enter Recipe URL" value={recipeUrl} onChange={(e) => setRecipeUrl(e.target.value)} />
                             <label>Video URL <FaVideo /></label>
@@ -380,74 +397,148 @@ const CreateMeal = () => {
                         </div>
                     </div>
                     {type === 'recipe' && (
-                        <div className="mt-4 p-3 bg-white shadow rounded">
-                            <h4>Ingredients</h4>
-                            {ingredients.map((ingredient, index) => (
-                                <div key={index} className="mb-3">
-                                    {/* Name, Amount, Unit Inputs */}
-                                    <div className="d-flex gap-2 mb-2">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Name"
-                                            required
-                                            value={ingredient.name}
-                                            onChange={(e) => updateIngredient(index, 'name', e.target.value)}
-                                        />
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            placeholder="Amount"
-                                            required
-                                            value={ingredient.amount}
-                                            onChange={(e) => updateIngredient(index, 'amount', e.target.value)}
-                                        />
-                                        <select
-                                            className="form-control"
-                                            value={ingredient.unit}
-                                            onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
-                                        >
-                                            {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
-                                                <option key={unit} value={unit}>{unit}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    {/* Calories, Brand, Optional Fields */}
-                                    <div className="d-flex gap-2 mb-2">
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            placeholder="Calories"
-                                            required
-                                            value={ingredient.calories}
-                                            onChange={(e) => updateIngredient(index, 'calories', e.target.value)}
-                                        />
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Brand (Optional)"
-                                            value={ingredient.brand}
-                                            onChange={(e) => updateIngredient(index, 'brand', e.target.value)}
-                                        />
-                                        <select
-                                            className="form-control"
-                                            value={ingredient.optional}
-                                            onChange={(e) => updateIngredient(index, 'optional', e.target.value)}
-                                        >
-                                            <option value="No">Required</option>
-                                            <option value="Yes">Optional</option>
-                                        </select>
-                                    </div>
+                    <div className="mt-4 p-3 bg-white shadow rounded">
+                        <h4 className="fw-bold">Recipe Sections</h4>
+                        {sectionedRecipe.map((section, secIndex) => (
+                        <div key={secIndex} className="mb-4 border rounded p-3 bg-light">
+                            <input
+                            type="text"
+                            className="form-control mb-3"
+                            placeholder="Section title (e.g., Salad, Dressing)"
+                            value={section.title}
+                            onChange={(e) => {
+                                const updated = [...sectionedRecipe];
+                                updated[secIndex].title = e.target.value;
+                                setSectionedRecipe(updated);
+                            }}
+                            />
+
+                            <h5>Ingredients</h5>
+                            {section.ingredients.map((ingredient, ingIndex) => (
+                            <div key={ingIndex} className="mb-3">
+                                <div className="d-flex gap-2 mb-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Name"
+                                    required
+                                    value={ingredient.name}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].name = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                />
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="Amount"
+                                    required
+                                    value={ingredient.amount}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].amount = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                />
+                                <select
+                                    className="form-control"
+                                    value={ingredient.unit}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].unit = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                >
+                                    {["g", "kg", "mg", "lb", "oz", "ml", "L", "cup", "tbsp", "tsp", "piece", "slice", "pinch", "trace", "scoop"].map(unit => (
+                                    <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </select>
                                 </div>
+                                <div className="d-flex gap-2 mb-2">
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="Calories"
+                                    required
+                                    value={ingredient.calories}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].calories = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Brand (Optional)"
+                                    value={ingredient.brand}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].brand = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                />
+                                <select
+                                    className="form-control"
+                                    value={ingredient.optional}
+                                    onChange={(e) => {
+                                    const updated = [...sectionedRecipe];
+                                    updated[secIndex].ingredients[ingIndex].optional = e.target.value;
+                                    setSectionedRecipe(updated);
+                                    }}
+                                >
+                                    <option value="No">Required</option>
+                                    <option value="Yes">Optional</option>
+                                </select>
+                                </div>
+                            </div>
                             ))}
-                            <button className="btn btn-secondary" onClick={addIngredient}>Ingredient</button>
-                            <h4 className="mt-4">Recipe Steps</h4>
-                            {steps.map((step, index) => (
-                                <input key={index} type="text" className="form-control mb-2" placeholder="Step description" required value={step} onChange={(e) => updateStep(index, e.target.value)} />
+                            <button
+                            className="btn btn-sm btn-secondary mb-3"
+                            onClick={() => {
+                                const updated = [...sectionedRecipe];
+                                updated[secIndex].ingredients.push({ name: '', amount: '', unit: 'g', calories: '', brand: '', optional: 'No' });
+                                setSectionedRecipe(updated);
+                            }}
+                            >+ Ingredient</button>
+
+                            <h5 className="mt-3">Instructions</h5>
+                            {section.steps.map((step, stepIndex) => (
+                            <input
+                                key={stepIndex}
+                                type="text"
+                                className="form-control mb-2"
+                                placeholder="Step description"
+                                required
+                                value={step}
+                                onChange={(e) => {
+                                const updated = [...sectionedRecipe];
+                                updated[secIndex].steps[stepIndex] = e.target.value;
+                                setSectionedRecipe(updated);
+                                }}
+                            />
                             ))}
-                            <button className="btn btn-secondary" onClick={addStep}>Instruction</button>
+                            <button
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => {
+                                const updated = [...sectionedRecipe];
+                                updated[secIndex].steps.push('');
+                                setSectionedRecipe(updated);
+                            }}
+                            >+ Step</button>
                         </div>
+                        ))}
+                        <button className="btn btn-outline-primary" onClick={() => {
+                        setSectionedRecipe([...sectionedRecipe, {
+                            title: '',
+                            ingredients: [],
+                            steps: [],
+                        }]);
+                        }}>+ Section</button>
+                    </div>
                     )}
+
                     <button className="btn btn-success w-100 mt-3" onClick={handleCreateMeal}>Create Meal</button>
                 </div>
             </div>
