@@ -26,6 +26,16 @@ export const mealApi = createApi({
         
         }),
         
+        // ✅ Edit a Meal
+        editMeal: builder.mutation({
+          query: ({ mealId, mealData }) => ({
+            url: `/editMeal/${mealId}`,
+            method: 'PUT', // or 'PATCH' if you prefer partial updates
+            body: mealData,
+          }),
+          invalidatesTags: ['MyMeals'], // Optionally re-fetch user's meals after edit
+        }),
+
         // ✅ Get User Meals
         getUserMeals: builder.query({
           query: () => ({
@@ -70,6 +80,7 @@ export const {
   useCreateMealMutation,
   useGetPublicMealsQuery,
   useGetUserMealsQuery,
+  useEditMealMutation,
   useGetMealByIdQuery,
   useSaveMealAsCopyMutation,
   useDeleteMealMutation,
