@@ -127,6 +127,15 @@ const CreateMeal = () => {
             return toast.error('Serving size value must be a positive number!');
         if (!servingSizeUnit.trim()) 
             return toast.error('Serving size unit is required!');
+        // Optional: Validate servingSizeDescription if provided
+        if (servingSizeDescription.trim()) {
+            if (servingSizeDescription.length > 200) {
+                return toast.error('Serving description cannot exceed 200 characters!');
+            }
+            if (!/^[\w\s.,'’()&+-:;!%"/]*$/.test(servingSizeDescription)) {
+                return toast.error('Serving description contains invalid characters!');
+            }
+        }
 
 
         // Nutrient Validation
@@ -141,7 +150,7 @@ const CreateMeal = () => {
                 return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a valid number (no alphabets allowed)!`);
             }
         }
-    
+  /*   
         // Ingredient Validation (only if ingredients are provided)
         if (type === "Recipe" && ingredients.length > 0) {
             ingredients.forEach((ingredient, index) => {
@@ -180,7 +189,45 @@ const CreateMeal = () => {
                 }
             });
         }
+ */
 
+        if (type === 'recipe') {
+            if (!sectionedRecipe.length) return toast.error("At least one recipe section is required!");
+        
+            for (let secIndex = 0; secIndex < sectionedRecipe.length; secIndex++) {
+                const section = sectionedRecipe[secIndex];
+        
+                if (!section.title.trim()) {
+                    return toast.error(`Section ${secIndex + 1} must have a title.`);
+                }
+        
+                // Validate ingredients ONLY IF any exist
+                if (section.ingredients.length > 0) {
+                    for (let ingIndex = 0; ingIndex < section.ingredients.length; ingIndex++) {
+                        const ing = section.ingredients[ingIndex];
+                        if (!ing.name.trim()) return toast.error(`Ingredient ${ingIndex + 1} in section ${secIndex + 1} must have a name.`);
+                        if (!/^[A-Za-z\s]+$/.test(ing.name)) return toast.error(`Ingredient name must be alphabetic at ${ingIndex + 1} in section ${secIndex + 1}.`);
+                        if (ing.name.length > 200) return toast.error(`Ingredient name too long at ${ingIndex + 1} in section ${secIndex + 1}.`);
+                        if (isNaN(parseFloat(ing.amount)) || parseFloat(ing.amount) < 0 || parseFloat(ing.amount) > 10000) return toast.error(`Invalid amount at ingredient ${ingIndex + 1} in section ${secIndex + 1}.`);
+                        if (!ing.unit) return toast.error(`Unit required for ingredient ${ingIndex + 1} in section ${secIndex + 1}.`);
+                        if (isNaN(parseFloat(ing.calories)) || parseFloat(ing.calories) < 0 || parseFloat(ing.calories) > 1000) return toast.error(`Invalid calories at ingredient ${ingIndex + 1} in section ${secIndex + 1}.`);
+                    }
+                }
+        
+                // Validate steps ONLY IF any exist
+                if (section.steps.length > 0) {
+                    if (section.steps.length > 30) {
+                        return toast.error(`You can only add up to 30 steps in section ${secIndex + 1}.`);
+                    }
+                    for (let stepIndex = 0; stepIndex < section.steps.length; stepIndex++) {
+                        const step = section.steps[stepIndex];
+                        if (!step.trim()) return toast.error(`Step ${stepIndex + 1} in section ${secIndex + 1} must not be empty.`);
+                        if (step.length > 500) return toast.error(`Step ${stepIndex + 1} in section ${secIndex + 1} is too long (max 500 characters).`);
+                    }
+                }
+            }
+        }
+        
     
         // All validations passed, now proceed with meal creation
         const mealData = {
@@ -194,6 +241,7 @@ const CreateMeal = () => {
             servingSize: {
                 value: parseFloat(servingSizeValue),  // Directly parse the float here
                 unit: servingSizeUnit.trim(),
+                description: servingSizeDescription.trim() || undefined, // optional
             },
             
             carbs: parseFloat(nutrients.carbs),
@@ -205,7 +253,7 @@ const CreateMeal = () => {
             cholesterol: parseFloat(nutrients.cholesterol),
             saturatedFats: parseFloat(nutrients.saturatedFats),
             unsaturatedFats: parseFloat(nutrients.unsaturatedFats),
-            ingredients: ingredients.map(ingredient => ({
+          /*   ingredients: ingredients.map(ingredient => ({
                 name: ingredient.name,
                 amount: {
                     value: parseFloat(ingredient.amount),
@@ -214,8 +262,21 @@ const CreateMeal = () => {
                 calories: parseFloat(ingredient.calories),
                 brand: ingredient.brand,
                 isOptional: ingredient.optional === "Yes",
+            })), */
+            sectionedRecipe: sectionedRecipe.map(section => ({
+                title: section.title.trim(),
+                ingredients: section.ingredients.map(ingredient => ({
+                    name: ingredient.name.trim(),
+                    amount: {
+                        value: parseFloat(ingredient.amount),
+                        unit: ingredient.unit,
+                    },
+                    calories: parseFloat(ingredient.calories),
+                    brand: ingredient.brand?.trim() || "",
+                    isOptional: ingredient.optional === "Yes",
+                })),
+                steps: section.steps.map(step => step.trim()),
             })),
-            recipeSteps: steps,
             version: 1,
             createdBy: userId,
         };
