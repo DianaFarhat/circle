@@ -17,6 +17,9 @@ const {authenticate, optionalAuthenticate}= require('../middlewares/authMiddlewa
 // Create a new meal (private if authorized)
 router.post("/createMeal", authenticate, createMeal);
 
+// Edit Meal (private if authorized)
+router.put("/editMeal/:mealId", authenticate, editMeal);
+
 // Route to get all public meals
 router.get("/publicMeals", getPublicMeals);
 

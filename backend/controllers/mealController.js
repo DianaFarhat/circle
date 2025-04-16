@@ -151,6 +151,122 @@ exports.createMeal = async (req, res) => {
 };
 
 
+//Edit Meal (By Their Author)
+exports.editMeal = async (req, res) => {
+    try {
+        const { mealId } = req.params;
+
+        // Ensure the user is authenticated
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: "Unauthorized. Please log in." });
+        }
+
+        // Find existing meal
+        const existingMeal = await Meal.findById(mealId);
+        if (!existingMeal) {
+            return res.status(404).json({ message: "Meal not found." });
+        }
+
+        // Only creator or admin can edit
+        if (existingMeal.createdBy.toString() !== req.user.id && req.user.role !== "admin") {
+            return res.status(403).json({ message: "You are not authorized to edit this meal." });
+        }
+
+        const {
+            name,
+            type,
+            image,
+            recipeUrl,
+            videoUrl,
+            tags,
+            calories,
+            servingSize,
+            sugar,
+            fiber,
+            sodium,
+            caffeine,
+            cholesterol,
+            saturatedFats,
+            unsaturatedFats,
+            protein,
+            carbs,
+            sectionedRecipe
+        } = req.body;
+
+        const errors = [];
+
+        if (!name) errors.push("Name is required.");
+        if (!type || !["simple", "recipe"].includes(type.toLowerCase())) 
+            errors.push("Type is required and must be 'simple' or 'recipe'.");
+        if (!image) errors.push("Image is required.");
+        if (!Number.isFinite(calories)) errors.push("Calories are required.");
+        if (!servingSize || !Number.isFinite(servingSize.value) || !servingSize.unit) 
+            errors.push("Serving size with value and unit is required.");
+
+        const nutritionFacts = [
+            { key: 'sugar', label: 'Sugar' },
+            { key: 'fiber', label: 'Fiber' },
+            { key: 'sodium', label: 'Sodium' },
+            { key: 'caffeine', label: 'Caffeine' },
+            { key: 'cholesterol', label: 'Cholesterol' },
+            { key: 'saturatedFats', label: 'Saturated Fats' },
+            { key: 'unsaturatedFats', label: 'Unsaturated Fats' },
+            { key: 'protein', label: 'Protein' },
+            { key: 'carbs', label: 'Carbs' },
+        ];
+
+        nutritionFacts.forEach(fact => {
+            if (!Number.isFinite(req.body[fact.key]) || req.body[fact.key] < 0) {
+                errors.push(`${fact.label} is required and must be a positive number or zero.`);
+            }
+        });
+
+        if (type.toLowerCase() === "recipe") {
+            if (!Array.isArray(sectionedRecipe) || sectionedRecipe.length === 0) {
+                errors.push("At least one section with ingredients or steps is required for recipe-type meals.");
+            } else {
+                sectionedRecipe.forEach((section, idx) => {
+                    if (!section.title) {
+                        errors.push(`Section ${idx + 1} is missing a title.`);
+                    }
+                });
+            }
+        }
+
+        if (errors.length > 0) {
+            return res.status(400).json({ message: "Validation Error", errors });
+        }
+
+        // Update meal fields
+        existingMeal.name = name;
+        existingMeal.type = type.toLowerCase();
+        existingMeal.image = image;
+        existingMeal.recipeUrl = recipeUrl;
+        existingMeal.videoUrl = videoUrl;
+        existingMeal.tags = tags;
+        existingMeal.calories = calories;
+        existingMeal.servingSize = servingSize;
+        existingMeal.sugar = sugar;
+        existingMeal.fiber = fiber;
+        existingMeal.sodium = sodium;
+        existingMeal.caffeine = caffeine;
+        existingMeal.cholesterol = cholesterol;
+        existingMeal.saturatedFats = saturatedFats;
+        existingMeal.unsaturatedFats = unsaturatedFats;
+        existingMeal.protein = protein;
+        existingMeal.carbs = carbs;
+        existingMeal.sectionedRecipe = type.toLowerCase() === "recipe" ? sectionedRecipe : [];
+
+        // Save changes
+        const updatedMeal = await existingMeal.save();
+
+        res.status(200).json({ message: "Meal updated successfully!", meal: updatedMeal });
+    } catch (error) {
+        console.error("Error editing meal:", error.message);
+        res.status(500).json({ message: "Server error while updating meal.", error: error.message });
+    }
+};
+
 //Get Public Meals (All Meals)
 exports.getPublicMeals = async (req, res) => {
     try {

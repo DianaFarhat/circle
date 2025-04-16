@@ -35,6 +35,8 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "createmeal", element: <CreateMeal /> },
       { path: "meals/:mealId", element: <MealPage /> },
+      {path: "editmeal/:mealId", element: <EditMeal />}, 
+
     ],
   },
 ]);
