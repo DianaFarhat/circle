@@ -131,8 +131,9 @@ const MealCard = ({ meal}) => {
                                     className="btn mealCardButton btn-outline-warning"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        onEdit(meal);
-                                    }}
+                                        navigate(`/editmeal/${meal._id}`);
+                                      }}
+                                      
                                     >
                                     Edit
                                     </button>
