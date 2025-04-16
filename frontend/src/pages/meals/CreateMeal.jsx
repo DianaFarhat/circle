@@ -150,47 +150,8 @@ const CreateMeal = () => {
                 return toast.error(`${key.charAt(0).toUpperCase() + key.slice(1)} must be a valid number (no alphabets allowed)!`);
             }
         }
-  /*   
-        // Ingredient Validation (only if ingredients are provided)
-        if (type === "Recipe" && ingredients.length > 0) {
-            ingredients.forEach((ingredient, index) => {
-                if (!ingredient.name.trim()) {
-                    return toast.error(`Ingredient name is required at position ${index + 1}!`);
-                }
-                if (!/^[A-Za-z\s]+$/.test(ingredient.name)) {
-                    return toast.error(`Ingredient name must contain only alphabetic characters at position ${index + 1}!`);
-                }
-                if (ingredient.name.length > 200) {
-                    return toast.error(`Ingredient name cannot exceed 200 characters at position ${index + 1}!`);
-                }
-                if (isNaN(parseFloat(ingredient.amount)) || parseFloat(ingredient.amount) < 0 || parseFloat(ingredient.amount) > 10000) {
-                    return toast.error(`Amount for ingredient at position ${index + 1} must be between 0 and 10,000!`);
-                }
-                if (!ingredient.unit) {
-                    return toast.error(`Unit is required for ingredient at position ${index + 1}!`);
-                }
-                if (isNaN(parseFloat(ingredient.calories)) || parseFloat(ingredient.calories) < 0 || parseFloat(ingredient.calories) > 1000) {
-                    return toast.error(`Calories for ingredient at position ${index + 1} must be between 0 and 1,000!`);
-                }
-            });
-        }
 
-        // Step Validation (only if steps are provided)
-        if (type === "Recipe" && steps.length > 0) {
-            if (steps.length > 30) {
-                return toast.error('You can only add a maximum of 30 steps!');
-            }
-            steps.forEach((step, index) => {
-                if (!step.trim()) {
-                    return toast.error(`Step description is required at position ${index + 1}!`);
-                }
-                if (step.length > 500) {
-                    return toast.error(`Step description cannot exceed 500 characters at position ${index + 1}!`);
-                }
-            });
-        }
- */
-
+        //Section Verification
         if (type === 'recipe') {
             if (!sectionedRecipe.length) return toast.error("At least one recipe section is required!");
         
@@ -253,16 +214,6 @@ const CreateMeal = () => {
             cholesterol: parseFloat(nutrients.cholesterol),
             saturatedFats: parseFloat(nutrients.saturatedFats),
             unsaturatedFats: parseFloat(nutrients.unsaturatedFats),
-          /*   ingredients: ingredients.map(ingredient => ({
-                name: ingredient.name,
-                amount: {
-                    value: parseFloat(ingredient.amount),
-                    unit: ingredient.unit,
-                },
-                calories: parseFloat(ingredient.calories),
-                brand: ingredient.brand,
-                isOptional: ingredient.optional === "Yes",
-            })), */
             sectionedRecipe: sectionedRecipe.map(section => ({
                 title: section.title.trim(),
                 ingredients: section.ingredients.map(ingredient => ({
