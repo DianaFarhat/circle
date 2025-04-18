@@ -24,6 +24,7 @@ exports.createMeal = async (req, res) => {
         // Extract meal details from the request body
         const {
             name,
+            mealDescription,
             type,
             image,
             recipeUrl,
@@ -49,6 +50,12 @@ exports.createMeal = async (req, res) => {
         const errors = [];
 
         if (!name) errors.push("Name is required.");
+        if (mealDescription && typeof mealDescription !== 'string') {
+            errors.push("Meal description must be a string.");
+        }
+        if (mealDescription?.length > 200) {
+            errors.push("Meal description cannot exceed 200 characters.");
+        }        
         if (!type || !["simple", "recipe"].includes(type.toLowerCase())) 
             errors.push("Type is required and must be 'simple' or 'recipe'.");
         if (!image) errors.push("Image is required.");
@@ -102,6 +109,7 @@ exports.createMeal = async (req, res) => {
         // Create new meal object
         const newMeal = new Meal({
             name,
+            mealDescription,
             type,
             image,
             recipeUrl,
@@ -174,6 +182,7 @@ exports.editMeal = async (req, res) => {
 
         const {
             name,
+            mealDescription,
             type,
             image,
             recipeUrl,
@@ -196,6 +205,12 @@ exports.editMeal = async (req, res) => {
         const errors = [];
 
         if (!name) errors.push("Name is required.");
+        if (mealDescription && typeof mealDescription !== 'string') {
+            errors.push("Meal description must be a string.");
+        }
+        if (mealDescription?.length > 200) {
+            errors.push("Meal description cannot exceed 200 characters.");
+        }        
         if (!type || !["simple", "recipe"].includes(type.toLowerCase())) 
             errors.push("Type is required and must be 'simple' or 'recipe'.");
         if (!image) errors.push("Image is required.");
@@ -239,6 +254,7 @@ exports.editMeal = async (req, res) => {
 
         // Update meal fields
         existingMeal.name = name;
+        existingMeal.mealDescription= mealDescription;
         existingMeal.type = type.toLowerCase();
         existingMeal.image = image;
         existingMeal.recipeUrl = recipeUrl;

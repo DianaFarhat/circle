@@ -10,6 +10,7 @@ const mealSchema = new mongoose.Schema(
     image: { type: String, required: true },
     recipeUrl: { type: String },
     videoUrl: { type: String },
+    mealDescription: {type: String},
 
     tags:[{ type: String }],
     

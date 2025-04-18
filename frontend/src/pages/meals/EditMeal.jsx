@@ -25,6 +25,7 @@ const EditMeal = () => {
     const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false); //is visible if user decides to add imageUrl
     const [imageUrl, setImageUrl] = useState("");
     const [mealName, setMealName] = useState('');
+    const [mealDescription, setMealDescription] = useState('');
     const [type, setType] = useState('simple');
     const [tag, setTag] = useState("");
     const [tags, setTags] = useState([]);
@@ -61,6 +62,7 @@ const EditMeal = () => {
     useEffect(() => {
       if (meal) {
         setMealName(meal.name || '');
+        setMealDescription(meal.mealDescription || '');
         setType(meal.type || 'simple');
         setImage(meal.image || fallbackImage);
         setTags(meal.tags || []);
@@ -207,6 +209,7 @@ const EditMeal = () => {
             image: image,
             recipeUrl: recipeUrl,
             videoUrl: videoUrl,
+            mealDescription: mealDescription,
             tags: tags,
             calories: parseFloat(calories),
             servingSize: {
@@ -330,6 +333,13 @@ const EditMeal = () => {
                           value={mealName} 
                           onChange={(e) => setMealName(e.target.value)} 
                       />
+                       <input 
+                            type="text" 
+                            className="form-control text-center border-0 fs-6 text-muted mt-1" 
+                            placeholder="Short meal description (e.g., Creamy green tea latte)" 
+                            value={mealDescription} 
+                            onChange={(e) => setMealDescription(e.target.value)} 
+                        />
                   </div>
                   <div className="row g-3 shadow" >
                       <div className="col-md-6 p-3 rounded">

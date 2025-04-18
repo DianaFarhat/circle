@@ -18,6 +18,7 @@ const CreateMeal = () => {
     const [imageUrlInputVisible, setImageUrlInputVisible] = useState(false); //is visible if user decides to add imageUrl
     const [imageUrl, setImageUrl] = useState("");
     const [mealName, setMealName] = useState('');
+    const [mealDescription, setMealDescription] = useState('');
     const [type, setType] = useState('simple');
     const [tag, setTag] = useState("");
     const [tags, setTags] = useState([]);
@@ -197,6 +198,7 @@ const CreateMeal = () => {
             image: image,
             recipeUrl: recipeUrl,
             videoUrl: videoUrl,
+            mealDescription: mealDescription,
             tags: tags,
             calories: parseFloat(calories),
             servingSize: {
@@ -313,6 +315,13 @@ const CreateMeal = () => {
                             placeholder="Matcha Latte" 
                             value={mealName} 
                             onChange={(e) => setMealName(e.target.value)} 
+                        />
+                        <input 
+                            type="text" 
+                            className="form-control text-center border-0 fs-6 text-muted mt-1" 
+                            placeholder="Short meal description (e.g., Creamy green tea latte)" 
+                            value={mealDescription} 
+                            onChange={(e) => setMealDescription(e.target.value)} 
                         />
                     </div>
                     <div className="row g-3 shadow" >
