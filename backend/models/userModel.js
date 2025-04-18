@@ -153,6 +153,35 @@ try {
     }
 
   });
+
+
+  // ✅ Middleware to Calculate Proteins and Calories Recommended
+  userSchema.pre("save", function (next) {
+    try {
+      // kg to lbs conversion factor
+      const KG_TO_LBS = 2.20462;
+  
+      const heightCm = this.height;
+      const isShort = heightCm < 157.5; // under 5'2
+      const currentWeightLbs = this.weight * KG_TO_LBS;
+      const goalWeightLbs = this.targetWeight ? this.targetWeight * KG_TO_LBS : currentWeightLbs;
+  
+      // Calories calculation
+      if (isShort) {
+        this.caloriesRecommended = Math.round(currentWeightLbs * 10);
+      } else {
+        this.caloriesRecommended = Math.round(goalWeightLbs * 12);
+      }
+  
+      // Protein calculation
+      this.proteinRecommended = Math.round(goalWeightLbs * 0.7);
+  
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+  
   
 
   // Virtual field for age based on birthdate
