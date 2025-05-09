@@ -8,13 +8,12 @@ const {
     getUserMeals,
     saveMealAsCopy,
     deleteMeal,
-    deleteAll,
 } = require('../controllers/mealController');  // Ensure the path is correct
 
 const {authenticate, optionalAuthenticate}= require('../middlewares/authMiddleware')
 
 
-router.delete("/deleteAll", deleteAll);
+
 
 
 // Create a new meal (private if authorized)
