@@ -30,8 +30,9 @@ const mealSchema = new mongoose.Schema(
     caffeine: { type: Number, required: true },
     cholesterol: { type: Number, required: true },
     saturatedFats: { type: Number, required: true },
-    unsaturatedFats: { type: Number, required: true },
-    
+    unsaturatedFats: { type: Number, required: true }, 
+    points: { type: Number, default:0 },
+
     //Recipe Section
     sectionedRecipe: [
       {
@@ -75,6 +76,23 @@ const mealSchema = new mongoose.Schema(
 
 // Indexing for quick lookups
 mealSchema.index({ createdBy: 1, parentMealId: 1 }); // Optimize private recipe queries
+
+// Pre-save middleware to calculate points
+mealSchema.pre("save", function (next) {
+  // Only calculate if core nutritional values are provided
+  if (this.calories && this.sugar != null && this.protein != null && this.fiber != null) {
+    const calories = this.calories || 0;
+    const sugar = this.sugar || 0;
+    const protein = this.protein || 0;
+    const fiber = this.fiber || 0;
+
+    const rawPoints = (calories / 33) + (sugar / 4) - (protein / 10) - (fiber / 5);
+    this.points = Math.round(Math.max(0, rawPoints)); // Ensure non-negative and round to nearest int
+  }
+
+  next();
+});
+
 
 // Export the Meal model
 module.exports = mongoose.model("Meal", mealSchema);
