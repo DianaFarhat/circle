@@ -291,6 +291,191 @@ module.exports = [
       "createdBy": null,
       "parentMealId": null
     },
+    {
+    "name": "Chocolate Baked Oats",
+    "type": "recipe",
+    "image": "https://vlhhealth.com/wp-content/uploads/2025/01/high-protein-low-calorie-breakfast-ideas.jpg",
+    "recipeUrl": "",
+    "videoUrl": "",
+    "mealDescription": "Warm, gooey, chocolate baked oats with a molten center and crispy edges. A sweet and satisfying high-protein breakfast that feels like dessert.",
+    "tags": [
+      "Breakfast",
+      "High-Protein",
+      "Low-Calorie",
+      "Healthy",
+      "Vegetarian",
+      "Sugar-Free",
+      "Sweet",
+      "Dessert"
+    ],
+    "nbOfTimesSaved": 0,
+    "calories": 290,
+    "servingSize": {
+      "value": 1,
+      "unit": "ramekin",
+      "description": "1 baked ramekin"
+    },
+    "carbs": 27,
+    "protein": 30,
+    "sugar": 4,
+    "fiber": 5,
+    "sodium": 160,
+    "caffeine": 8,
+    "cholesterol": 5,
+    "saturatedFats": 2,
+    "unsaturatedFats": 5,
+    "sectionedRecipe": [
+      {
+        "title": "Main",
+        "ingredients": [
+          { "name": "Rolled oats", "amount": { "value": 0.33, "unit": "cup" }, "calories": 110 },
+          { "name": "Nonfat Greek yogurt", "amount": { "value": 0.5, "unit": "cup" }, "calories": 60 },
+          { "name": "Chocolate protein powder", "amount": { "value": 0.5, "unit": "scoop" }, "calories": 60 },
+          { "name": "Unsweetened almond milk", "amount": { "value": 0.5, "unit": "cup" }, "calories": 15 },
+          { "name": "Unsweetened cocoa powder", "amount": { "value": 0.5, "unit": "tbsp" }, "calories": 6 },
+          { "name": "Baking powder", "amount": { "value": 0.5, "unit": "tsp" }, "calories": 0 },
+          { "name": "Sugar-free dark chocolate chips", "amount": { "value": 0.5, "unit": "tbsp" }, "calories": 20 },
+          { "name": "Cooking spray", "amount": { "value": 1, "unit": "spray" }, "calories": 0 }
+        ],
+        "steps": [
+          "Preheat oven to 350°F (175°C).",
+          "Blend all ingredients except chocolate chips until smooth.",
+          "Lightly spray a ramekin with cooking spray.",
+          "Pour blended mixture into the ramekin.",
+          "Top with sugar-free chocolate chips.",
+          "Bake for 20–25 minutes until edges are firm and center is gooey.",
+          "Let cool slightly and enjoy warm."
+        ]
+      }
+    ],
+    "isPublic": true,
+    "version": 1,
+    "createdBy": null,
+    "parentMealId": null
+    },
+    {
+  "name": "Horchata Chia Pudding",
+  "type": "recipe",
+  "image": "https://vlhhealth.com/wp-content/uploads/2025/01/high-protein-low-calorie-breakfast-recipes.jpg",
+  "recipeUrl": "",
+  "videoUrl": "",
+  "mealDescription": "This horchata-inspired chia pudding combines vanilla protein powder, almond milk, and cinnamon for a creamy, high-protein, and fiber-rich breakfast.",
+  "tags": [
+    "Breakfast",
+    "High-Protein",
+    "Low-Calorie",
+    "Healthy",
+    "Vegan",
+    "Vegetarian",
+    "Gluten-Free",
+    "Sugar-Free",
+    "Sweet",
+    "Dessert",
+    "Protein Powder"
+  ],
+  "nbOfTimesSaved": 0,
+  "calories": 290,
+  "servingSize": {
+    "value": 1,
+    "unit": "pudding",
+    "description": "1 jar or bowl of pudding"
+  },
+  "carbs": 27,
+  "protein": 31,
+  "sugar": 2,
+  "fiber": 6,
+  "sodium": 190,
+  "caffeine": 0,
+  "cholesterol": 0,
+  "saturatedFats": 0.5,
+  "unsaturatedFats": 5.5,
+  "sectionedRecipe": [
+    {
+      "title": "Main",
+      "ingredients": [
+        { "name": "Unsweetened almond milk", "amount": { "value": 0.75, "unit": "cup" }, "calories": 30 },
+        { "name": "Vanilla protein powder", "amount": { "value": 1, "unit": "scoop" }, "calories": 120 },
+        { "name": "Chia seeds", "amount": { "value": 1, "unit": "tbsp" }, "calories": 60 },
+        { "name": "Cinnamon", "amount": { "value": 0.5, "unit": "tsp" }, "calories": 3 },
+        { "name": "Vanilla extract", "amount": { "value": 0.5, "unit": "tsp" }, "calories": 3 }
+      ],
+      "steps": [
+        "In a small bowl or jar, combine almond milk, vanilla protein powder, chia seeds, cinnamon, and vanilla extract.",
+        "Mix well until smooth and evenly distributed.",
+        "Seal and refrigerate overnight (or at least 4–6 hours).",
+        "Before serving, stir and top with extra cinnamon if desired."
+      ]
+    }
+  ],
+  "isPublic": true,
+  "version": 1,
+  "createdBy": null,
+  "parentMealId": null
+},
+{
+  "name": "Egg White Bites with Bell Pepper, Spinach, and Feta",
+  "type": "recipe",
+  "image": "https://vlhhealth.com/wp-content/uploads/2025/01/high-protein-low-calorie-meals.jpg",
+  "recipeUrl": "",
+  "videoUrl": "",
+  "mealDescription": "Fluffy egg white bites loaded with diced bell pepper, chopped spinach, and crumbled feta. A savory, low-calorie breakfast perfect for meal prep and calorie deficit plans.",
+  "tags": [
+    "Breakfast",
+    "High-Protein",
+    "Low-Calorie",
+    "Healthy",
+    "Vegetarian",
+    "Gluten-Free",
+    "Sugar-Free",
+    "Savory",
+    "Meal Prep"
+  ],
+  "nbOfTimesSaved": 0,
+  "calories": 280,
+  "servingSize": {
+    "value": 3,
+    "unit": "bites",
+    "description": "3 muffin-sized egg bites"
+  },
+  "carbs": 8,
+  "protein": 31,
+  "sugar": 3,
+  "fiber": 2,
+  "sodium": 410,
+  "caffeine": 0,
+  "cholesterol": 15,
+  "saturatedFats": 2.5,
+  "unsaturatedFats": 4.5,
+  "sectionedRecipe": [
+    {
+      "title": "Main",
+      "ingredients": [
+        { "name": "Liquid egg whites", "amount": { "value": 1.5, "unit": "cups" }, "calories": 180 },
+        { "name": "Bell pepper (diced)", "amount": { "value": 0.75, "unit": "cup" }, "calories": 30 },
+        { "name": "Spinach (chopped)", "amount": { "value": 0.75, "unit": "cup" }, "calories": 7 },
+        { "name": "Feta cheese (crumbled)", "amount": { "value": 3, "unit": "tbsp" }, "calories": 60 },
+        { "name": "Cooking spray", "amount": { "value": 1, "unit": "spray" }, "calories": 0 },
+        { "name": "Salt", "amount": { "value": 1, "unit": "pinch" }, "calories": 0 },
+        { "name": "Black pepper", "amount": { "value": 1, "unit": "pinch" }, "calories": 0 }
+      ],
+      "steps": [
+        "Preheat oven to 350°F (175°C).",
+        "Grease a muffin tin with cooking spray.",
+        "Evenly distribute bell peppers, spinach, and feta into 4 muffin slots.",
+        "Pour egg whites over the vegetables and cheese.",
+        "Season with salt and pepper to taste.",
+        "Bake for 18–20 minutes, until set and lightly golden on top.",
+        "Let cool slightly and enjoy. Store leftovers in the fridge."
+      ]
+    }
+  ],
+  "isPublic": true,
+  "version": 1,
+  "createdBy": null,
+  "parentMealId": null
+}
+
+
 
 
 
