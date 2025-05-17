@@ -86,6 +86,82 @@ module.exports = [
   "createdBy": null,
   "parentMealId": null
 },
+{
+  "name": "Light Vegan Fasolia (White Kidney Bean Stew)",
+  "type": "recipe",
+  "image": "https://mamaslebanesekitchen.com/wp-content/uploads/strikingr/images/2813_fasolia-with-rice-613x501@2x.jpg",
+  "recipeUrl": "",
+  "videoUrl": "",
+  "mealDescription": "A lighter, vegan-friendly take on the traditional Lebanese Fasolia stew, made with white kidney beans (cannellini), tomato paste, and aromatic spices. This simple version uses a Maggi cube for depth and skips the meat, making it perfect for a healthy lunch or dinner.",
+  "tags": [
+    "Lebanese",
+    "Lunch",
+    "Dinner",
+    "Vegan",
+    "Vegetarian",
+    "Gluten-Free",
+    "Sugar-Free",
+    "Diet-Friendly"
+  ],
+  "nbOfTimesSaved": 0,
+  "calories": 290,
+  "servingSize": {
+    "value": 1,
+    "unit": "bowl",
+    "description": "1 serving with ½ cup cooked light fasolia and ½ cup rice or bulgur"
+  },
+  "carbs": 38,
+  "protein": 10,
+  "sugar": 2,
+  "fiber": 8,
+  "sodium": 540,
+  "caffeine": 0,
+  "cholesterol": 0,
+  "saturatedFats": 1,
+  "unsaturatedFats": 4,
+  "sectionedRecipe": [
+    {
+      "title": "Stew Ingredients",
+      "ingredients": [
+        { "name": "White kidney beans (Cannellini)", "amount": { "value": 1.5, "unit": "cups (dry)" }, "calories": 330 },
+        { "name": "Tomato paste", "amount": { "value": 2, "unit": "tbsp" }, "calories": 26 },
+        { "name": "Garlic cloves (minced)", "amount": { "value": 3, "unit": "pieces" }, "calories": 13 },
+        { "name": "Onion (finely chopped)", "amount": { "value": 1, "unit": "small" }, "calories": 30 },
+        { "name": "Olive oil", "amount": { "value": 1, "unit": "tbsp" }, "calories": 119 },
+        { "name": "Maggi vegetable bouillon cube", "amount": { "value": 1, "unit": "cube" }, "calories": 15 },
+        { "name": "Cinnamon powder", "amount": { "value": 0.5, "unit": "tsp" }, "calories": 3 },
+        { "name": "Black pepper", "amount": { "value": 0.25, "unit": "tsp" }, "calories": 1 },
+        { "name": "Salt (optional)", "amount": { "value": 1, "unit": "pinch" }, "calories": 0 },
+        { "name": "Water", "amount": { "value": 5, "unit": "cups" }, "calories": 0 }
+      ],
+      "steps": [
+        "Soak the white kidney beans overnight or for at least 6 hours. Drain and rinse before cooking.",
+        "In a large pot, add the soaked beans and 4 cups of fresh water. Bring to a boil, then reduce heat and simmer for about 45–60 minutes until the beans are soft.",
+        "In a separate pot, heat 1 tbsp olive oil and sauté the chopped onion and garlic until fragrant and lightly golden.",
+        "Add the tomato paste and spices (cinnamon, black pepper, salt), stir for 1–2 minutes to deepen flavor.",
+        "Add the cooked beans along with 1 cup of their cooking water into the pot.",
+        "Crumble in the Maggi cube and stir everything together.",
+        "Simmer the stew uncovered on low heat for 10–15 minutes, allowing it to slightly thicken. Stir occasionally.",
+        "Adjust seasoning as needed and remove from heat. Let sit for a few minutes before serving."
+      ]
+    },
+    {
+      "title": "Serving Suggestions",
+      "ingredients": [],
+      "steps": [
+        "Serve hot with ½ cup cooked white rice, brown rice, bulgur, or quinoa.",
+        "For a lighter option, pair with cauliflower rice or enjoy on its own as a soup-stew hybrid.",
+        "Optional: Garnish with chopped parsley or a squeeze of lemon juice for brightness."
+      ]
+    }
+  ],
+  "isPublic": true,
+  "version": 1,
+  "createdBy": null,
+  "parentMealId": null
+},
+
+
 
 
 

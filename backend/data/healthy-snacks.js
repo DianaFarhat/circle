@@ -58,6 +58,61 @@ module.exports = [
   "createdBy": null,
   "parentMealId": null
 },
+{
+  "name": "Oil-Popped Popcorn Snack",
+  "type": "recipe",
+  "image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2023/2/14/popcorn-in-white-bowl-on-blue-surface.jpg.rend.hgtvcom.1280.1280.85.suffix/1676483406371.webp",
+  "recipeUrl": "",
+  "videoUrl": "",
+  "mealDescription": "A simple and satisfying snack made with whole corn kernels popped in a touch of oil. Crunchy, naturally gluten-free, and endlessly customizable with your favorite seasonings.",
+  "tags": [
+    "Snack",
+    "Vegan",
+    "Vegetarian",
+    "Gluten-Free",
+    "Sugar-Free",
+    "Low-Calorie",
+    "Whole Foods",
+    "Healthy"
+  ],
+  "nbOfTimesSaved": 0,
+  "calories": 150,
+  "servingSize": {
+    "value": 1,
+    "unit": "bowl",
+    "description": "About 3 cups popped popcorn (from 2 tablespoons kernels)"
+  },
+  "carbs": 18,
+  "protein": 3,
+  "sugar": 0,
+  "fiber": 3,
+  "sodium": 0,
+  "caffeine": 0,
+  "cholesterol": 0,
+  "saturatedFats": 1,
+  "unsaturatedFats": 6,
+  "sectionedRecipe": [
+    {
+      "title": "Main",
+      "ingredients": [
+        { "name": "Popcorn kernels", "amount": { "value": 2, "unit": "tbsp" }, "calories": 70 },
+        { "name": "Olive oil or avocado oil", "amount": { "value": 1, "unit": "tbsp" }, "calories": 119 },
+        { "name": "Salt (optional)", "amount": { "value": 1, "unit": "pinch" }, "calories": 0 }
+      ],
+      "steps": [
+        "In a large heavy-bottomed pot with a lid, heat the oil over medium heat.",
+        "Add 2-3 popcorn kernels and cover. Once they pop, the oil is hot enough.",
+        "Add the rest of the kernels, cover, and shake the pot occasionally.",
+        "When popping slows to 1–2 seconds between pops, remove from heat.",
+        "Transfer to a bowl, season with salt (or spices like paprika, cumin, or nutritional yeast), and enjoy warm."
+      ]
+    }
+  ],
+  "isPublic": true,
+  "version": 1,
+  "createdBy": null,
+  "parentMealId": null
+},
 
   
 ];
